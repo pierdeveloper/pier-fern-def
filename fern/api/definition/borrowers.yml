@@ -1,0 +1,73 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+
+services:
+  http:
+    BorrowersService:
+      docs: | 
+        Borrowers represent a legal borrower, and can either be a consumer (e.g. for personal loans and lines of credit) or a [business](notion://www.notion.so/72a5b7a8b07d4bb983ae86a6b32d6696#5261b2cf754e453c8ad40b059ac0d584) (e.g. for commercial charge cards and loans). 
+        Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
+      base-path: /borrowers
+      auth: true
+      endpoints: 
+        createBusinessBorrower:
+          display-name: Create a business borrower
+          path: /borrowers
+          method: POST 
+          request: 
+          response:
+          errors:
+          examples: 
+        updateBusinessBorrower:
+          display-name: Update a business borrower
+          path: /borrowers/{borrower_id}
+          method: PATCH 
+          request: 
+          response:
+          errors:
+          examples: 
+        createConsumerBorrower:
+          display-name: Create a consumer borrower
+          path: /borrowers/consumer
+          method: POST  
+          request: 
+          response:
+          errors:
+          examples: 
+        updateConsumerBorrower:
+          display-name: Update a consumer borrower
+          path: /borrowers/consumer/{borrower_id}
+          path-parameters:
+            borrower_id:
+          method: PATCH   
+          request: 
+          response:
+          errors:
+          examples: 
+        getBorrower:
+          display-name: Retrieve a borrower by id 
+          path: /borrowers/{borrower_id}
+          path-parameters:
+            borrower_id:
+          method: PATCH   
+          request: 
+          response:
+          errors:
+          examples: 
+      getAllBorrowers:
+          display-name: List all borrowers
+          path: /borrowers/{borrower_id}
+          path-parameters:
+            borrower_id: 
+          method: GET   
+          response:
+          errors:
+          examples: 
+
+types:
+  id: string
+  BusinessBorrower: 
+    properties:
+      types: 
