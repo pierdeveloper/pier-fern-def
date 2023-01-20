@@ -2,6 +2,17 @@
 
 types:
   id: string
+  Address: 
+    properties:
+      line_1: string
+      line_2: optional<string>
+      city: string 
+      state: 
+        type: string 
+        docs: 2-digit US state code (e.g. CA, IL, FL)
+      zip: 
+        type: string 
+        docs: 5-digit US zip code
 
 errors:
   ServerError:

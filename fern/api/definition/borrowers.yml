@@ -20,54 +20,90 @@ services:
           response:
           errors:
           examples: 
-        updateBusinessBorrower:
-          display-name: Update a business borrower
-          path: /borrowers/{borrower_id}
-          method: PATCH 
-          request: 
-          response:
-          errors:
-          examples: 
-        createConsumerBorrower:
-          display-name: Create a consumer borrower
-          path: /borrowers/consumer
-          method: POST  
-          request: 
-          response:
-          errors:
-          examples: 
-        updateConsumerBorrower:
-          display-name: Update a consumer borrower
-          path: /borrowers/consumer/{borrower_id}
-          path-parameters:
-            borrower_id:
-          method: PATCH   
-          request: 
-          response:
-          errors:
-          examples: 
-        getBorrower:
-          display-name: Retrieve a borrower by id 
-          path: /borrowers/{borrower_id}
-          path-parameters:
-            borrower_id:
-          method: PATCH   
-          request: 
-          response:
-          errors:
-          examples: 
-      getAllBorrowers:
-          display-name: List all borrowers
-          path: /borrowers/{borrower_id}
-          path-parameters:
-            borrower_id: 
-          method: GET   
-          response:
-          errors:
-          examples: 
+      #   updateBusinessBorrower:
+      #     display-name: Update a business borrower
+      #     path: /borrowers/{borrower_id}
+      #     method: PATCH 
+      #     request: 
+      #     response:
+      #     errors:
+      #     examples: 
+      #   createConsumerBorrower:
+      #     display-name: Create a consumer borrower
+      #     path: /borrowers/consumer
+      #     method: POST  
+      #     request: 
+      #     response:
+      #     errors:
+      #     examples: 
+      #   updateConsumerBorrower:
+      #     display-name: Update a consumer borrower
+      #     path: /borrowers/consumer/{borrower_id}
+      #     path-parameters:
+      #       borrower_id:
+      #     method: PATCH   
+      #     request: 
+      #     response:
+      #     errors:
+      #     examples: 
+      #   getBorrower:
+      #     display-name: Retrieve a borrower by id 
+      #     path: /borrowers/{borrower_id}
+      #     path-parameters:
+      #       borrower_id:
+      #     method: PATCH   
+      #     request: 
+      #     response:
+      #     errors:
+      #     examples: 
+      # getAllBorrowers:
+      #     display-name: List all borrowers
+      #     path: /borrowers/{borrower_id}
+      #     path-parameters:
+      #       borrower_id: 
+      #     method: GET   
+      #     response:
+      #     errors:
+      #     examples: 
 
 types:
   id: string
   BusinessBorrower: 
     properties:
-      types: 
+      id: string 
+      address: commons.Address 
+      beneficial_owners: list<BeneficialOwners>
+
+  BeneficialOwners: 
+    docs: A person who owns owns 25% or more of the business as well as those who control the funds.
+    properties:
+      address: 
+        type: commons.Address
+        docs: The person's address.
+      date_of_birth: 
+        type: string 
+        docs: The person's date of birth (YYYY-MM-DD)
+      email: 
+        type: string 
+        docs: The person's valid email address
+      first_name:
+        type: string 
+        docs: The person's first name
+      last_name:
+        type: string 
+        docs: The person's last name
+      phone:
+        type: string 
+        docs: The person's 10-digit US phone number (e.g. 4152251000)
+      percent_ownership:  
+        type: integer
+        docs: The percent ownership the person has in the business in basis points (e.g. 2500 for 25%)
+      ssn:  
+        type: string 
+        docs: The person's 9-digit US social security number (e.g. 123456789) 
+
+    # docs: | 
+    #   An array of objects representing owners of the business and those who control the funds of the business. 
+    #   If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
+    #   A maximum of 5 objects can be added. 
+    #   See BeneficialOwner type
