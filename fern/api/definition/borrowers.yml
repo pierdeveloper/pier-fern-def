@@ -121,25 +121,36 @@ services:
                   error_code: BORROWER_NOT_FOUND
                   error_message: A borrower resource does not exist
 
-      #   getBorrower:
-      #     display-name: Retrieve a borrower by id
-      #     path: /borrowers/{borrower_id}
-      #     path-parameters:
-      #       borrower_id:
-      #     method: PATCH
-      #     request:
-      #     response:
-      #     errors:
-      #     examples:
-      # getAllBorrowers:
-      #     display-name: List all borrowers
-      #     path: /borrowers/{borrower_id}
-      #     path-parameters:
-      #       borrower_id:
-      #     method: GET
-      #     response:
-      #     errors:
-      #     examples:
+        getBorrower:
+          display-name: Retrieve a borrower by id
+          docs: Retrieve one borrower by id
+          path: /borrowers/{borrower_id}
+          path-parameters:
+            borrower_id: ConsumerBorrowerId
+          method: GET 
+          response: ConsumerBorrower 
+          errors:
+            - commons.BorrowerNotFoundError
+          examples:
+            - path-parameters:
+                borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
+              response: 
+                body: $ConsumerBorrower.Example0
+            - path-parameters:
+                borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
+              response:
+                error: commons.BorrowerNotFoundError
+                body: 
+                  error_type: BORROWER_ERROR
+                  error_code: BORROWER_NOT_FOUND
+                  error_message: The borrower resource does not exist
+
+        getAllBorrowers:
+          display-name: List all borrowers
+          docs: Retrieve all borrowers associated with your account
+          path: /borrowers
+          method: GET
+          response: list<ConsumerBorrower>
 
 types:
   BusinessBorrowerId:
