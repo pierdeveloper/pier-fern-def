@@ -52,7 +52,9 @@ services:
 
         approve:
           display-name: Create an application 
-          path: /
+          path: /{application_id}/approve
+          path-parameters:
+            application_id: ApplicationId 
           method: POST
           request: CreateApplicationRequest
           response: Application

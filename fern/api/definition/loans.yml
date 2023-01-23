@@ -1,0 +1,36 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+  applications: applications.yml
+
+services:
+  http:
+    LoansService:
+      docs: | 
+        Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. 
+        The loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. 
+        Loan agreements that are not signed within 24 hours expire and need to be re-created
+      base-path: /loan_agreements
+      auth: true
+      endpoints:
+        create:
+          display-name: Create a loan agreement
+          path: /
+          method: POST
+          request: CreateLoanAgreementRequest
+          response: LoanAgreement
+          errors:
+            - commons.InvalidInputError
+            - commons.BorrowerNotFoundError
+
+types: 
+  LoanAgreementId: string 
+  CreateLoanAgreementRequest: 
+    properties:
+      id: LoanAgreementId
+      application_id: applications.ApplicationId
+  
+  LoanAgreement: 
+    properties:
+      id: LoanAgreementId
