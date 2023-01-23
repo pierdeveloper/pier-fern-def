@@ -19,7 +19,7 @@ services:
         create:
           display-name: Create a facility
           docs: A facility can be created for a given loan agreement with a status of `signed`
-          path: /facilities
+          path: /
           method: POST
           request: CreateFacilityRequest
           response: Facility
@@ -30,7 +30,7 @@ services:
         close:
           display-name: Close a facility
           docs: Closes an active facility by setting its status to `closed`
-          path: /facilities/{facility_id}/close
+          path: /{facility_id}/close
           path-parameters:
             facility_id: FacilityId
           method: POST
@@ -43,7 +43,7 @@ services:
         listAll: 
           display-name: List all facilities
           docs: List all facilities on your account 
-          path: /facilities
+          path: /
           method: GET 
           response: list<Facility>
 

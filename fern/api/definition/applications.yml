@@ -61,8 +61,6 @@ services:
           errors:
             - commons.InvalidInputError
             - commons.BorrowerNotFoundError 
-          # examples: 
-            # TODO 
         
         reject: 
           display-name: Reject an application 
@@ -76,8 +74,6 @@ services:
           errors:
             - commons.InvalidInputError
             - commons.ApplicationNotFoundError 
-          # examples:
-            # TODO
 
         get:
           display-name: Get an application by ID 
@@ -89,17 +85,13 @@ services:
           response: Application
           errors:
             - commons.ApplicationNotFoundError
-          # examples:
-            # TODO
 
         getAll: 
           display-name: List all applications
           docs: List all applications associated with your account
-          path: /applications
+          path: /
           method: GET 
           response: list<Application>
-          # examples:
-            # TODO  
 
 types: 
   ApplicationId: 
