@@ -39,6 +39,19 @@ services:
           errors:
             - commons.FacilityNotFoundError
             - commons.FacilityCannotBeClosedError
+
+        get:
+          display-name: Retrieve a facility
+          docs: Retrieve a facility by its id
+          path: /{facility_id}
+          path-parameters:
+            facility_id: 
+              type: FacilityId
+              docs: The facility_id of the facility you want to retrieve
+          method: GET
+          response: Facility
+          errors:
+            - commons.FacilityNotFoundError
         
         listAll: 
           display-name: List all facilities
