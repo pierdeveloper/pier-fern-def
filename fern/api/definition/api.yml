@@ -1,8 +1,7 @@
 name: api
 auth: 
-  auth-scheme: basic
+  scheme: basic
   docs: | 
-    Pier uses basic auth to authenticate API requests. 
     All calls should be made with the username field left empty and the password field set to your API key. 
     Remember to prefix your API key with a colon.
 environments:

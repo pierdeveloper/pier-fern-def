@@ -13,6 +13,27 @@ types:
       zip: 
         type: string 
         docs: 5-digit US zip code
+  
+  BaseErrorBody:
+    properties:
+      error_type: string 
+      error_code: string 
+      error_message: string
+  
+  InvalidInput:
+    extends: BaseErrorBody 
+    properties: 
+      error_detail: list<ErrorDetail>
+
+  ErrorDetail: 
+    properties:
+      value: string 
+      msg: string 
+      param: string 
+      location: string 
+  
+  DuplicateEin: 
+    extends: BaseErrorBody 
 
 errors:
   ServerError:
@@ -22,3 +43,8 @@ errors:
     docs: |
       Pier's rate limit is set to 1,000 requests per minute. 
       The limit applies to both the sandbox and production environments.
+  InvalidInputError: 
+    status-code: 400
+    type: InvalidInput
+  DuplicateEinError:
+    status-code: 400

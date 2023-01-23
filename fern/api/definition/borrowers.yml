@@ -14,12 +14,92 @@ services:
       endpoints: 
         createBusinessBorrower:
           display-name: Create a business borrower
+          docs: Creates a business borrower. Business borrowers must have a unique EIN.
           path: /borrowers
           method: POST 
-          request: 
-          response:
+          request: CreateBusinessBorrowerRequest
+          response: BusinessBorrower
           errors:
+            - commons.InvalidInputError
+            - commons.DuplicateEinError
           examples: 
+            - request: 
+                address:
+                  line_1: 15 Market St
+                  line_2: null
+                  city: San Francisco
+                  state: NJ
+                  zip: '94133'
+                business_contact:
+                  first_name: alex
+                  last_name: montana
+                  phone: '4155555555'
+                  email: alex@acme.co
+                  title: COO
+                beneficial_owners:
+                  - address:
+                      line_1: 15 Market St
+                      line_2: null
+                      city: San Francisco
+                      state: CA
+                      zip: '91133'
+                    date_of_birth: '1991-12-18'
+                    email: jdoe@acme.com
+                    first_name: Jane
+                    last_name: Dough
+                    percent_ownership: 2500
+                    phone: '4155555555'
+                    ssn: '123456789'
+                    id: 63ae91f8eae458cb0d79f77e
+                business_name: Apple Landscaping
+                business_type: corporation
+                dba_name: Apple Landscaping
+                ein: '130256721'
+                incorporation_date: '2000-12-12'
+                kyb_completion_date: '2022-11-15'
+                phone: '4152556465'
+                state_of_incorporation: DE
+              response: 
+                body:
+                  address:
+                    line_1: 15 Market St
+                    line_2: null
+                    city: San Francisco
+                    state: NJ
+                    zip: '94133'
+                  business_contact:
+                    first_name: alex
+                    last_name: montana
+                    phone: '4155555555'
+                    email: alex@acme.co
+                    title: COO
+                  beneficial_owners:
+                    - address:
+                        line_1: 15 Market St
+                        line_2: null
+                        city: San Francisco
+                        state: CA
+                        zip: '91133'
+                      date_of_birth: '1991-12-18'
+                      email: jdoe@acme.com
+                      first_name: Jane
+                      last_name: Dough
+                      percent_ownership: 2500
+                      phone: '4155555555'
+                      ssn: '123456789'
+                      id: 63ae91f8eae458cb0d79f77e
+                  id: bor_18e5a3726b3943cda2635f40e1041ba4
+                  business_name: Apple Landscaping
+                  business_type: corporation
+                  dba_name: Apple Landscaping
+                  ein: '130256721'
+                  incorporation_date: '2000-12-12'
+                  kyb_completion_date: '2022-11-15'
+                  phone: '4152556465'
+                  state_of_incorporation: DE
+                  created_on: '2022-12-30T07:23:36.665Z'
+                  
+
       #   updateBusinessBorrower:
       #     display-name: Update a business borrower
       #     path: /borrowers/{borrower_id}
@@ -67,16 +147,94 @@ services:
       #     examples: 
 
 types:
-  id: string
+  BusinessBorrowerId: string
+  BeneficialOwnerId: string 
+
+  CreateBusinessBorrowerRequest:
+    properties:
+      address: 
+        type: commons.Address 
+        docs: The address of the business.
+      beneficial_owners: 
+        type: list<BeneficialOwners>
+        docs: | 
+          An array of objects representing owners of the business and those who control the funds of the business. 
+          If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
+          A maximum of 5 objects can be added.
+      business_contact: 
+        type: BusinessContact
+        docs: The person executing the loan agreement.
+      business_name: 
+        type: string
+        docs: Legal name of the business.
+      business_type: 
+        type: BusinessType
+        docs: The type of business entity.
+      dba_name: 
+        type: string 
+        docs: Doing-business-as name of the business
+      ein: 
+        type: string 
+        docs: 9-digit IRS employee identification number of the business (e.g. 345543221)
+      incorporation_date: 
+        type: string 
+        docs: Incorporation date of the business (YYYY-MM-DD)
+      kyb_completion_date: 
+        type: string 
+        docs: Date kyb completed on the business (YYYY-MM-DD) 
+      state_of_incorporation: 
+        type: string 
+        docs: Required 2-digit US state code (e.g. CA, IL, FL, …)
+      phone: 
+        type: string 
+        docs: The phone number of the business
+      
+
   BusinessBorrower: 
     properties:
-      id: string 
+      id: BusinessBorrowerId 
       address: commons.Address 
-      beneficial_owners: list<BeneficialOwners>
+      beneficial_owners: 
+        type: list<BeneficialOwners>
+        docs: | 
+          An array of objects representing owners of the business and those who control the funds of the business. 
+          If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
+          A maximum of 5 objects can be added.
+      business_contact: 
+        type: BusinessContact
+        docs: The person executing the loan agreement.
+      business_name: 
+        type: string
+        docs: Legal name of the business
+      business_type: 
+        type: BusinessType
+        docs: The type of business entity.
+      created_on: 
+        type: string 
+        docs: Time stamp of borrower's creation date
+      dba_name: 
+        type: string 
+        docs: Doing-business-as name of the business
+      ein: 
+        type: string 
+        docs: 9-digit IRS employee identification number of the business (e.g. 345543221)
+      incorporation_date: 
+        type: string 
+        docs: Incorporation date of the business (YYYY-MM-DD)
+      kyb_completion_date: 
+        type: string 
+        docs: Date kyb completed on the business (YYYY-MM-DD) 
+      phone: 
+        type: string 
+        docs: The phone number of the business
+      state_of_incorporation: 
+        type: string 
+        docs: Required 2-digit US state code (e.g. CA, IL, FL, …)
 
   BeneficialOwners: 
     docs: A person who owns owns 25% or more of the business as well as those who control the funds.
     properties:
+      id: BeneficialOwnerId
       address: 
         type: commons.Address
         docs: The person's address.
@@ -102,8 +260,49 @@ types:
         type: string 
         docs: The person's 9-digit US social security number (e.g. 123456789) 
 
-    # docs: | 
-    #   An array of objects representing owners of the business and those who control the funds of the business. 
-    #   If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
-    #   A maximum of 5 objects can be added. 
-    #   See BeneficialOwner type
+  BusinessContact: 
+    properties:
+      first_name: string 
+      last_name: string 
+      phone: string 
+      email: string 
+      title: string 
+      
+  BusinessType:
+    enum: 
+      - corporation
+      - llc
+      - partnership
+      - sole_proprietorship
+
+  LineOfCreditOffer: 
+    properties:
+      amount: integer
+      apr: integer
+      annual_fee: integer
+      billing_cycle: integer
+      finance_charge: integer
+      grace_period: integer
+      grace_period_interest_rate: integer
+      interest_rate: integer
+      late_payment_fee: integer
+      origination_fee: integer
+      term: integer
+      
+  LoanOffer:
+    properties:
+      amount: integer
+      annual_fee: integer
+      apr: integer
+      finance_charge: integer
+      grace_period: integer
+      interest_rate: integer
+      origination_fee: integer
+      repayment_frequency: string
+      late_payment_fee: integer
+      term: integer
+
+  RejectionType:
+    properties:
+      reason: string
+      reason_message: string 
