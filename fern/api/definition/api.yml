@@ -1,4 +1,5 @@
 name: api
+display-name: Pier API
 auth: 
   scheme: basic
   docs: | 
