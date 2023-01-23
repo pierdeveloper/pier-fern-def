@@ -51,12 +51,12 @@ services:
                   error_message: The borrower resource does not exist
 
         approve:
-          display-name: Create an application 
+          display-name: Approve an application 
           path: /{application_id}/approve
           path-parameters:
             application_id: ApplicationId 
           method: POST
-          request: CreateApplicationRequest
+          request: ApproveApplicationRequest
           response: Application
           errors:
             - commons.InvalidInputError
@@ -288,3 +288,13 @@ types:
       application_id: 
         type: string 
         docs: The id of the borrower you're requesting to retrieve
+
+  ApproveApplicationRequest: 
+    properties:
+      offer: LineOfCreditOffer #TODO add union type for LoanOffer
+      id: ApplicationId
+      borrower_id: borrowers.ConsumerBorrowerId
+      credit_type: commons.CreditType
+      status: ApplicationStatus
+      created_on: datetime 
+      decisioned_on: datetime 
