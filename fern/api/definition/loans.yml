@@ -52,9 +52,7 @@ services:
         getAll: 
           display-name: List all loan agreements 
           docs: List all loan agreements on your account 
-          path: /{loan_agreement_id}
-          path-parameters:
-            loan_agreement_id: LoanAgreementId
+          path: /
           method: GET
           response: list<LoanAgreement>
 
