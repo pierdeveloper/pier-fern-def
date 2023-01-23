@@ -41,6 +41,9 @@ types:
   BorrowerNotFound: 
     extends: BaseErrorBody
 
+  ApplicationNotFound: 
+    extends: BaseErrorBody
+
 errors:
   ServerError:
     status-code: 500
@@ -54,9 +57,13 @@ errors:
     type: InvalidInput
   DuplicateEinError:
     status-code: 400
+    type: DuplicateEin
   DuplicateSsnError: 
     status-code: 400
     type: DuplicateSsn
   BorrowerNotFoundError:
     status-code: 404
     type: BorrowerNotFound 
+  ApplicationNotFoundError:
+    status-code: 404
+    type: ApplicationNotFound

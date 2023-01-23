@@ -1,0 +1,301 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+  borrowers: borrowers.yml
+
+services:
+  http:
+    ApplicationsService:
+      docs: |
+        Applications represent the credit application for a borrower. 
+        Applications must be created for a given borrower, and one borrower can have many applications. 
+        Once an application is created, it must either be approved or rejected.
+        Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
+      base-path: /applications
+      auth: true
+      endpoints:
+        create:
+          display-name: Create an application 
+          path: /
+          method: POST
+          request: CreateApplicationRequest
+          response: Application
+          errors:
+            - commons.InvalidInputError
+            - commons.BorrowerNotFoundError
+          examples:
+            - request: $CreateApplicationRequest.Example0
+              response:
+                body: $Application.Example0 
+            - request: $CreateApplicationRequest.Example0
+              response: 
+                error: commons.InvalidInputError
+                body:
+                  error_type: APPLICATION_ERROR
+                  error_code: INVALID_INPUT
+                  error_message: A value provided in the body is incorrect. See error_detail for more
+                  error_detail:
+                    - value: loc
+                      msg: >-
+                        Credit type must be either LOAN, REVOLVING_LINE_OF_CREDIT or
+                        CLOSED_LINE_OF_CREDIT
+                      param: credit_type
+                      location: body
+            - request: $CreateApplicationRequest.Example0
+              response: 
+                error: commons.BorrowerNotFoundError
+                body: 
+                  error_type: BORROWER_ERROR
+                  error_code: BORROWER_NOT_FOUND 
+                  error_message: The borrower resource does not exist
+
+        approve:
+          display-name: Create an application 
+          path: /
+          method: POST
+          request: CreateApplicationRequest
+          response: Application
+          errors:
+            - commons.InvalidInputError
+            - commons.BorrowerNotFoundError 
+          # examples: 
+            # TODO 
+        
+        reject: 
+          display-name: Reject an application 
+          docs: Updates the status of a credit application to `REJECTED` and returns a user readable rejection reason, to be used in the adverse action notice
+          path: /{application_id}/reject
+          path-parameters:
+            application_id: ApplicationId
+          method: POST 
+          request: RejectRequest
+          response: Application
+          errors:
+            - commons.InvalidInputError
+            - commons.ApplicationNotFoundError 
+          # examples:
+            # TODO
+
+        get:
+          display-name: Get an application by ID 
+          docs: Get an application by its id
+          path: /{application_id}
+          path-parameters:
+            application_id: ApplicationId
+          method: GET 
+          response: Application
+          errors:
+            - commons.ApplicationNotFoundError
+          # examples:
+            # TODO
+
+        getAll: 
+          display-name: List all applications
+          docs: List all applications associated with your account
+          path: /applications
+          method: GET 
+          response: list<Application>
+          # examples:
+            # TODO  
+
+types: 
+  ApplicationId: 
+    type: string 
+    examples: 
+      - name: Example0
+        value: app_f0467657bba948e6a87292e182132848
+        
+  ApplicationStatus:
+    enum:
+      - value: pending
+        docs: the application is pending a decision
+      - value: approved
+        docs: the application is approved with an offer
+      - value: accepted
+        docs: the application offer has been accepted by the borrower
+      - value: rejected
+        docs: the application is rejected 
+      - value: expired
+        docs: the application has expired
+
+  CreateApplicationRequest: 
+    properties:
+      borrower_id: 
+        type: string
+        docs: The `borrower_id` of the borrower the application is for
+      credit_type: 
+        type: string 
+        docs: The type of credit product.
+      requested_amount: 
+        type: optional<integer>
+        docs: If the borrower requests an amount in their application, the requested loan or credit line amount (in cents).
+    examples: 
+      - name: Example0 
+        value: 
+          borrower_id: $borrowers.ConsumerBorrowerId.Example0
+          credit_type: revolving_line_of_credit
+          requested_amount: 200000
+          
+  Application: 
+    properties:
+      id: optional<ApplicationId>
+      borrower_id: 
+        type: optional<borrowers.ConsumerBorrowerId>
+        docs: The `borrower_id` of the borrower the application belongs to
+      credit_type: 
+        type: optional<CreditType>
+        docs: The type of credit product. 
+      status: optional<ApplicationStatus>
+      created_on: 
+        type: optional<datetime>
+        docs: Timestamp the application object is created on
+      decisioned_on: 
+        type: optional<datetime>
+        docs: Timestamp when the application is either approved or rejected on
+      offer: 
+        type: optional<LoanOffer>
+        docs: If the application is approved, an object containing the credit offer details
+    examples:
+      - name: Example0 
+        value: 
+          id: $ApplicationId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Example0
+          credit_type: installment_loan
+          status: pending
+          created_on: '2022-12-31T01:36:52.606Z'
+  CreditType: 
+    enum: 
+      - installment_loan
+      - revolving_line_of_credit
+      - closed_line_of_credit
+  
+  LineOfCreditOffer:
+    properties:
+      amount: 
+        type: integer
+        docs: The amount (in cents) of the credit line offer (e.g. '200000' for $2,000.00)
+      apr: 
+        type: integer
+        docs: The apr (in basis points) of the credit line offer (e.g. '750' for 7.50%)
+      annual_fee: 
+        type: integer
+        docs: The annual fee charged for the credit line (e.g. '5000' for $50.00)
+      billing_cycle: 
+        type: integer
+        docs: | 
+          The time in days between the last statement's closing date and the next statement's closing date. 
+          For consumer lines of credit, the minimum is '21'
+      finance_charge: 
+        type: integer
+        docs: If your platform charges a monthly finance charge for access to the line, the amount in cents
+      grace_period: 
+        type: integer
+        docs: The time in days between the end of a billing cycle and the bill's due date. For consumer lines of credit, the minimum is '21'
+      grace_period_interest_rate: 
+        type: optional<integer>
+        docs: The interest rate (in basis points) charged during the grace period. Must be '0' for consumer lines of credit. Defaults to `0` if omitted
+      interest_rate: 
+        type: integer
+        docs: The interest rate (in basis points) of the loan or credit line offer (e.g. '750' for 7.50%)
+      introductory_offer_interest_rate: 
+        type: optional<integer>
+        docs: If you offer an introductory period with a reduced interest rate, the interest rate in basis points
+      introductory_offer_interest_rate_term: 
+        type: optional<integer>
+        docs: If you offer an introductory period with a reduced interest rate, the term in months
+      late_payment_fee: 
+        type: integer
+        docs: The fee charged if a borrower misses the payment due date, in cents (e.g. '2500' for $25.00)
+      origination_fee: 
+        type: integer
+        docs: The origination fee charged to originate the line in cents (e.g. '20000' for $200)
+      term: 
+        type: integer
+        docs: The term of the line in months
+    examples:
+      - name: Example0 
+        value: 
+          amount: 1000000
+          apr: 0
+          annual_fee: 0
+          billing_cycle: 30
+          finance_charge: 0
+          grace_period: 21
+          grace_period_interest_rate: 0
+          interest_rate: 0
+          late_payment_fee: 0
+          origination_fee: 0
+          term: 24
+
+  LoanOffer:
+    properties:
+      amount: integer
+      annual_fee: integer
+      apr: integer
+      finance_charge: integer
+      grace_period: integer
+      interest_rate: integer
+      origination_fee: integer
+      repayment_frequency: string
+      late_payment_fee: integer
+      term: integer
+
+  RejectRequest: 
+    properties:
+      rejection_reason: RejectionReason
+
+  RejectionReason: 
+    enum: 
+      - value: income_too_low
+        docs: Income does not meet requirement
+      - value: bank_balance_too_low
+        docs: Bank account balance is too low
+      - value: income_unpredictable
+        docs: Unable to predict regular pattern of income deposits
+      - value: user_account_duplicate
+        docs: Duplicate account (previously applied for a loan with a different email address)
+      - value: sdb_check_failed
+        docs: State database lending restriction
+      - value: bank_account_linking_error
+        docs: Unable to link to a supported banking institution
+      - value: mla_failed
+        docs: | 
+          Under the Military Lending Act, loans to military personnel or their spouses
+          and dependents cannot be made if the interest and expenses associated with the
+          loan exceed an annual percentage rate (APR) of 36%. Due to these limits on
+          military-related lending, we can't lend to members of the military or their
+          spouses and dependents. Please feel free to contact us with any questions you
+          may have about this notice!
+      - value: iddoc_failed
+        docs: Unable to verify identification documents
+      - value: no_checking_or_savings_data
+        docs: No data from supported financial institution. Unsupported financial institution is linked
+      - value: insufficient_bank_history
+        docs: Unable to pull enough bank history
+      - value: loan_location_no_license
+        docs: Unable to verify that your permanent residence is in a state
+      - value: address_invalid
+        docs: Unable to verify mailing address
+      - value: income_verification_failed
+        docs: Unable to verify qualified income over a sustained period
+      - value: stacking_behavior
+        docs: Recent deposits and withdrawals detected from other lenders
+      - value: ssn_verification_failed
+        docs: Unable to verify SSN number
+      - value: too_many_nsfs
+        docs: Multiple Returned checks or Insufficient Fund Fees detected
+      - value: fraud_risk_too_high
+        docs: Bank account has been flagged as potential fraud risk
+      - value: bankruptcy
+        docs: Outstanding balance from previous loan
+      - value: processor_suspended
+        docs: Payment processor is unable to authenticate user
+      - value: cash_flow_verification_failed
+        docs: Cash flow analysis - income funds are quickly depleted from bank account after income deposit
+
+  GetApplicationRequest: 
+    properties:
+      application_id: 
+        type: string 
+        docs: The id of the borrower you're requesting to retrieve

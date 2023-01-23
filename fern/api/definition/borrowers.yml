@@ -461,33 +461,6 @@ types:
           created_on: '2022-12-31T00:58:47.828Z'
           phone: '2065886919'
 
-  # LineOfCreditOffer:
-  #   properties:
-  #     amount: integer
-  #     apr: integer
-  #     annual_fee: integer
-  #     billing_cycle: integer
-  #     finance_charge: integer
-  #     grace_period: integer
-  #     grace_period_interest_rate: integer
-  #     interest_rate: integer
-  #     late_payment_fee: integer
-  #     origination_fee: integer
-  #     term: integer
-
-  # LoanOffer:
-  #   properties:
-  #     amount: integer
-  #     annual_fee: integer
-  #     apr: integer
-  #     finance_charge: integer
-  #     grace_period: integer
-  #     interest_rate: integer
-  #     origination_fee: integer
-  #     repayment_frequency: string
-  #     late_payment_fee: integer
-  #     term: integer
-
   RejectionType:
     properties:
       reason: string
