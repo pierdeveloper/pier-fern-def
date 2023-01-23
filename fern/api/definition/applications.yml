@@ -146,7 +146,7 @@ types:
         type: optional<borrowers.ConsumerBorrowerId>
         docs: The `borrower_id` of the borrower the application belongs to
       credit_type: 
-        type: optional<CreditType>
+        type: optional<commons.CreditType>
         docs: The type of credit product. 
       status: optional<ApplicationStatus>
       created_on: 
@@ -166,11 +166,6 @@ types:
           credit_type: installment_loan
           status: pending
           created_on: '2022-12-31T01:36:52.606Z'
-  CreditType: 
-    enum: 
-      - installment_loan
-      - revolving_line_of_credit
-      - closed_line_of_credit
   
   LineOfCreditOffer:
     properties:

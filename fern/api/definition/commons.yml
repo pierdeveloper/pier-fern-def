@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
 types:
-  id: string
   Address: 
     properties:
       line_1: string
@@ -13,6 +12,12 @@ types:
       zip: 
         type: string 
         docs: 5-digit US zip code
+
+  CreditType: 
+    enum: 
+      - installment_loan
+      - revolving_line_of_credit
+      - closed_line_of_credit
   
   BaseErrorBody:
     properties:
@@ -44,6 +49,27 @@ types:
   ApplicationNotFound: 
     extends: BaseErrorBody
 
+  DocumentCannotBeCreated: 
+    extends: BaseErrorBody 
+  
+  DocumentCannotBeSigned:
+    extends: BaseErrorBody
+  
+  DocumentNotFound: 
+    extends: BaseErrorBody
+
+  FacilityCannotBeCreated: 
+    extends: BaseErrorBody
+  
+  FacilityAlreadyExists:
+    extends: BaseErrorBody
+
+  FacilityNotFound:
+    extends: BaseErrorBody 
+
+  FacilityCannotBeClosed: 
+    extends: BaseErrorBody
+
 errors:
   ServerError:
     status-code: 500
@@ -67,3 +93,24 @@ errors:
   ApplicationNotFoundError:
     status-code: 404
     type: ApplicationNotFound
+  DocumentCannotBeCreatedError: 
+    status-code: 400
+    type: DocumentCannotBeCreated
+  DocumentCannotBeSignedError: 
+    status-code: 400
+    type: DocumentCannotBeSigned
+  DocumentNotFoundError:
+    status-code: 404
+    type: DocumentNotFound
+  FacilityCannotBeCreatedError: 
+    status-code: 400 
+    type: FacilityCannotBeCreated
+  FacilityAlreadyExistsError:
+    status-code: 404
+    type: FacilityAlreadyExists
+  FacilityNotFoundError: 
+    status-code: 404
+    type: FacilityNotFound
+  FacilityCannotBeClosedError:
+    status-code: 400
+    type: FacilityCannotBeClosed

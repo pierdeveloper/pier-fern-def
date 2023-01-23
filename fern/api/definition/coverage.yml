@@ -1,0 +1,39 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+  applications: applications.yml
+
+services:
+  http:
+    CoverageAndUtilityService:
+      docs: |
+        Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. 
+        `min` and `max` amounts are in cents, and `max_apr` is in basis points. 
+        States not yet supported are represented as an empty object
+      base-path: /
+      auth: true
+      endpoints:
+        retrieveCommercialCoverage:
+          display-name: Retrieve commercial lending coverage
+          docs: Retrieve state-by-state commercial coverage 
+          path: /coverage/commercial
+          method: GET 
+          response: CommercialCoverage
+        
+        retrieveConsumerCoverage:
+          display-name: Retrieve consumer lending coverage 
+          docs: Retrieve state-by-state consumer coverage list
+          path: /coverage/consumer 
+          method: GET 
+          response: unknown 
+        
+        retrieveRejectionReasons:
+          display-name: Retrieve rejection reasons
+          docs: Retrieve a list of valid reasons to reject an applicant, along with descriptions for each reason
+          path: /rejection_reasons
+          response: RejectionReasons
+
+types: 
+  CommercialCoverage: unknown 
+  RejectionReasons: list<map<applications.RejectionReason,string>>

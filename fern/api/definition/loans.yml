@@ -16,21 +16,91 @@ services:
       endpoints:
         create:
           display-name: Create a loan agreement
+          docs: A loan agreement can be created for an application with a status of approved. Expect 4-8 seconds of latency
           path: /
           method: POST
           request: CreateLoanAgreementRequest
           response: LoanAgreement
           errors:
-            - commons.InvalidInputError
-            - commons.BorrowerNotFoundError
+            - commons.ApplicationNotFoundError
+            - commons.DocumentCannotBeCreatedError
+        
+        sign: 
+          display-name: Sign a loan agreement
+          docs: Electronically signs a loan document and updates the application's status to `accepted`
+          path: /{loan_agreement_id}/sign
+          path-parameters:
+            loan_agreement_id: LoanAgreementId
+          method: POST
+          request: SignLoanAgreementRequest
+          response: SignLoanAgreementResponse
+          errors:
+            - commons.ApplicationNotFoundError
+            - commons.DocumentCannotBeSignedError
+        
+        get: 
+          display-name: Get a loan agreement by id
+          docs: Retrieve a loan agreement by its id
+          path: /{loan_agreement_id}
+          path-parameters:
+            loan_agreement_id: LoanAgreementId
+          method: GET 
+          response: LoanAgreement
+          errors:
+            - commons.DocumentNotFoundError
+        
+        getAll: 
+          display-name: List all loan agreements 
+          docs: List all loan agreements on your account 
+          path: /{loan_agreement_id}
+          path-parameters:
+            loan_agreement_id: LoanAgreementId
+          method: GET
+          response: list<LoanAgreement>
 
 types: 
   LoanAgreementId: string 
   CreateLoanAgreementRequest: 
     properties:
-      id: LoanAgreementId
-      application_id: applications.ApplicationId
+      application_id: 
+        type: applications.ApplicationId
+        docs: The `application_id` of the application to create the loan agreement for
   
   LoanAgreement: 
     properties:
       id: LoanAgreementId
+      application_id: 
+        type: string 
+        docs: The `application_id` of the corresponding loan application the agreement is for
+      created_on: 
+        type: string 
+        docs: Timestamp the loan agreement object is created on
+      document_url: 
+        type: string 
+        docs: Url where the loan agreement document is hosted
+      signature_timestamp: 
+        type: string 
+        docs: Timestamp of when e-signature is completed
+      status:   
+        type: LoanAgreementStatus
+        docs: The status of the document 
+    
+  LoanAgreementStatus: 
+    enum: 
+      - pending_signature
+      - signed
+      - expired
+  
+  SignLoanAgreementRequest: 
+    properties:
+      loan_agreement_id: LoanAgreementId
+
+  SignLoanAgreementResponse: 
+    properties:
+      status: LoanAgreementStatus
+      id: LoanAgreementId 
+      application_id: applications.ApplicationId
+      signature_timestamp: datetime 
+      document_url: string 
+      created_on: datetime 
+      

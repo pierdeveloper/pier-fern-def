@@ -1,0 +1,92 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+imports:
+  commons: commons.yml
+  applications: applications.yml
+  borrowers: borrowers.yml
+  loans: loans.yml
+
+services:
+  http:
+    FacilitiesService:
+      docs: |
+        A facility represents an active loan or line of credit. 
+        It contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. 
+        Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality. 
+      base-path: /facilities
+      auth: true
+      endpoints:
+        create:
+          display-name: Create a facility
+          docs: A facility can be created for a given loan agreement with a status of `signed`
+          path: /facilities
+          method: POST
+          request: CreateFacilityRequest
+          response: Facility
+          errors:
+            - commons.FacilityCannotBeCreatedError
+            - commons.FacilityAlreadyExistsError
+        
+        close:
+          display-name: Close a facility
+          docs: Closes an active facility by setting its status to `closed`
+          path: /facilities/{facility_id}/close
+          path-parameters:
+            facility_id: FacilityId
+          method: POST
+          request: CloseFacilityRequest
+          response: Facility
+          errors:
+            - commons.FacilityNotFoundError
+            - commons.FacilityCannotBeClosedError
+        
+        listAll: 
+          display-name: List all facilities
+          docs: List all facilities on your account 
+          path: /facilities
+          method: GET 
+          response: list<Facility>
+
+types: 
+  FacilityId: string 
+  Facility: 
+    properties:
+      id: FacilityId 
+      application_id: 
+        type: applications.ApplicationId 
+        docs: The `application_id` of the corresponding loan application for the facility
+      borrower_id: 
+        type: borrowers.ConsumerBorrowerId
+        docs: The `borrower_id` of the corresponding borrower the facility is for
+      loan_agreement_id: 
+        type: string 
+        docs: The `loan_agreement_id` of the corresponding loan agreement the facility is for
+      credit_type: 
+        type: commons.CreditType 
+        docs: The type of credit production.
+      created_on: 
+        type: datetime 
+        docs: Timestamp the loan agreement object is created on
+      status: 
+        type: CreditStatus
+        docs: The status of the facility.
+      terms: 
+        type: applications.LineOfCreditOffer
+        docs: An object containing a summary of the terms of the facility. 
+
+  CreditStatus: 
+    enum: 
+      - active
+      - closed
+  
+  CreateFacilityRequest: 
+    properties:
+      loan_agreement_id: 
+        type: loans.LoanAgreementId
+        docs: The `loan_agreement_id` of the loan agreement to create a facility for
+
+  CloseFacilityRequest: 
+    properties:
+      facility_id: 
+        type: FacilityId
+        docs: The `facility_id` of the facility to close
