@@ -31,6 +31,7 @@ services:
         retrieveRejectionReasons:
           display-name: Retrieve rejection reasons
           docs: Retrieve a list of valid reasons to reject an applicant, along with descriptions for each reason
+          method: GET
           path: /rejection_reasons
           response: RejectionReasons
 
