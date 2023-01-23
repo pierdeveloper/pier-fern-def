@@ -6,303 +6,478 @@ imports:
 services:
   http:
     BorrowersService:
-      docs: | 
+      docs: |
         Borrowers represent a legal borrower, and can either be a consumer (e.g. for personal loans and lines of credit) or a [business](notion://www.notion.so/72a5b7a8b07d4bb983ae86a6b32d6696#5261b2cf754e453c8ad40b059ac0d584) (e.g. for commercial charge cards and loans). 
         Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
       base-path: /borrowers
       auth: true
-      endpoints: 
+      endpoints:
         createBusinessBorrower:
           display-name: Create a business borrower
           docs: Creates a business borrower. Business borrowers must have a unique EIN.
           path: /borrowers
-          method: POST 
-          request: CreateBusinessBorrowerRequest
+          method: POST
+          request: BusinessBorrowerRequest
           response: BusinessBorrower
           errors:
             - commons.InvalidInputError
             - commons.DuplicateEinError
-          examples: 
-            - request: 
-                address:
-                  line_1: 15 Market St
-                  line_2: null
-                  city: San Francisco
-                  state: NJ
-                  zip: '94133'
-                business_contact:
-                  first_name: alex
-                  last_name: montana
-                  phone: '4155555555'
-                  email: alex@acme.co
-                  title: COO
-                beneficial_owners:
-                  - address:
-                      line_1: 15 Market St
-                      line_2: null
-                      city: San Francisco
-                      state: CA
-                      zip: '91133'
-                    date_of_birth: '1991-12-18'
-                    email: jdoe@acme.com
-                    first_name: Jane
-                    last_name: Dough
-                    percent_ownership: 2500
-                    phone: '4155555555'
-                    ssn: '123456789'
-                    id: 63ae91f8eae458cb0d79f77e
-                business_name: Apple Landscaping
-                business_type: corporation
-                dba_name: Apple Landscaping
-                ein: '130256721'
-                incorporation_date: '2000-12-12'
-                kyb_completion_date: '2022-11-15'
-                phone: '4152556465'
-                state_of_incorporation: DE
-              response: 
-                body:
-                  address:
-                    line_1: 15 Market St
-                    line_2: null
-                    city: San Francisco
-                    state: NJ
-                    zip: '94133'
-                  business_contact:
-                    first_name: alex
-                    last_name: montana
-                    phone: '4155555555'
-                    email: alex@acme.co
-                    title: COO
-                  beneficial_owners:
-                    - address:
-                        line_1: 15 Market St
-                        line_2: null
-                        city: San Francisco
-                        state: CA
-                        zip: '91133'
-                      date_of_birth: '1991-12-18'
-                      email: jdoe@acme.com
-                      first_name: Jane
-                      last_name: Dough
-                      percent_ownership: 2500
-                      phone: '4155555555'
-                      ssn: '123456789'
-                      id: 63ae91f8eae458cb0d79f77e
-                  id: bor_18e5a3726b3943cda2635f40e1041ba4
-                  business_name: Apple Landscaping
-                  business_type: corporation
-                  dba_name: Apple Landscaping
-                  ein: '130256721'
-                  incorporation_date: '2000-12-12'
-                  kyb_completion_date: '2022-11-15'
-                  phone: '4152556465'
-                  state_of_incorporation: DE
-                  created_on: '2022-12-30T07:23:36.665Z'
-                  
+          examples:
+            - request: $BusinessBorrowerRequest.Example0
+              response:
+                body: $BusinessBorrower.Example0
 
-      #   updateBusinessBorrower:
-      #     display-name: Update a business borrower
-      #     path: /borrowers/{borrower_id}
-      #     method: PATCH 
-      #     request: 
-      #     response:
-      #     errors:
-      #     examples: 
-      #   createConsumerBorrower:
-      #     display-name: Create a consumer borrower
-      #     path: /borrowers/consumer
-      #     method: POST  
-      #     request: 
-      #     response:
-      #     errors:
-      #     examples: 
-      #   updateConsumerBorrower:
-      #     display-name: Update a consumer borrower
-      #     path: /borrowers/consumer/{borrower_id}
-      #     path-parameters:
-      #       borrower_id:
-      #     method: PATCH   
-      #     request: 
-      #     response:
-      #     errors:
-      #     examples: 
+        updateBusinessBorrower:
+          display-name: Update a business borrower
+          docs: Updates an existing borrower. The full borrower object needs to be supplied in the update request.
+          path: /borrowers/{borrower_id}
+          path-parameters:
+            borrower_id: BusinessBorrowerId
+          method: PATCH
+          request: BusinessBorrowerRequest
+          response: BusinessBorrower
+          errors:
+            - commons.InvalidInputError
+            - commons.DuplicateEinError
+          examples:
+            - path-parameters:
+                borrower_id: $BusinessBorrowerId.Example0 
+              request: $BusinessBorrowerRequest.Example0
+              response:
+                body: $BusinessBorrower.Example0
+
+        createConsumerBorrower:
+          display-name: Create a consumer borrower
+          docs: Creates a consumer borrower. Consumer borrower's must have a unique SSN.
+          path: /borrowers/consumer
+          method: POST
+          request: ConsumerBorrowerRequest
+          response: ConsumerBorrower
+          errors:
+            - commons.InvalidInputError
+            - commons.DuplicateSsnError
+          examples:
+            - request: $ConsumerBorrowerRequest.Example0
+              response: 
+                body: $ConsumerBorrower.Example0
+            - request: $ConsumerBorrowerRequest.Example0
+              response: 
+                error: commons.InvalidInputError 
+                body: 
+                  error_type: INVALID_INPUT
+                  error_code: BORROWER_ERROR
+                  error_message: A value provided in the body is incorrect. See error_detail for more
+                  error_detail:
+                    - value: jdough@acme
+                      msg: Email must be a valid email
+                      param: email
+                      location: body
+            - request: $ConsumerBorrowerRequest.Example0
+              response: 
+                error: commons.DuplicateSsnError
+                body: 
+                  error_type: BORROWER_ERROR
+                  error_code: DUPLICATE_SSN
+                  error_message: A borrower with that SSN already exists   
+
+        updateConsumerBorrower:
+          display-name: Update a consumer borrower
+          path: /borrowers/consumer/{borrower_id}
+          path-parameters:
+            borrower_id: ConsumerBorrowerId
+          method: PATCH
+          request: ConsumerBorrowerRequest
+          response: ConsumerBorrower
+          errors:
+            - commons.InvalidInputError
+            - commons.BorrowerNotFoundError
+          examples:
+            - path-parameters:
+                borrower_id: $ConsumerBorrowerId.Example0
+              request: $ConsumerBorrowerRequest.Example0
+              response: 
+                body: $ConsumerBorrower.Example0
+            - path-parameters:
+                borrower_id: $ConsumerBorrowerId.Example0
+              request: $ConsumerBorrowerRequest.Example0
+              response: 
+                error: commons.InvalidInputError
+                body: 
+                  error_type: INVALID_INPUT
+                  error_code: BORROWER_ERROR
+                  error_message: A value provided in the body is incorrect. See error_detail for more
+                  error_detail:
+                    - value: jdough@acme
+                      msg: Email must be a valid email
+                      param: email
+                      location: body
+            - path-parameters:
+                borrower_id: $ConsumerBorrowerId.Example0
+              request: $ConsumerBorrowerRequest.Example0
+              response: 
+                error: commons.BorrowerNotFoundError
+                body: 
+                  error_type: BORROWER_ERROR
+                  error_code: BORROWER_NOT_FOUND
+                  error_message: A borrower resource does not exist
+
       #   getBorrower:
-      #     display-name: Retrieve a borrower by id 
+      #     display-name: Retrieve a borrower by id
       #     path: /borrowers/{borrower_id}
       #     path-parameters:
       #       borrower_id:
-      #     method: PATCH   
-      #     request: 
+      #     method: PATCH
+      #     request:
       #     response:
       #     errors:
-      #     examples: 
+      #     examples:
       # getAllBorrowers:
       #     display-name: List all borrowers
       #     path: /borrowers/{borrower_id}
       #     path-parameters:
-      #       borrower_id: 
-      #     method: GET   
+      #       borrower_id:
+      #     method: GET
       #     response:
       #     errors:
-      #     examples: 
+      #     examples:
 
 types:
-  BusinessBorrowerId: string
-  BeneficialOwnerId: string 
+  BusinessBorrowerId:
+    type: string
+    examples:
+      - name: Example0
+        value: bor_18e5a3726b3943cda2635f40e1041ba4
+  BeneficialOwnerId: string
+  ConsumerBorrowerId:
+    type: string
+    examples:
+      - name: Example0
+        value: bor_a1d0c30d77104f35b4c842b99132624e
 
-  CreateBusinessBorrowerRequest:
+  BusinessBorrowerRequest:
     properties:
-      address: 
-        type: commons.Address 
+      address:
+        type: commons.Address
         docs: The address of the business.
-      beneficial_owners: 
+      beneficial_owners:
         type: list<BeneficialOwners>
-        docs: | 
+        docs: |
           An array of objects representing owners of the business and those who control the funds of the business. 
           If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
           A maximum of 5 objects can be added.
-      business_contact: 
+      business_contact:
         type: BusinessContact
         docs: The person executing the loan agreement.
-      business_name: 
+      business_name:
         type: string
         docs: Legal name of the business.
-      business_type: 
+      business_type:
         type: BusinessType
         docs: The type of business entity.
-      dba_name: 
-        type: string 
+      dba_name:
+        type: string
         docs: Doing-business-as name of the business
-      ein: 
-        type: string 
+      ein:
+        type: string
         docs: 9-digit IRS employee identification number of the business (e.g. 345543221)
-      incorporation_date: 
-        type: string 
+      incorporation_date:
+        type: string
         docs: Incorporation date of the business (YYYY-MM-DD)
-      kyb_completion_date: 
-        type: string 
-        docs: Date kyb completed on the business (YYYY-MM-DD) 
-      state_of_incorporation: 
-        type: string 
+      kyb_completion_date:
+        type: string
+        docs: Date kyb completed on the business (YYYY-MM-DD)
+      state_of_incorporation:
+        type: string
         docs: Required 2-digit US state code (e.g. CA, IL, FL, …)
-      phone: 
-        type: string 
+      phone:
+        type: string
         docs: The phone number of the business
-      
+    examples:
+      - name: Example0
+        value:
+          address:
+            line_1: 15 Market St
+            line_2: null
+            city: San Francisco
+            state: NJ
+            zip: "94133"
+          business_contact:
+            first_name: alex
+            last_name: montana
+            phone: "4155555555"
+            email: alex@acme.co
+            title: COO
+          beneficial_owners:
+            - address:
+                line_1: 15 Market St
+                line_2: null
+                city: San Francisco
+                state: CA
+                zip: "91133"
+              date_of_birth: "1991-12-18"
+              email: jdoe@acme.com
+              first_name: Jane
+              last_name: Dough
+              percent_ownership: 2500
+              phone: "4155555555"
+              ssn: "123456789"
+              id: 63ae91f8eae458cb0d79f77e
+          business_name: Apple Landscaping
+          business_type: corporation
+          dba_name: Apple Landscaping
+          ein: "130256721"
+          incorporation_date: "2000-12-12"
+          kyb_completion_date: "2022-11-15"
+          phone: "4152556465"
+          state_of_incorporation: DE
 
-  BusinessBorrower: 
+  BusinessBorrower:
     properties:
-      id: BusinessBorrowerId 
-      address: commons.Address 
-      beneficial_owners: 
+      id: BusinessBorrowerId
+      address: commons.Address
+      beneficial_owners:
         type: list<BeneficialOwners>
-        docs: | 
+        docs: |
           An array of objects representing owners of the business and those who control the funds of the business. 
           If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
           A maximum of 5 objects can be added.
-      business_contact: 
+      business_contact:
         type: BusinessContact
         docs: The person executing the loan agreement.
-      business_name: 
+      business_name:
         type: string
         docs: Legal name of the business
-      business_type: 
+      business_type:
         type: BusinessType
         docs: The type of business entity.
-      created_on: 
-        type: string 
+      created_on:
+        type: string
         docs: Time stamp of borrower's creation date
-      dba_name: 
-        type: string 
+      dba_name:
+        type: string
         docs: Doing-business-as name of the business
-      ein: 
-        type: string 
+      ein:
+        type: string
         docs: 9-digit IRS employee identification number of the business (e.g. 345543221)
-      incorporation_date: 
-        type: string 
+      incorporation_date:
+        type: string
         docs: Incorporation date of the business (YYYY-MM-DD)
-      kyb_completion_date: 
-        type: string 
-        docs: Date kyb completed on the business (YYYY-MM-DD) 
-      phone: 
-        type: string 
+      kyb_completion_date:
+        type: string
+        docs: Date kyb completed on the business (YYYY-MM-DD)
+      phone:
+        type: string
         docs: The phone number of the business
-      state_of_incorporation: 
-        type: string 
+      state_of_incorporation:
+        type: string
         docs: Required 2-digit US state code (e.g. CA, IL, FL, …)
+    examples:
+      - name: Example0
+        value:
+          address:
+            line_1: 15 Market St
+            line_2: null
+            city: San Francisco
+            state: NJ
+            zip: "94133"
+          business_contact:
+            first_name: alex
+            last_name: montana
+            phone: "4155555555"
+            email: alex@acme.co
+            title: COO
+          beneficial_owners:
+            - address:
+                line_1: 15 Market St
+                line_2: null
+                city: San Francisco
+                state: CA
+                zip: "91133"
+              date_of_birth: "1991-12-18"
+              email: jdoe@acme.com
+              first_name: Jane
+              last_name: Dough
+              percent_ownership: 2500
+              phone: "4155555555"
+              ssn: "123456789"
+              id: 63ae91f8eae458cb0d79f77e
+          id: bor_18e5a3726b3943cda2635f40e1041ba4
+          business_name: Apple Landscaping
+          business_type: corporation
+          dba_name: Apple Landscaping
+          ein: "130256721"
+          incorporation_date: "2000-12-12"
+          kyb_completion_date: "2022-11-15"
+          phone: "4152556465"
+          state_of_incorporation: DE
+          created_on: "2022-12-30T07:23:36.665Z"
 
-  BeneficialOwners: 
+  BeneficialOwners:
     docs: A person who owns owns 25% or more of the business as well as those who control the funds.
     properties:
       id: BeneficialOwnerId
-      address: 
+      address:
         type: commons.Address
         docs: The person's address.
-      date_of_birth: 
-        type: string 
+      date_of_birth:
+        type: string
         docs: The person's date of birth (YYYY-MM-DD)
-      email: 
-        type: string 
+      email:
+        type: string
         docs: The person's valid email address
       first_name:
-        type: string 
+        type: string
         docs: The person's first name
       last_name:
-        type: string 
+        type: string
         docs: The person's last name
       phone:
-        type: string 
+        type: string
         docs: The person's 10-digit US phone number (e.g. 4152251000)
-      percent_ownership:  
+      percent_ownership:
         type: integer
         docs: The percent ownership the person has in the business in basis points (e.g. 2500 for 25%)
-      ssn:  
-        type: string 
-        docs: The person's 9-digit US social security number (e.g. 123456789) 
+      ssn:
+        type: string
+        docs: The person's 9-digit US social security number (e.g. 123456789)
 
-  BusinessContact: 
+  BusinessContact:
     properties:
-      first_name: string 
-      last_name: string 
-      phone: string 
-      email: string 
-      title: string 
-      
+      first_name: string
+      last_name: string
+      phone: string
+      email: string
+      title: string
+
   BusinessType:
-    enum: 
+    enum:
       - corporation
       - llc
       - partnership
       - sole_proprietorship
 
-  LineOfCreditOffer: 
+  ConsumerBorrowerRequest:
     properties:
-      amount: integer
-      apr: integer
-      annual_fee: integer
-      billing_cycle: integer
-      finance_charge: integer
-      grace_period: integer
-      grace_period_interest_rate: integer
-      interest_rate: integer
-      late_payment_fee: integer
-      origination_fee: integer
-      term: integer
-      
-  LoanOffer:
+      address:
+        type: commons.Address
+        docs: The address of the borrower
+      date_of_birth:
+        type: string
+        docs: The borrower's date of birth (YYYY-MM-DD)
+      email:
+        type: string
+        docs: The borrower's valid email address
+      first_name:
+        type: string
+        docs: The borrower's first name
+      last_name:
+        type: string
+        docs: The borrower's last name
+      kyc_completion_date:
+        type: string
+        docs: Date kyc completed on the borrower (YYYY-MM-DD)
+      phone:
+        type: string
+        docs: The borrower's 10-digit US phone number (e.g. 4152775050)
+      ssn:
+        type: string
+        docs: 9-digit social security number of the borrower (e.g. 345543221)
+    examples:
+      - name: Example0 
+        value: 
+          address:
+            line_1: 15 Main Street
+            line_2: Unit 204
+            city: Austin
+            state: TX
+            zip: '73301'
+          date_of_birth: '1991-12-18'
+          email: jdough@acme.co
+          first_name: Jane
+          last_name: Dough
+          ssn: '999888777'
+          kyc_completion_date: '2022-11-15'
+          phone: '2065886919'
+
+  ConsumerBorrower:
     properties:
-      amount: integer
-      annual_fee: integer
-      apr: integer
-      finance_charge: integer
-      grace_period: integer
-      interest_rate: integer
-      origination_fee: integer
-      repayment_frequency: string
-      late_payment_fee: integer
-      term: integer
+      address:
+        type: commons.Address
+        docs: The address of the borrower
+      date_of_birth:
+        type: string
+        docs: The borrower's date of birth (YYYY-MM-DD)
+      id:
+        type: ConsumerBorrowerId
+        docs: The ID of the borrower
+      email:
+        type: string
+        docs: The borrower's valid email address
+      first_name:
+        type: string
+        docs: The borrower's first name
+      last_name:
+        type: string
+        docs: The borrower's last name
+      kyc_completion_date:
+        type: string
+        docs: Date kyc completed on the borrower (YYYY-MM-DD)
+      phone:
+        type: string
+        docs: The borrower's 10-digit US phone number (e.g. 4152775050)
+      ssn:
+        type: string
+        docs: 9-digit social security number of the borrower (e.g. 345543221)
+      created_on:
+        type: datetime
+        docs: The date the borrower was created
+    examples:
+      - name: Example0 
+        value: 
+          address:
+            line_1: 15 Main Street
+            line_2: null
+            city: Austin
+            state: TX
+            zip: '73301'
+          id: bor_a1d0c30d77104f35b4c842b99132624e
+          date_of_birth: '1991-12-18'
+          email: jdough@acme.co
+          first_name: Jane
+          last_name: Dough
+          ssn: '999888777'
+          kyc_completion_date: '2022-11-15'
+          created_on: '2022-12-31T00:58:47.828Z'
+          phone: '2065886919'
+
+  # LineOfCreditOffer:
+  #   properties:
+  #     amount: integer
+  #     apr: integer
+  #     annual_fee: integer
+  #     billing_cycle: integer
+  #     finance_charge: integer
+  #     grace_period: integer
+  #     grace_period_interest_rate: integer
+  #     interest_rate: integer
+  #     late_payment_fee: integer
+  #     origination_fee: integer
+  #     term: integer
+
+  # LoanOffer:
+  #   properties:
+  #     amount: integer
+  #     annual_fee: integer
+  #     apr: integer
+  #     finance_charge: integer
+  #     grace_period: integer
+  #     interest_rate: integer
+  #     origination_fee: integer
+  #     repayment_frequency: string
+  #     late_payment_fee: integer
+  #     term: integer
 
   RejectionType:
     properties:
       reason: string
-      reason_message: string 
+      reason_message: string
