@@ -15,7 +15,7 @@ services:
         createBusinessBorrower:
           display-name: Create a business borrower
           docs: Creates a business borrower. Business borrowers must have a unique EIN.
-          path: /borrowers
+          path: /business
           method: POST
           request: BusinessBorrowerRequest
           response: BusinessBorrower
@@ -30,7 +30,7 @@ services:
         updateBusinessBorrower:
           display-name: Update a business borrower
           docs: Updates an existing borrower. The full borrower object needs to be supplied in the update request.
-          path: /borrowers/{borrower_id}
+          path: /business/{borrower_id}
           path-parameters:
             borrower_id: BusinessBorrowerId
           method: PATCH
@@ -49,7 +49,7 @@ services:
         createConsumerBorrower:
           display-name: Create a consumer borrower
           docs: Creates a consumer borrower. Consumer borrower's must have a unique SSN.
-          path: /borrowers/consumer
+          path: /consumer
           method: POST
           request: ConsumerBorrowerRequest
           response: ConsumerBorrower
@@ -82,7 +82,7 @@ services:
 
         updateConsumerBorrower:
           display-name: Update a consumer borrower
-          path: /borrowers/consumer/{borrower_id}
+          path: /consumer/{borrower_id}
           path-parameters:
             borrower_id: ConsumerBorrowerId
           method: PATCH
@@ -124,7 +124,7 @@ services:
         getBorrower:
           display-name: Retrieve a borrower by id
           docs: Retrieve one borrower by id
-          path: /borrowers/{borrower_id}
+          path: /{borrower_id}
           path-parameters:
             borrower_id: ConsumerBorrowerId
           method: GET 
@@ -148,7 +148,7 @@ services:
         getAllBorrowers:
           display-name: List all borrowers
           docs: Retrieve all borrowers associated with your account
-          path: /borrowers
+          path: /
           method: GET
           response: list<ConsumerBorrower>
 
