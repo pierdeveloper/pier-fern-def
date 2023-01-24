@@ -1,116 +1,129 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
 types:
-  Address: 
+  Address:
     properties:
       line_1: string
       line_2: optional<string>
-      city: string 
-      state: 
-        type: string 
+      city: string
+      state:
+        type: string
         docs: 2-digit US state code (e.g. CA, IL, FL)
-      zip: 
-        type: string 
+      zip:
+        type: string
         docs: 5-digit US zip code
 
-  CreditType: 
-    enum: 
+  CreditType:
+    enum:
       - installment_loan
       - revolving_line_of_credit
       - closed_line_of_credit
-  
+
   BaseErrorBody:
     properties:
-      error_type: string 
-      error_code: string 
+      error_type: string
+      error_code: string
       error_message: string
-  
+
   InvalidInput:
-    extends: BaseErrorBody 
-    properties: 
+    extends: BaseErrorBody
+    properties:
       error_detail: list<ErrorDetail>
 
-  ErrorDetail: 
+  ErrorDetail:
     properties:
-      value: string 
-      msg: string 
-      param: string 
-      location: string 
-  
-  DuplicateEin: 
-    extends: BaseErrorBody 
+      value: string
+      msg: string
+      param: string
+      location: string
 
-  DuplicateSsn: 
-    extends: BaseErrorBody 
-
-  BorrowerNotFound: 
+  DuplicateEin:
     extends: BaseErrorBody
 
-  ApplicationNotFound: 
+  DuplicateSsn:
     extends: BaseErrorBody
 
-  DocumentCannotBeCreated: 
-    extends: BaseErrorBody 
-  
+  BorrowerNotFound:
+    extends: BaseErrorBody
+
+  ApplicationNotFound:
+    extends: BaseErrorBody
+
+  DocumentCannotBeCreated:
+    extends: BaseErrorBody
+
   DocumentCannotBeSigned:
     extends: BaseErrorBody
-  
-  DocumentNotFound: 
+
+  DocumentNotFound:
     extends: BaseErrorBody
 
-  FacilityCannotBeCreated: 
+  FacilityCannotBeCreated:
     extends: BaseErrorBody
-  
+
   FacilityAlreadyExists:
     extends: BaseErrorBody
 
   FacilityNotFound:
-    extends: BaseErrorBody 
+    extends: BaseErrorBody
 
-  FacilityCannotBeClosed: 
+  FacilityCannotBeClosed:
     extends: BaseErrorBody
 
 errors:
   ServerError:
     status-code: 500
+
   RateLimitError:
     status-code: 429
     docs: |
       Pier's rate limit is set to 1,000 requests per minute. 
       The limit applies to both the sandbox and production environments.
-  InvalidInputError: 
+
+  InvalidInputError:
     status-code: 400
     type: InvalidInput
+
   DuplicateEinError:
     status-code: 400
     type: DuplicateEin
-  DuplicateSsnError: 
+
+  DuplicateSsnError:
     status-code: 400
     type: DuplicateSsn
+
   BorrowerNotFoundError:
     status-code: 404
-    type: BorrowerNotFound 
+    type: BorrowerNotFound
+
   ApplicationNotFoundError:
     status-code: 404
     type: ApplicationNotFound
-  DocumentCannotBeCreatedError: 
+
+  DocumentCannotBeCreatedError:
     status-code: 400
     type: DocumentCannotBeCreated
-  DocumentCannotBeSignedError: 
+
+  DocumentCannotBeSignedError:
     status-code: 400
     type: DocumentCannotBeSigned
+
   DocumentNotFoundError:
     status-code: 404
     type: DocumentNotFound
-  FacilityCannotBeCreatedError: 
-    status-code: 400 
+
+  FacilityCannotBeCreatedError:
+    status-code: 400
     type: FacilityCannotBeCreated
+
   FacilityAlreadyExistsError:
     status-code: 404
     type: FacilityAlreadyExists
-  FacilityNotFoundError: 
+
+  FacilityNotFoundError:
     status-code: 404
     type: FacilityNotFound
+
   FacilityCannotBeClosedError:
     status-code: 400
     type: FacilityCannotBeClosed

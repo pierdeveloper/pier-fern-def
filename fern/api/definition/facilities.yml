@@ -12,21 +12,26 @@ services:
       docs: |
         A facility represents an active loan or line of credit. 
         It contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. 
-        Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality. 
+        Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality.
       base-path: /facilities
       auth: true
       endpoints:
         create:
           display-name: Create a facility
           docs: A facility can be created for a given loan agreement with a status of `signed`
-          path: /
+          path: ""
           method: POST
           request: CreateFacilityRequest
           response: Facility
           errors:
             - commons.FacilityCannotBeCreatedError
             - commons.FacilityAlreadyExistsError
-        
+          examples: 
+            - request: 
+                loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+              response: 
+                body: $Facility.Active
+
         close:
           display-name: Close a facility
           docs: Closes an active facility by setting its status to `closed`
@@ -34,72 +39,102 @@ services:
           path-parameters:
             facility_id: FacilityId
           method: POST
-          request: CloseFacilityRequest
           response: Facility
           errors:
             - commons.FacilityNotFoundError
             - commons.FacilityCannotBeClosedError
+          examples: 
+            - path-parameters: 
+                facility_id: doc_234259b117854d0194bc5864a6c45b42
+              request: 
+              response: 
+                body: $Facility.Closed
 
         get:
           display-name: Retrieve a facility
           docs: Retrieve a facility by its id
           path: /{facility_id}
           path-parameters:
-            facility_id: 
+            facility_id:
               type: FacilityId
               docs: The facility_id of the facility you want to retrieve
           method: GET
           response: Facility
           errors:
             - commons.FacilityNotFoundError
-        
-        listAll: 
-          display-name: List all facilities
-          docs: List all facilities on your account 
-          path: /
-          method: GET 
-          response: list<Facility>
+          examples: 
+            - path-parameters: 
+                facility_id: doc_234259b117854d0194bc5864a6c45b42
+              response: 
+                body: $Facility.Active
 
-types: 
-  FacilityId: string 
-  Facility: 
+        listAll:
+          display-name: List all facilities
+          docs: List all facilities on your account
+          path: ""
+          method: GET
+          response: list<Facility>
+          examples: 
+            - response: 
+                body: 
+                  - $Facility.Active
+
+types:
+  FacilityId: string
+
+  Facility:
     properties:
-      id: FacilityId 
-      application_id: 
-        type: applications.ApplicationId 
+      id: FacilityId
+      application_id:
+        type: applications.ApplicationId
         docs: The `application_id` of the corresponding loan application for the facility
-      borrower_id: 
+      borrower_id:
         type: borrowers.ConsumerBorrowerId
         docs: The `borrower_id` of the corresponding borrower the facility is for
-      loan_agreement_id: 
-        type: string 
+      loan_agreement_id:
+        type: string
         docs: The `loan_agreement_id` of the corresponding loan agreement the facility is for
-      credit_type: 
-        type: commons.CreditType 
+      credit_type:
+        type: commons.CreditType
         docs: The type of credit production.
-      created_on: 
-        type: datetime 
+      created_on:
+        type: datetime
         docs: Timestamp the loan agreement object is created on
-      status: 
+      status:
         type: CreditStatus
         docs: The status of the facility.
-      terms: 
-        type: applications.LineOfCreditOffer
-        docs: An object containing a summary of the terms of the facility. 
+      terms:
+        type: applications.Offer
+        docs: An object containing a summary of the terms of the facility.
+    examples: 
+      - name: Active
+        value: 
+          terms: $applications.Offer.LineOfCredit
+          id: fac_7264c6575a894548a386939434b0adf3
+          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          credit_type: revolving_line_of_credit
+          status: active
+          created_on: '2023-01-17T04:59:21.773Z'
+      - name: Closed
+        value: 
+          terms: $applications.Offer.LineOfCredit
+          id: fac_7264c6575a894548a386939434b0adf3
+          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          credit_type: revolving_line_of_credit
+          status: closed
+          created_on: '2023-01-17T04:59:21.773Z'
 
-  CreditStatus: 
-    enum: 
+  CreditStatus:
+    enum:
       - active
       - closed
-  
-  CreateFacilityRequest: 
+
+  CreateFacilityRequest:
     properties:
-      loan_agreement_id: 
+      loan_agreement_id:
         type: loans.LoanAgreementId
         docs: The `loan_agreement_id` of the loan agreement to create a facility for
-
-  CloseFacilityRequest: 
-    properties:
-      facility_id: 
-        type: FacilityId
-        docs: The `facility_id` of the facility to close

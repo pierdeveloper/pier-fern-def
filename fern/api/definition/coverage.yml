@@ -6,7 +6,7 @@ imports:
 
 services:
   http:
-    CoverageAndUtilityService:
+    CoverageService:
       docs: |
         Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. 
         `min` and `max` amounts are in cents, and `max_apr` is in basis points. 
@@ -16,25 +16,128 @@ services:
       endpoints:
         retrieveCommercialCoverage:
           display-name: Retrieve commercial lending coverage
-          docs: Retrieve state-by-state commercial coverage 
+          docs: Retrieve state-by-state commercial coverage
           path: /coverage/commercial
-          method: GET 
-          response: CommercialCoverage
-        
+          method: GET
+          response: map<string, CommercialCoverage>
+          examples: 
+            - response: 
+                body: 
+                  AL:
+                    limit_1:
+                      amount:
+                        min: 500000
+                        max: 25000000
+                    max_apr: 9999
+                    business_types:
+                      - corporation
+                      - partnership
+                      - llc
+                      - sole_proprietorship
+                
         retrieveConsumerCoverage:
-          display-name: Retrieve consumer lending coverage 
+          display-name: Retrieve consumer lending coverage
           docs: Retrieve state-by-state consumer coverage list
-          path: /coverage/consumer 
-          method: GET 
-          response: unknown 
+          path: /coverage/consumer
+          method: GET
+          response: map<string, ConsumerCoverage>
+          examples: 
+            - response: 
+                body: 
+                  AL:
+                    limit_1:
+                      amount:
+                        min: 150000
+                        max: 5000000
+                    max_apr: 0
         
         retrieveRejectionReasons:
           display-name: Retrieve rejection reasons
           docs: Retrieve a list of valid reasons to reject an applicant, along with descriptions for each reason
           method: GET
           path: /rejection_reasons
-          response: RejectionReasons
+          response: RetrieveRejectionReasonsResponse
+          examples: 
+            - response: 
+                body: $RetrieveRejectionReasonsResponse.Default
 
-types: 
-  CommercialCoverage: unknown 
-  RejectionReasons: list<map<applications.RejectionReason,string>>
+types:
+  CommercialCoverage:
+    properties: 
+      max_apr: optional<integer>
+      business_types: optional<list<BussinessType>>
+      limit_1: CoverageLimit
+  
+  ConsumerCoverage: 
+    properties: 
+      max_apr: optional<integer>
+      limit_1: CoverageLimit
+  
+  BussinessType: 
+    enum: 
+      - corporation
+      - partnership
+      - llc
+      - sole_proprietorship
+
+  CoverageLimit: 
+    properties: 
+      amount: CoverageAmount
+  
+  CoverageAmount: 
+    properties: 
+      min: integer
+      max: integer
+  
+  RetrieveRejectionReasonsResponse: 
+    type: map<applications.RejectionReason, string>
+    examples: 
+      - name: Default
+        value: 
+          income_too_low: > 
+            Income does not meet requirement
+          bank_balance_too_low: > 
+            Bank account balance is too low
+          income_unpredictable: > 
+            Unable to predict regular pattern of income deposits
+          user_account_duplicate: > 
+            Duplicate account (previously applied for a loan with a different email address)
+          sdb_check_failed: > 
+            State database lending restriction
+          bank_account_linking_error: > 
+            Unable to link to a supported banking institution
+          mla_failed: > 
+            Under the Military Lending Act, loans to military personnel or their spouses
+            and dependents cannot be made if the interest and expenses associated with the loan
+            exceed an annual percentage rate (APR) of 36%. Due to these limits on military-related
+            lending, we can't lend to members of the military or their spouses and dependents.
+            Please feel free to contact us with any questions you may have about this notice!
+          iddoc_failed: > 
+            Unable to verify identification documents
+          no_checking_or_savings_data: > 
+            No data from supported financial institution. Unsupported
+            financial institution is linked
+          insufficient_bank_history: > 
+            Unable to pull enough bank history
+          loan_location_no_license: > 
+            Unable to verify that your permanent residence is in a state
+          address_invalid: > 
+            Unable to verify mailing address
+          income_verification_failed: > 
+            Unable to verify qualified income over a sustained period
+          stacking_behavior: > 
+            Recent deposits and withdrawals detected from other lenders
+          ssn_verification_failed: > 
+            Unable to verify SSN number
+          too_many_nsfs: > 
+            Multiple Returned checks or Insufficient Fund Fees detected
+          fraud_risk_too_high: > 
+            Bank account has been flagged as potential fraud risk
+          bankruptcy: > 
+            Outstanding balance from previous loan
+          processor_suspended: > 
+            Payment processor is unable to authenticate user
+          cash_flow_verification_failed: > 
+            Cash flow analysis - income funds are quickly depleted
+            from bank account after income deposit
+
