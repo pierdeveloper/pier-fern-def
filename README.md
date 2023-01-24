@@ -3,6 +3,7 @@
 Tagging a release on this repository will update the:
 
 - [Node.js SDK repo](https://github.com/fern-pier/pier-node)
+- [Documentation Website](https://fern-api.stoplight.io/docs/pier/99817551bfa79-create-an-application)
 - [OpenAPI spec repo](https://github.com/fern-pier/pier-openapi)
 - [Postman collection repo](https://github.com/fern-pier/pier-postman)
 - _More SDKs to come..._
