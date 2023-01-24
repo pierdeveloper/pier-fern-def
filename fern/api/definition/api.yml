@@ -7,12 +7,7 @@ auth:
     Remember to prefix your API key with a colon.
 environments:
   Production: https://production.pier-finance.com/api
-  Sandbox: 
-    url: https://sandbox.pier-finance.com/api
-    docs: | 
-      The sandbox is designed to mimic the production environment, with a few exceptions. 
-      Loan agreements created in the sandbox will have large `draft` watermarks and funds flows will only occur in production. 
-      Sandbox API keys are prefixed with `test_` while production API keys are  prefixed with `prod_`.
+  Sandbox: https://sandbox.pier-finance.com/api
 default-environment: Production
 error-discrimination:
   strategy: status-code
