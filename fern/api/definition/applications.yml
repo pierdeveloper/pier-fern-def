@@ -1,103 +1,104 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
+docs: |
+  Applications represent the credit application for a borrower. 
+  Applications must be created for a given borrower, and one borrower can have many applications. 
+  Once an application is created, it must either be approved or rejected.
+  Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
+
 imports:
   commons: commons.yml
   borrowers: borrowers.yml
 
-services:
-  http:
-    ApplicationsService:
-      docs: |
-        Applications represent the credit application for a borrower. 
-        Applications must be created for a given borrower, and one borrower can have many applications. 
-        Once an application is created, it must either be approved or rejected.
-        Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
-      base-path: /applications
-      auth: true
-      endpoints:
-        create:
-          display-name: Create an application
-          path: ""
-          method: POST
-          request: CreateApplicationRequest
-          response: Application
-          errors:
-            - commons.InvalidInputError
-            - commons.BorrowerNotFoundError
-          examples:
-            - request: $CreateApplicationRequest.Example0
-              response:
-                body: $Application.PendingApplication
+service:
+  base-path: /applications
+  auth: true
+  endpoints:
+    create:
+      display-name: Create an application
+      path: ""
+      method: POST
+      request: CreateApplicationRequest
+      response: Application
+      errors:
+        - commons.InvalidInputError
+        - commons.BorrowerNotFoundError
+      examples:
+        - request: $CreateApplicationRequest.Example0
+          response:
+            body: $Application.PendingApplication
 
-        approve:
-          display-name: Approve an application
-          path: /{application_id}/approve
-          path-parameters:
-            application_id: ApplicationId
-          method: POST
-          request: Offer
-          response: Application
-          errors:
-            - commons.InvalidInputError
-            - commons.BorrowerNotFoundError
-          examples:
-            - path-parameters:
-                application_id: $ApplicationId.Example0
-              request: $Offer.LineOfCredit
-              response:
-                body: $Application.ApprovedApplication
+    approve:
+      display-name: Approve an application
+      path: /{application_id}/approve
+      path-parameters:
+        application_id: ApplicationId
+      method: POST
+      request: Offer
+      response: Application
+      errors:
+        - commons.InvalidInputError
+        - commons.BorrowerNotFoundError
+      examples:
+        - path-parameters:
+            application_id: $ApplicationId.Example0
+          request: $Offer.LineOfCredit
+          response:
+            body: $Application.ApprovedApplication
 
-        reject:
-          display-name: Reject an application
-          docs: Updates the status of a credit application to `REJECTED` and returns a user readable rejection reason, to be used in the adverse action notice
-          path: /{application_id}/reject
-          path-parameters:
-            application_id: ApplicationId
-          method: POST
+    reject:
+      display-name: Reject an application
+      docs:
+        Updates the status of a credit application to `REJECTED` and returns a
+        user readable rejection reason, to be used in the adverse action notice
+      path: /{application_id}/reject
+      path-parameters:
+        application_id: ApplicationId
+      method: POST
+      request:
+        name: Reject
+        body:
+          properties:
+            rejection_reason: RejectionReason
+      response: Application
+      errors:
+        - commons.InvalidInputError
+        - commons.ApplicationNotFoundError
+      examples:
+        - path-parameters:
+            application_id: $ApplicationId.Example0
           request:
-            name: Reject
+            rejection_reason: bank_balance_too_low
+          response:
+            body: $Application.RejectedApplication
+
+    get:
+      display-name: Get an application by ID
+      docs: Get an application by its id
+      path: /{application_id}
+      path-parameters:
+        application_id: ApplicationId
+      method: GET
+      response: Application
+      errors:
+        - commons.ApplicationNotFoundError
+      examples:
+        - path-parameters:
+            application_id: $ApplicationId.Example0
+          response:
+            body: $Application.ApprovedApplication
+
+    getAll:
+      display-name: List all applications
+      docs: List all applications associated with your account
+      path: ""
+      method: GET
+      response: list<Application>
+      examples:
+        - response:
             body:
-              properties:
-                rejection_reason: RejectionReason
-          response: Application
-          errors:
-            - commons.InvalidInputError
-            - commons.ApplicationNotFoundError
-          examples:
-            - path-parameters:
-                application_id: $ApplicationId.Example0
-              request:
-                rejection_reason: bank_balance_too_low
-              response:
-                body: $Application.RejectedApplication
-
-        get:
-          display-name: Get an application by ID
-          docs: Get an application by its id
-          path: /{application_id}
-          path-parameters:
-            application_id: ApplicationId
-          method: GET
-          response: Application
-          errors:
-            - commons.ApplicationNotFoundError
-          examples:
-            - path-parameters:
-                application_id: $ApplicationId.Example0
-              response:
-                body: $Application.ApprovedApplication
-
-        getAll:
-          display-name: List all applications
-          docs: List all applications associated with your account
-          path: /
-          method: GET
-          response: list<Application>
-          examples:
-            - response:
-                body:
-                  - $Application.ApprovedApplication
-                  - $Application.PendingApplication
+              - $Application.ApprovedApplication
+              - $Application.PendingApplication
 
 types:
   ApplicationId:
@@ -129,7 +130,9 @@ types:
         docs: The type of credit product.
       requested_amount:
         type: optional<integer>
-        docs: If the borrower requests an amount in their application, the requested loan or credit line amount (in cents).
+        docs:
+          If the borrower requests an amount in their application, the requested
+          loan or credit line amount (in cents).
     examples:
       - name: Example0
         value:
@@ -187,17 +190,21 @@ types:
         docs: Timestamp when the application is either approved or rejected on
       offer:
         type: optional<Offer>
-        docs: If the application is approved, an object containing the credit offer details
+        docs:
+          If the application is approved, an object containing the credit offer
+          details
       rejection_reasons:
         type: optional<list<RejectionReason>>
         docs: >
-          If the application is rejected, a list containing 1-4 rejection reason(s). 
-          The Rejection Reasons endpoint provides a list of valid reasons and descriptors
+          If the application is rejected, a list containing 1-4 rejection
+          reason(s).  The Rejection Reasons endpoint provides a list of valid
+          reasons and descriptors
       requested_amount:
         type: optional<integer>
         docs: >
-          If the borrower requests an amount in their application, the requested 
-          loan or credit line amount in cents (e.g. 500000 for $5,000)
+          If the borrower requests an amount in their application, the
+          requested  loan or credit line amount in cents (e.g. 500000 for
+          $5,000)
       status: ApplicationStatus
     examples:
       - name: PendingApplication
@@ -231,7 +238,8 @@ types:
     properties:
       amount:
         type: integer
-        docs: The amount (in cents) of the credit line offer (e.g. '200000' for $2,000.00)
+        docs: The amount (in cents) of the credit line offer (e.g. '200000' for
+          $2,000.00)
       apr:
         type: integer
         docs: The apr (in basis points) of the credit line offer (e.g. '750' for 7.50%)
@@ -245,28 +253,44 @@ types:
           For consumer lines of credit, the minimum is '21'
       finance_charge:
         type: optional<integer>
-        docs: If your platform charges a monthly finance charge for access to the line, the amount in cents
+        docs:
+          If your platform charges a monthly finance charge for access to the line,
+          the amount in cents
       grace_period:
         type: integer
-        docs: The time in days between the end of a billing cycle and the bill's due date. For consumer lines of credit, the minimum is '21'
+        docs:
+          The time in days between the end of a billing cycle and the bill's due
+          date. For consumer lines of credit, the minimum is '21'
       grace_period_interest_rate:
         type: optional<integer>
-        docs: The interest rate (in basis points) charged during the grace period. Must be '0' for consumer lines of credit. Defaults to `0` if omitted
+        docs:
+          The interest rate (in basis points) charged during the grace period. Must
+          be '0' for consumer lines of credit. Defaults to `0` if omitted
       interest_rate:
         type: integer
-        docs: The interest rate (in basis points) of the loan or credit line offer (e.g. '750' for 7.50%)
+        docs:
+          The interest rate (in basis points) of the loan or credit line offer (e.g.
+          '750' for 7.50%)
       introductory_offer_interest_rate:
         type: optional<integer>
-        docs: If you offer an introductory period with a reduced interest rate, the interest rate in basis points
+        docs:
+          If you offer an introductory period with a reduced interest rate, the
+          interest rate in basis points
       introductory_offer_interest_rate_term:
         type: optional<integer>
-        docs: If you offer an introductory period with a reduced interest rate, the term in months
+        docs:
+          If you offer an introductory period with a reduced interest rate, the term
+          in months
       late_payment_fee:
         type: integer
-        docs: The fee charged if a borrower misses the payment due date, in cents (e.g. '2500' for $25.00)
+        docs:
+          The fee charged if a borrower misses the payment due date, in cents (e.g.
+          '2500' for $25.00)
       origination_fee:
         type: integer
-        docs: The origination fee charged to originate the line in cents (e.g. '20000' for $200)
+        docs:
+          The origination fee charged to originate the line in cents (e.g. '20000'
+          for $200)
       term:
         type: integer
         docs: The term of the line in months
@@ -293,7 +317,9 @@ types:
       - value: income_unpredictable
         docs: Unable to predict regular pattern of income deposits
       - value: user_account_duplicate
-        docs: Duplicate account (previously applied for a loan with a different email address)
+        docs:
+          Duplicate account (previously applied for a loan with a different email
+          address)
       - value: sdb_check_failed
         docs: State database lending restriction
       - value: bank_account_linking_error
@@ -309,7 +335,9 @@ types:
       - value: iddoc_failed
         docs: Unable to verify identification documents
       - value: no_checking_or_savings_data
-        docs: No data from supported financial institution. Unsupported financial institution is linked
+        docs:
+          No data from supported financial institution. Unsupported financial
+          institution is linked
       - value: insufficient_bank_history
         docs: Unable to pull enough bank history
       - value: loan_location_no_license
@@ -331,7 +359,9 @@ types:
       - value: processor_suspended
         docs: Payment processor is unable to authenticate user
       - value: cash_flow_verification_failed
-        docs: Cash flow analysis - income funds are quickly depleted from bank account after income deposit
+        docs:
+          Cash flow analysis - income funds are quickly depleted from bank account
+          after income deposit
 
   GetApplicationRequest:
     properties:

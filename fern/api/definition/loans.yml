@@ -1,84 +1,86 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
+docs: |
+  Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. 
+  The loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. 
+  Loan agreements that are not signed within 24 hours expire and need to be re-created
+
 imports:
   commons: commons.yml
   applications: applications.yml
 
-services:
-  http:
-    LoansService:
-      docs: |
-        Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. 
-        The loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. 
-        Loan agreements that are not signed within 24 hours expire and need to be re-created
-      base-path: /loan_agreements
-      auth: true
-      endpoints:
-        create:
-          display-name: Create a loan agreement
-          docs: A loan agreement can be created for an application with a status of approved. Expect 4-8 seconds of latency
-          path: ""
-          method: POST
-          request: 
-            name: CreateLoanAgreementRequest
-            body: 
-              properties:
-                application_id:
-                  type: applications.ApplicationId
-                  docs: The `application_id` of the application to create the loan agreement for
-          response: LoanAgreement
-          errors:
-            - commons.ApplicationNotFoundError
-            - commons.DocumentCannotBeCreatedError
-          examples: 
-            - request: 
-                application_id: app_a9d2f388030d4f4296f80fc327e08d0d
-              response: 
-                body: $LoanAgreement.Default
+service:
+  base-path: /loan_agreements
+  auth: true
+  endpoints:
+    create:
+      display-name: Create a loan agreement
+      docs: A loan agreement can be created for an application with a status of
+        approved. Expect 4-8 seconds of latency
+      path: ""
+      method: POST
+      request:
+        name: CreateLoanAgreementRequest
+        body:
+          properties:
+            application_id:
+              type: applications.ApplicationId
+              docs: The `application_id` of the application to create the loan agreement for
+      response: LoanAgreement
+      errors:
+        - commons.ApplicationNotFoundError
+        - commons.DocumentCannotBeCreatedError
+      examples:
+        - request:
+            application_id: app_a9d2f388030d4f4296f80fc327e08d0d
+          response:
+            body: $LoanAgreement.Default
 
-        sign:
-          display-name: Sign a loan agreement
-          docs: Electronically signs a loan document and updates the application's status to `accepted`
-          path: /{loan_agreement_id}/sign
-          path-parameters:
-            loan_agreement_id: LoanAgreementId
-          method: POST
-          response: SignLoanAgreementResponse
-          errors:
-            - commons.ApplicationNotFoundError
-            - commons.DocumentCannotBeSignedError
-          examples: 
-            - path-parameters: 
-                loan_agreement_id: doc_96d13bec673c4eba8d44c9cda3bbb811
-              response: 
-                body: $SignLoanAgreementResponse.Default
+    sign:
+      display-name: Sign a loan agreement
+      docs:
+        Electronically signs a loan document and updates the application's status
+        to `accepted`
+      path: /{loan_agreement_id}/sign
+      path-parameters:
+        loan_agreement_id: LoanAgreementId
+      method: POST
+      response: SignLoanAgreementResponse
+      errors:
+        - commons.ApplicationNotFoundError
+        - commons.DocumentCannotBeSignedError
+      examples:
+        - path-parameters:
+            loan_agreement_id: doc_96d13bec673c4eba8d44c9cda3bbb811
+          response:
+            body: $SignLoanAgreementResponse.Default
 
-        get:
-          display-name: Get a loan agreement by id
-          docs: Retrieve a loan agreement by its id
-          path: /{loan_agreement_id}
-          path-parameters:
-            loan_agreement_id: LoanAgreementId
-          method: GET
-          response: LoanAgreement
-          errors:
-            - commons.DocumentNotFoundError
-          examples: 
-            - path-parameters: 
-                loan_agreement_id: doc_43da3b3f95c745e1985a71e9a00d6c27
-              response: 
-                body: $LoanAgreement.Default
+    get:
+      display-name: Get a loan agreement by id
+      docs: Retrieve a loan agreement by its id
+      path: /{loan_agreement_id}
+      path-parameters:
+        loan_agreement_id: LoanAgreementId
+      method: GET
+      response: LoanAgreement
+      errors:
+        - commons.DocumentNotFoundError
+      examples:
+        - path-parameters:
+            loan_agreement_id: doc_43da3b3f95c745e1985a71e9a00d6c27
+          response:
+            body: $LoanAgreement.Default
 
-        getAll:
-          display-name: List all loan agreements
-          docs: List all loan agreements on your account
-          path: ""
-          method: GET
-          response: list<LoanAgreement>
-          examples: 
-            - response: 
-                body: 
-                  - $LoanAgreement.Default
+    getAll:
+      display-name: List all loan agreements
+      docs: List all loan agreements on your account
+      path: ""
+      method: GET
+      response: list<LoanAgreement>
+      examples:
+        - response:
+            body:
+              - $LoanAgreement.Default
 
 types:
   LoanAgreementId: string
@@ -88,7 +90,9 @@ types:
       id: LoanAgreementId
       application_id:
         type: string
-        docs: The `application_id` of the corresponding loan application the agreement is for
+        docs:
+          The `application_id` of the corresponding loan application the agreement
+          is for
       created_on:
         type: string
         docs: Timestamp the loan agreement object is created on
@@ -101,14 +105,14 @@ types:
       status:
         type: LoanAgreementStatus
         docs: The status of the document
-    examples: 
+    examples:
       - name: Default
-        value: 
+        value:
           status: pending_signature
           id: doc_43da3b3f95c745e1985a71e9a00d6c27
           application_id: app_a9d2f388030d4f4296f80fc327e08d0d
           document_url: https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd
-          created_on: '2022-12-31T20:47:38.152Z'
+          created_on: "2022-12-31T20:47:38.152Z"
 
   LoanAgreementStatus:
     enum:
@@ -124,12 +128,12 @@ types:
       signature_timestamp: datetime
       document_url: string
       created_on: datetime
-    examples: 
+    examples:
       - name: Default
-        value: 
+        value:
           status: signed
           id: doc_96d13bec673c4eba8d44c9cda3bbb811
           application_id: app_a9d2f388030d4f4296f80fc327e08d0d
-          signature_timestamp: '2022-12-31T21:10:47.610Z'
+          signature_timestamp: "2022-12-31T21:10:47.610Z"
           document_url: https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_jQRTtHgekEbdJTxtsR.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T210718Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=9ead57dba9e8e2179a3e9950f1c7c19fe8b10dfbc55f5ce09228bd216e4cdd73
-          created_on: '2022-12-31T21:07:16.642Z'
+          created_on: "2022-12-31T21:07:16.642Z"

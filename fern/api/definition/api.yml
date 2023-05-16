@@ -1,8 +1,8 @@
 name: api
 display-name: Pier API
-auth: 
+auth:
   scheme: basic
-  docs: | 
+  docs: |
     All calls should be made with the username field left empty and the password field set to your API key. 
     Remember to prefix your API key with a colon.
 environments:
