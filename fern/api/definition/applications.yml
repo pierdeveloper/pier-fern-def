@@ -18,13 +18,30 @@ service:
       display-name: Create an application
       path: ""
       method: POST
-      request: CreateApplicationRequest
+      request:
+        name: CreateApplicationRequest
+        body: 
+          properties: 
+            borrower_id:
+              type: string
+              docs: The `borrower_id` of the borrower the application is for
+            credit_type:
+              type: string
+              docs: The type of credit product.
+            requested_amount:
+              type: optional<integer>
+              docs:
+                If the borrower requests an amount in their application, the requested
+                loan or credit line amount (in cents).
       response: Application
       errors:
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:
-        - request: $CreateApplicationRequest.Example0
+        - request:
+            borrower_id: $borrowers.ConsumerBorrowerId.Example0
+            credit_type: revolving_line_of_credit
+            requested_amount: 200000
           response:
             body: $Application.PendingApplication
 
@@ -119,26 +136,6 @@ types:
         docs: the application is rejected
       - value: expired
         docs: the application has expired
-
-  CreateApplicationRequest:
-    properties:
-      borrower_id:
-        type: string
-        docs: The `borrower_id` of the borrower the application is for
-      credit_type:
-        type: string
-        docs: The type of credit product.
-      requested_amount:
-        type: optional<integer>
-        docs:
-          If the borrower requests an amount in their application, the requested
-          loan or credit line amount (in cents).
-    examples:
-      - name: Example0
-        value:
-          borrower_id: $borrowers.ConsumerBorrowerId.Example0
-          credit_type: revolving_line_of_credit
-          requested_amount: 200000
 
   Offer:
     union:
