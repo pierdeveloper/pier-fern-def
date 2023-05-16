@@ -19,16 +19,12 @@ types:
       - revolving_line_of_credit
       - closed_line_of_credit
 
-  BaseErrorBody:
+  ErrorBody:
     properties:
       error_type: string
       error_code: string
       error_message: string
-
-  InvalidInput:
-    extends: BaseErrorBody
-    properties:
-      error_detail: list<ErrorDetail>
+      error_detail: optional<list<ErrorDetail>>
 
   ErrorDetail:
     properties:
@@ -36,39 +32,6 @@ types:
       msg: string
       param: string
       location: string
-
-  DuplicateEin:
-    extends: BaseErrorBody
-
-  DuplicateSsn:
-    extends: BaseErrorBody
-
-  BorrowerNotFound:
-    extends: BaseErrorBody
-
-  ApplicationNotFound:
-    extends: BaseErrorBody
-
-  DocumentCannotBeCreated:
-    extends: BaseErrorBody
-
-  DocumentCannotBeSigned:
-    extends: BaseErrorBody
-
-  DocumentNotFound:
-    extends: BaseErrorBody
-
-  FacilityCannotBeCreated:
-    extends: BaseErrorBody
-
-  FacilityAlreadyExists:
-    extends: BaseErrorBody
-
-  FacilityNotFound:
-    extends: BaseErrorBody
-
-  FacilityCannotBeClosed:
-    extends: BaseErrorBody
 
 errors:
   ServerError:
@@ -82,48 +45,48 @@ errors:
 
   InvalidInputError:
     status-code: 400
-    type: InvalidInput
+    type: ErrorBody
 
   DuplicateEinError:
     status-code: 400
-    type: DuplicateEin
+    type: ErrorBody
 
   DuplicateSsnError:
     status-code: 400
-    type: DuplicateSsn
+    type: ErrorBody
 
   BorrowerNotFoundError:
     status-code: 404
-    type: BorrowerNotFound
+    type: ErrorBody
 
   ApplicationNotFoundError:
     status-code: 404
-    type: ApplicationNotFound
+    type: ErrorBody
 
   DocumentCannotBeCreatedError:
     status-code: 400
-    type: DocumentCannotBeCreated
+    type: ErrorBody
 
   DocumentCannotBeSignedError:
     status-code: 400
-    type: DocumentCannotBeSigned
+    type: ErrorBody
 
   DocumentNotFoundError:
     status-code: 404
-    type: DocumentNotFound
+    type: ErrorBody
 
   FacilityCannotBeCreatedError:
     status-code: 400
-    type: FacilityCannotBeCreated
+    type: ErrorBody
 
   FacilityAlreadyExistsError:
     status-code: 404
-    type: FacilityAlreadyExists
+    type: ErrorBody
 
   FacilityNotFoundError:
     status-code: 404
-    type: FacilityNotFound
+    type: ErrorBody
 
   FacilityCannotBeClosedError:
     status-code: 400
-    type: FacilityCannotBeClosed
+    type: ErrorBody
