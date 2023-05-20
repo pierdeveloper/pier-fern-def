@@ -872,7 +872,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"ssn\": \"999888777\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1734,6 +1734,91 @@
               },
               "description": null,
               "body": "[\n    {\n        \"status\": \"pending_signature\",\n        \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n        \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n        \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n        \"created_on\": \"2022-12-31T20:47:38.152Z\",\n        \"signature_timestamp\": null\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Loan payments can be made using Pier via ACH\n",
+      "name": "Payments",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Submit a loan payment",
+          "request": {
+            "description": "Instructs Pier to initiate an ACH payment for a loan.\n",
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"transfer_type\": \"standard\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Instructs Pier to initiate an ACH payment for a loan.\n",
+                "url": {
+                  "raw": "{{baseUrl}}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"transfer_type\": \"standard\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"pmt_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"status\": \"pending\",\n    \"transfer_type\": \"standard\",\n    \"created_on\": \"2023-02-27T00:00:00Z\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]

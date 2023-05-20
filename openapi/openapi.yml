@@ -682,7 +682,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ConsumerBorrower'
+                $ref: '#/components/schemas/ConsumerBorrowerResponse'
               examples:
                 Example1:
                   value:
@@ -697,7 +697,6 @@ paths:
                     email: jdough@acme.co
                     first_name: Jane
                     last_name: Dough
-                    ssn: '999888777'
                     kyc_completion_date: '2022-11-15'
                     created_on: '2022-12-31T00:58:47.828Z'
                     phone: '2065886919'
@@ -1366,6 +1365,50 @@ paths:
                 $ref: '#/components/schemas/ErrorBody'
       summary: Get a loan agreement by id
       security: *ref_0
+  /payments:
+    post:
+      description: |
+        Instructs Pier to initiate an ACH payment for a loan.
+      operationId: payments_submitPayment
+      tags:
+        - Payments
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+              examples:
+                Example1:
+                  value:
+                    id: pmt_234259b117854d0194bc5864a6c45b42
+                    amount: 100000
+                    facility_id: fac_234259b117854d0194bc5864a6c45b42
+                    status: pending
+                    transfer_type: standard
+                    created_on: '2023-02-27T00:00:00Z'
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Submit a loan payment
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+            examples:
+              Example1:
+                value:
+                  facility_id: fac_234259b117854d0194bc5864a6c45b42
+                  amount: 100000
+                  transfer_type: standard
 components:
   schemas:
     ApplicationId:
@@ -2135,6 +2178,36 @@ components:
     FacilityId:
       title: FacilityId
       type: string
+    Statement:
+      title: Statement
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the statement
+          example: stmt_deb6aba913d84feb987934f50c32bf03
+        statement_date:
+          type: string
+          description: The date of the statement (YYYY-MM-DD)
+          example: '2023-03-17'
+        facility_id:
+          $ref: '#/components/schemas/FacilityId'
+        url:
+          type: string
+          description: The url of the statement pdf
+          example: >-
+            https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
+        created_on:
+          type: string
+          format: date-time
+          description: Timestamp the statement object is created on
+          example: '2023-02-27T00:00:00Z'
+      required:
+        - id
+        - statement_date
+        - facility_id
+        - url
+        - created_on
     Facility:
       title: Facility
       type: object
@@ -2336,6 +2409,75 @@ components:
         - application_id
         - document_url
         - created_on
+    PaymentId:
+      title: PaymentId
+      type: string
+    PaymentRequest:
+      title: PaymentRequest
+      type: object
+      properties:
+        facility_id:
+          type: string
+          description: The facility_id of the credit facility to make a payment for
+          example: fac_234259b117854d0194bc5864a6c45b42
+        amount:
+          type: integer
+          description: The amount of the payment, in cents
+          example: 100000
+        transfer_type:
+          $ref: '#/components/schemas/TransferType'
+          description: The type of ACH transfer
+      required:
+        - facility_id
+        - amount
+        - transfer_type
+    Payment:
+      title: Payment
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/PaymentId'
+        amount:
+          type: integer
+          description: The amount of the payment, in cents
+          example: 100000
+        facility_id:
+          type: string
+          description: The facility_id of the credit facility to make a payment for
+          example: fac_234259b117854d0194bc5864a6c45b42
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+          description: The status of the payment
+        transfer_type:
+          $ref: '#/components/schemas/TransferType'
+          description: The type of ACH transfer
+        created_on:
+          type: string
+          format: date-time
+          description: Timestamp the payment is created on
+          example: '2023-02-27T00:00:00Z'
+      required:
+        - id
+        - amount
+        - facility_id
+        - status
+        - transfer_type
+        - created_on
+    PaymentStatus:
+      title: PaymentStatus
+      type: string
+      enum:
+        - pending
+        - processing
+        - settled
+        - failed
+    TransferType:
+      title: TransferType
+      type: string
+      enum:
+        - standard
+        - next_day
+        - same_day
   securitySchemes:
     BasicAuth:
       type: http

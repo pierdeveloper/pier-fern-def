@@ -1,0 +1,116 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+docs: |
+  Loan payments can be made using Pier via ACH
+
+imports:
+  commons: commons.yml
+
+service:
+  base-path: /payments
+  auth: true
+  endpoints:
+    submitPayment:
+      display-name: Submit a loan payment
+      docs: |
+        Instructs Pier to initiate an ACH payment for a loan.
+      path: ""
+      method: POST
+      request: PaymentRequest
+      response: Payment
+      errors:
+        - commons.InvalidInputError
+      examples:
+        - request: $PaymentRequest.Default
+          response:
+            body: $Payment.Pending
+
+types:
+  PaymentId:
+    type: string
+    examples:
+      - name: Example0
+        value: pmt_18e5a3726b3943cda2635f40e1041ba4
+
+  PaymentRequest:
+    properties:
+      facility_id:
+        type: string
+        docs: The facility_id of the credit facility to make a payment for
+      amount:
+        type: integer
+        docs: The amount of the payment, in cents
+      transfer_type:
+        type: TransferType
+        docs: The type of ACH transfer
+    examples:
+      - name: Default
+        value:
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          transfer_type: standard
+
+  Payment:
+    properties:
+      id: PaymentId
+      amount:
+        type: integer
+        docs: The amount of the payment, in cents
+      facility_id:
+        type: string
+        docs: The facility_id of the credit facility to make a payment for
+      status:
+        type: PaymentStatus
+        docs: The status of the payment
+      transfer_type:
+        type: TransferType
+        docs: The type of ACH transfer
+      created_on:
+        type: datetime
+        docs: Timestamp the payment is created on
+    examples:
+      - name: Pending
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: pending
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Processing
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: processing
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Settled
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: settled
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Failed
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: failed
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+
+  PaymentStatus:
+    enum:
+      - pending
+      - processing
+      - settled
+      - failed
+
+  TransferType:
+    enum:
+      - standard
+      - next_day
+      - same_day
