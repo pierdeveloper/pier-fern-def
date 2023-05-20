@@ -3,8 +3,7 @@ display-name: Pier API
 auth:
   scheme: basic
   docs: |
-    All calls should be made with the username field left empty and the password field set to your API key. 
-    Remember to prefix your API key with a colon.
+    Use your API client ID as the username and your API client secret as the password.
 environments:
   Production: https://production.pier-finance.com/api
   Sandbox: https://sandbox.pier-finance.com/api

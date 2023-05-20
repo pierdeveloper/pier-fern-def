@@ -115,7 +115,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"installment_loan\",\n    \"status\": \"pending\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\"\n}",
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"rejection_reasons\": [],\n    \"status\": \"pending\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -155,7 +155,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"type\": \"line_of_credit\",\n    \"amount\": 1000000,\n    \"apr\": 0,\n    \"annual_fee\": 0,\n    \"billing_cycle\": 30,\n    \"finance_charge\": 0,\n    \"grace_period\": 21,\n    \"grace_period_interest_rate\": 0,\n    \"interest_rate\": 0,\n    \"late_payment_fee\": 0,\n    \"origination_fee\": 0,\n    \"term\": 24\n}",
+              "raw": "{\n    \"type\": \"loan\",\n    \"amount\": 1000000,\n    \"grace_period\": 0,\n    \"grace_period_interest_rate\": 0,\n    \"interest_rate\": 0,\n    \"origination_fee\": 0,\n    \"repayment_frequency\": \"monthly\",\n    \"late_payment_fee\": 0,\n    \"term\": 36\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -200,7 +200,7 @@
                 "auth": null,
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"type\": \"line_of_credit\",\n    \"amount\": 1000000,\n    \"apr\": 0,\n    \"annual_fee\": 0,\n    \"billing_cycle\": 30,\n    \"finance_charge\": 0,\n    \"grace_period\": 21,\n    \"grace_period_interest_rate\": 0,\n    \"interest_rate\": 0,\n    \"late_payment_fee\": 0,\n    \"origination_fee\": 0,\n    \"term\": 24\n}",
+                  "raw": "{\n    \"type\": \"loan\",\n    \"amount\": 1000000,\n    \"grace_period\": 0,\n    \"grace_period_interest_rate\": 0,\n    \"interest_rate\": 0,\n    \"origination_fee\": 0,\n    \"repayment_frequency\": \"monthly\",\n    \"late_payment_fee\": 0,\n    \"term\": 36\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -209,7 +209,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"line_of_credit\",\n        \"amount\": 1000000,\n        \"apr\": 0,\n        \"annual_fee\": 0,\n        \"billing_cycle\": 30,\n        \"finance_charge\": 0,\n        \"grace_period\": 21,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"late_payment_fee\": 0,\n        \"origination_fee\": 0,\n        \"term\": 24\n    }\n}",
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    }\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -218,7 +218,7 @@
           "_type": "endpoint",
           "name": "Reject an application",
           "request": {
-            "description": "Updates the status of a credit application to `REJECTED` and returns a user readable rejection reason, to be used in the adverse action notice",
+            "description": "Updates the status of a credit application to `rejected` and returns a user readable rejection reason, to be used in the adverse action notice",
             "url": {
               "raw": "{{baseUrl}}/applications/:application_id/reject",
               "host": [
@@ -249,7 +249,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"rejection_reason\": \"bank_balance_too_low\"\n}",
+              "raw": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ]\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -263,7 +263,7 @@
               "status": "OK",
               "code": 200,
               "originalRequest": {
-                "description": "Updates the status of a credit application to `REJECTED` and returns a user readable rejection reason, to be used in the adverse action notice",
+                "description": "Updates the status of a credit application to `rejected` and returns a user readable rejection reason, to be used in the adverse action notice",
                 "url": {
                   "raw": "{{baseUrl}}/applications/:application_id/reject",
                   "host": [
@@ -294,7 +294,7 @@
                 "auth": null,
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"rejection_reason\": \"bank_balance_too_low\"\n}",
+                  "raw": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ]\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -303,7 +303,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ],\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_1677bbbaf21a4954bb114bd9c4348d8a\",\n    \"credit_type\": \"installment_loan\",\n    \"status\": \"rejected\",\n    \"created_on\": \"2022-12-31T02:20:35.934Z\",\n    \"decisioned_on\": \"2022-12-31T02:21:01.842Z\"\n}",
+              "body": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ],\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_1677bbbaf21a4954bb114bd9c4348d8a\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"rejected\",\n    \"created_on\": \"2022-12-31T02:20:35.934Z\",\n    \"decisioned_on\": \"2022-12-31T02:21:01.842Z\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -379,7 +379,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"line_of_credit\",\n        \"amount\": 1000000,\n        \"apr\": 0,\n        \"annual_fee\": 0,\n        \"billing_cycle\": 30,\n        \"finance_charge\": 0,\n        \"grace_period\": 21,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"late_payment_fee\": 0,\n        \"origination_fee\": 0,\n        \"term\": 24\n    }\n}",
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    }\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -441,7 +441,7 @@
                 "body": null
               },
               "description": null,
-              "body": "[\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"credit_type\": \"revolving_line_of_credit\",\n        \"status\": \"approved\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\",\n        \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n        \"offer\": {\n            \"type\": \"line_of_credit\",\n            \"amount\": 1000000,\n            \"apr\": 0,\n            \"annual_fee\": 0,\n            \"billing_cycle\": 30,\n            \"finance_charge\": 0,\n            \"grace_period\": 21,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"late_payment_fee\": 0,\n            \"origination_fee\": 0,\n            \"term\": 24\n        }\n    },\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"credit_type\": \"installment_loan\",\n        \"status\": \"pending\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\"\n    }\n]",
+              "body": "[\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"credit_type\": \"consumer_revolving_line_of_credit\",\n        \"rejection_reasons\": [],\n        \"status\": \"approved\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\",\n        \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n        \"offer\": {\n            \"type\": \"loan\",\n            \"amount\": 1000000,\n            \"grace_period\": 0,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"repayment_frequency\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"term\": 36\n        }\n    },\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"rejection_reasons\": [],\n        \"status\": \"pending\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\"\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -631,7 +631,7 @@
           "_type": "endpoint",
           "name": "Create a consumer borrower",
           "request": {
-            "description": "Creates a consumer borrower. Consumer borrower's must have a unique SSN.",
+            "description": "Create a consumer borrower. The created consumer resource is returned in the response.",
             "url": {
               "raw": "{{baseUrl}}/borrowers/consumer",
               "host": [
@@ -669,7 +669,7 @@
               "status": "OK",
               "code": 200,
               "originalRequest": {
-                "description": "Creates a consumer borrower. Consumer borrower's must have a unique SSN.",
+                "description": "Create a consumer borrower. The created consumer resource is returned in the response.",
                 "url": {
                   "raw": "{{baseUrl}}/borrowers/consumer",
                   "host": [
@@ -702,7 +702,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"ssn\": \"999888777\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -796,7 +796,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"ssn\": \"999888777\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\",\n    \"phone\": \"2065886919\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1216,7 +1216,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"terms\": {\n        \"type\": \"line_of_credit\",\n        \"amount\": 1000000,\n        \"apr\": 0,\n        \"annual_fee\": 0,\n        \"billing_cycle\": 30,\n        \"finance_charge\": 0,\n        \"grace_period\": 21,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"late_payment_fee\": 0,\n        \"origination_fee\": 0,\n        \"term\": 24\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-01-17T04:59:21.773Z\"\n}",
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1294,7 +1294,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"terms\": {\n        \"type\": \"line_of_credit\",\n        \"amount\": 1000000,\n        \"apr\": 0,\n        \"annual_fee\": 0,\n        \"billing_cycle\": 30,\n        \"finance_charge\": 0,\n        \"grace_period\": 21,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"late_payment_fee\": 0,\n        \"origination_fee\": 0,\n        \"term\": 24\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"status\": \"closed\",\n    \"created_on\": \"2023-01-17T04:59:21.773Z\"\n}",
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"created_on\": \"2023-01-17T04:59:21.773Z\",\n    \"status\": \"closed\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1370,7 +1370,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"terms\": {\n        \"type\": \"line_of_credit\",\n        \"amount\": 1000000,\n        \"apr\": 0,\n        \"annual_fee\": 0,\n        \"billing_cycle\": 30,\n        \"finance_charge\": 0,\n        \"grace_period\": 21,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"late_payment_fee\": 0,\n        \"origination_fee\": 0,\n        \"term\": 24\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-01-17T04:59:21.773Z\"\n}",
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1432,7 +1432,7 @@
                 "body": null
               },
               "description": null,
-              "body": "[\n    {\n        \"terms\": {\n            \"type\": \"line_of_credit\",\n            \"amount\": 1000000,\n            \"apr\": 0,\n            \"annual_fee\": 0,\n            \"billing_cycle\": 30,\n            \"finance_charge\": 0,\n            \"grace_period\": 21,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"late_payment_fee\": 0,\n            \"origination_fee\": 0,\n            \"term\": 24\n        },\n        \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n        \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n        \"credit_type\": \"revolving_line_of_credit\",\n        \"status\": \"active\",\n        \"created_on\": \"2023-01-17T04:59:21.773Z\"\n    }\n]",
+              "body": "[\n    {\n        \"terms\": {\n            \"type\": \"loan\",\n            \"amount\": 1000000,\n            \"grace_period\": 0,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"repayment_frequency\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"term\": 36\n        },\n        \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n        \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"status\": \"active\",\n        \"created_on\": \"2023-05-12T19:46:09.293Z\",\n        \"account_number\": \"401542198\",\n        \"balance\": 5000000,\n        \"origination_date\": \"2023-05-12\",\n        \"disbursement_date\": \"2023-05-12\",\n        \"remaining_term\": 48,\n        \"payments_due\": [],\n        \"monthly_payment\": 124425,\n        \"next_payment_amount\": 124425,\n        \"next_payment_due_date\": \"2023-06-12\",\n        \"current_payment_due_date\": \"2023-06-12\",\n        \"last_payment_date\": null,\n        \"principal_paid_thru\": \"2023-05-11\",\n        \"next_billing_date\": \"2023-05-28\",\n        \"interest_accrued_thru\": \"2023-05-11\",\n        \"next_accrual_cutoff_date\": \"2023-06-11\",\n        \"scheduled_payoff_date\": \"2027-05-12\"\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1517,7 +1517,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\"\n}",
+              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\",\n    \"signature_timestamp\": null\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1671,7 +1671,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\"\n}",
+              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\",\n    \"signature_timestamp\": null\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1733,7 +1733,7 @@
                 "body": null
               },
               "description": null,
-              "body": "[\n    {\n        \"status\": \"pending_signature\",\n        \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n        \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n        \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n        \"created_on\": \"2022-12-31T20:47:38.152Z\"\n    }\n]",
+              "body": "[\n    {\n        \"status\": \"pending_signature\",\n        \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n        \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n        \"document_url\": \"https://production-formapi-docs.s3.amazonaws.com/store/acc_QqdcDH47A63qKZbK3S/templates/tpl_4zqGxezHzrfqDaxGr2/submissions/sub_J9PbHbXYbL4jzRxc3R.pdf?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAJESVN6QC4ACN3XSQ%2F20221231%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20221231T204739Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=cf0c6429ef72ca06d861cb912f5d1cf376a5c26c7f904aaa9bf08f10103785bd\",\n        \"created_on\": \"2022-12-31T20:47:38.152Z\",\n        \"signature_timestamp\": null\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]

@@ -20,8 +20,8 @@ service:
       method: POST
       request:
         name: CreateApplicationRequest
-        body: 
-          properties: 
+        body:
+          properties:
             borrower_id:
               type: string
               docs: The `borrower_id` of the borrower the application is for
@@ -59,14 +59,14 @@ service:
       examples:
         - path-parameters:
             application_id: $ApplicationId.Example0
-          request: $Offer.LineOfCredit
+          request: $Offer.Loan
           response:
             body: $Application.ApprovedApplication
 
     reject:
       display-name: Reject an application
       docs:
-        Updates the status of a credit application to `REJECTED` and returns a
+        Updates the status of a credit application to `rejected` and returns a
         user readable rejection reason, to be used in the adverse action notice
       path: /{application_id}/reject
       path-parameters:
@@ -76,7 +76,7 @@ service:
         name: Reject
         body:
           properties:
-            rejection_reason: RejectionReason
+            rejection_reasons: list<RejectionReason>
       response: Application
       errors:
         - commons.InvalidInputError
@@ -85,7 +85,7 @@ service:
         - path-parameters:
             application_id: $ApplicationId.Example0
           request:
-            rejection_reason: bank_balance_too_low
+            rejection_reasons: [bank_balance_too_low]
           response:
             body: $Application.RejectedApplication
 
@@ -160,10 +160,8 @@ types:
         value:
           type: loan
           amount: 1000000
-          annual_fee: 0
-          apr: 0
-          finance_charge: 0
           grace_period: 0
+          grace_period_interest_rate: 0
           interest_rate: 0
           origination_fee: 0
           repayment_frequency: monthly
@@ -208,25 +206,27 @@ types:
         value:
           id: $ApplicationId.Example0
           borrower_id: $borrowers.ConsumerBorrowerId.Example0
-          credit_type: installment_loan
+          credit_type: consumer_installment_loan
+          rejection_reasons: []
           status: pending
           created_on: "2022-12-31T01:36:52.606Z"
       - name: ApprovedApplication
         value:
           id: $ApplicationId.Example0
           borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
-          credit_type: revolving_line_of_credit
+          credit_type: consumer_revolving_line_of_credit
+          rejection_reasons: []
           status: approved
           created_on: "2022-12-31T01:36:52.606Z"
           decisioned_on: "2023-01-17T05:31:52.955Z"
-          offer: $Offer.LineOfCredit
+          offer: $Offer.Loan
       - name: RejectedApplication
         value:
           rejection_reasons:
             - bank_balance_too_low
           id: $ApplicationId.Example0
           borrower_id: bor_1677bbbaf21a4954bb114bd9c4348d8a
-          credit_type: installment_loan
+          credit_type: consumer_installment_loan
           status: rejected
           created_on: "2022-12-31T02:20:35.934Z"
           decisioned_on: "2022-12-31T02:21:01.842Z"
@@ -294,16 +294,33 @@ types:
 
   LoanOffer:
     properties:
-      amount: integer
-      annual_fee: integer
-      apr: integer
-      finance_charge: integer
-      grace_period: integer
-      interest_rate: integer
-      origination_fee: integer
-      repayment_frequency: string
-      late_payment_fee: integer
-      term: integer
+      amount:
+        type: integer
+        docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
+      grace_period:
+        type: optional<integer>
+        docs: If offering an introductory grace period where payments wont be required, the period in months
+      grace_period_interest_rate:
+        type: optional<integer>
+        docs: If offering an introductory grace period where payments wont be required, the interest rate in basis points
+      interest_rate:
+        type: integer
+        docs: The interest rate (in basis points) charged on the loan principal (e.g. 750 for 7.50%)
+      origination_fee:
+        type: integer
+        docs: The origination fee charged to originate the loan in cents (e.g. 20000 for $200)
+      repayment_frequency:
+        type: string
+        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, bimonthly, or quarterly. Should be monthly for consumer loans
+      late_payment_fee:
+        type: integer
+        docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
+      term:
+        type: integer
+        docs: The repayment term of the loan, in months
+      third_party_disbursement_destination:
+        type: optional<string>
+        docs: For buy-now-pay-later loans, the name of the company the loan funds will be disbursed to (required for applications with credit_type consumer_bnpl or commercial_bnpl)
 
   RejectionReason:
     enum:

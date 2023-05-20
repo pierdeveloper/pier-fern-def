@@ -24,8 +24,8 @@ service:
       method: POST
       request:
         name: CreateFacilityRequest
-        body: 
-          properties: 
+        body:
+          properties:
             loan_agreement_id:
               type: loans.LoanAgreementId
               docs: The `loan_agreement_id` of the loan agreement to create a facility for
@@ -89,6 +89,95 @@ service:
 types:
   FacilityId: string
 
+  Statement:
+    properties:
+      id:
+        type: string
+        docs: The id of the statement
+      statement_date:
+        type: string
+        docs: The date of the statement (YYYY-MM-DD)
+      facility_id: FacilityId
+      url:
+        type: string
+        docs: The url of the statement pdf
+      created_on:
+        type: datetime
+        docs: Timestamp the statement object is created on
+    examples:
+      - name: Default
+        value:
+          id: stmt_deb6aba913d84feb987934f50c32bf03
+          statement_date: 2023-03-17
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          url: https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
+          created_on: 2023-02-27T00:00:00Z
+
+  Payment:
+    properties:
+      id:
+        type: string
+        docs: The id of the payment
+      amount:
+        type: integer
+        docs: The amount of the payment, in cents
+      facility_id: FacilityId
+      status:
+        type: PaymentStatus
+        docs: The status of the payment
+      transfer_type:
+        type: TransferType
+        docs: The type of ACH transfer
+      created_on:
+        type: datetime
+        docs: Timestamp the payment is created on
+    examples:
+      - name: Pending
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: pending
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Processing
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: processing
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Settled
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: settled
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+      - name: Failed
+        value:
+          id: pmt_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          status: failed
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+
+  PaymentStatus:
+    enum:
+      - pending
+      - processing
+      - settled
+      - failed
+
+  TransferType:
+    enum:
+      - standard
+      - next_day
+      - same_day
+
   Facility:
     properties:
       id: FacilityId
@@ -113,30 +202,111 @@ types:
       status:
         type: CreditStatus
         docs: The status of the facility.
+      account_number:
+        type: string
+        docs: The account number of the credit facility
+      balance:
+        type: integer
+        docs: The remaining balance of the loan, in cents
+      origination_date:
+        type: string
+        docs: The date the loan was originated (YYYY-MM-DD)
+      disbursement_date:
+        type: string
+        docs: The date the loan was disbursed (YYYY-MM-DD)
+      remaining_term:
+        type: integer
+        docs: The remaining term of the loan, in months
+      payments_due:
+        type: list<string>
+        docs: An array of payments due (empty if no payments are due)
+      monthly_payment:
+        type: integer
+        docs: The monthly payment amount, in cents
+      next_payment_amount:
+        type: integer
+        docs: The amount of the next payment, in cents
+      next_payment_due_date:
+        type: string
+        docs: The date the next payment is due (YYYY-MM-DD)
+      current_payment_due_date:
+        type: string
+        docs: The date the current payment is due (YYYY-MM-DD)
+      last_payment_date:
+        type: optional<string>
+        docs: The date the last payment was made (YYYY-MM-DD)
+      principal_paid_thru:
+        type: string
+        docs: The date the principal is paid through (YYYY-MM-DD)
+      next_billing_date:
+        type: string
+        docs: The next billing date of the loan (YYYY-MM-DD)
+      interest_accrued_thru:
+        type: string
+        docs: The date the interest is accrued through (YYYY-MM-DD)
+      next_accrual_cutoff_date:
+        type: string
+        docs: The next accrual cutoff date of the loan (YYYY-MM-DD)
+      scheduled_payoff_date:
+        type: string
+        docs: The scheduled payoff date of the loan (YYYY-MM-DD)
       terms:
         type: applications.Offer
         docs: An object containing a summary of the terms of the facility.
     examples:
       - name: Active
         value:
-          terms: $applications.Offer.LineOfCredit
+          terms: $applications.Offer.Loan
           id: fac_7264c6575a894548a386939434b0adf3
           application_id: app_ad1564ffb1d745f9ad482bb5182708e2
           borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
           loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
-          credit_type: revolving_line_of_credit
+          credit_type: consumer_installment_loan
           status: active
-          created_on: "2023-01-17T04:59:21.773Z"
+          created_on: "2023-05-12T19:46:09.293Z"
+          account_number: "401542198"
+          balance: 5000000
+          origination_date: "2023-05-12"
+          disbursement_date: "2023-05-12"
+          remaining_term: 48
+          payments_due: []
+          monthly_payment: 124425
+          next_payment_amount: 124425
+          next_payment_due_date: "2023-06-12"
+          current_payment_due_date: "2023-06-12"
+          last_payment_date: null
+          principal_paid_thru: "2023-05-11"
+          next_billing_date: "2023-05-28"
+          interest_accrued_thru: "2023-05-11"
+          next_accrual_cutoff_date: "2023-06-11"
+          scheduled_payoff_date: "2027-05-12"
+
       - name: Closed
         value:
-          terms: $applications.Offer.LineOfCredit
+          terms: $applications.Offer.Loan
           id: fac_7264c6575a894548a386939434b0adf3
           application_id: app_ad1564ffb1d745f9ad482bb5182708e2
           borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
           loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
-          credit_type: revolving_line_of_credit
-          status: closed
+          credit_type: consumer_installment_loan
           created_on: "2023-01-17T04:59:21.773Z"
+          status: closed
+          account_number: "401542198"
+          balance: 5000000
+          origination_date: "2023-05-12"
+          disbursement_date: "2023-05-12"
+          remaining_term: 48
+          payments_due: []
+          monthly_payment: 124425
+          next_payment_amount: 124425
+          next_payment_due_date: "2023-06-12"
+          current_payment_due_date: "2023-06-12"
+          last_payment_date: null
+          principal_paid_thru: "2023-05-11"
+          next_billing_date: "2023-05-28"
+          interest_accrued_thru: "2023-05-11"
+          next_accrual_cutoff_date: "2023-06-11"
+          scheduled_payoff_date: "2027-05-12"
 
   CreditStatus:
     enum:
