@@ -9,7 +9,7 @@ imports:
   commons: commons.yml
   applications: applications.yml
   borrowers: borrowers.yml
-  loans: loans.yml
+  loan-agreements: loan-agreements.yml
 
 service:
   base-path: /facilities
@@ -27,7 +27,7 @@ service:
         body:
           properties:
             loan_agreement_id:
-              type: loans.LoanAgreementId
+              type: loan-agreements.LoanAgreementId
               docs: The `loan_agreement_id` of the loan agreement to create a facility for
       response: Facility
       errors:
@@ -74,6 +74,25 @@ service:
             facility_id: doc_234259b117854d0194bc5864a6c45b42
           response:
             body: $Facility.Active
+
+    getStatementsForFacility:
+      display-name: Retrieve statements for a facility
+      docs: Retrieve statements for a facility by its id
+      path: /{facility_id}/statements
+      path-parameters:
+        facility_id:
+          type: FacilityId
+          docs: The facility_id of the facility you want to retrieve statements for
+      method: GET
+      response: list<Statement>
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: doc_234259b117854d0194bc5864a6c45b42
+          response:
+            body:
+              - $Statement.Default
 
     listAll:
       display-name: List all facilities

@@ -26,7 +26,7 @@ service:
               type: string
               docs: The `borrower_id` of the borrower the application is for
             credit_type:
-              type: string
+              type: commons.CreditType
               docs: The type of credit product.
             requested_amount:
               type: optional<integer>
@@ -40,7 +40,7 @@ service:
       examples:
         - request:
             borrower_id: $borrowers.ConsumerBorrowerId.Example0
-            credit_type: revolving_line_of_credit
+            credit_type: consumer_installment_loan
             requested_amount: 200000
           response:
             body: $Application.PendingApplication

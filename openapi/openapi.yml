@@ -52,9 +52,8 @@ paths:
                   description: The `borrower_id` of the borrower the application is for
                   example: bor_a1d0c30d77104f35b4c842b99132624e
                 credit_type:
-                  type: string
+                  $ref: '#/components/schemas/CreditType'
                   description: The type of credit product.
-                  example: revolving_line_of_credit
                 requested_amount:
                   type: integer
                   description: >-
@@ -67,7 +66,7 @@ paths:
               Example1:
                 value:
                   borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
-                  credit_type: revolving_line_of_credit
+                  credit_type: consumer_installment_loan
                   requested_amount: 200000
     get:
       description: List all applications associated with your account
@@ -1192,14 +1191,56 @@ paths:
                 $ref: '#/components/schemas/ErrorBody'
       summary: Retrieve a facility
       security: *ref_0
+  /facilities/{facility_id}/statements:
+    get:
+      description: Retrieve statements for a facility by its id
+      operationId: facilities_getStatementsForFacility
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          description: The facility_id of the facility you want to retrieve statements for
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: doc_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Statement'
+              examples:
+                Example1:
+                  value:
+                    - id: stmt_deb6aba913d84feb987934f50c32bf03
+                      statement_date: '2023-03-17'
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      url: >-
+                        https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
+                      created_on: '2023-02-27T00:00:00Z'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Retrieve statements for a facility
+      security: *ref_0
   /loan_agreements:
     post:
       description: >-
         A loan agreement can be created for an application with a status of
         approved. Expect 4-8 seconds of latency
-      operationId: loans_create
+      operationId: loanAgreements_create
       tags:
-        - Loans
+        - LoanAgreements
       parameters: []
       responses:
         '200':
@@ -1252,9 +1293,9 @@ paths:
                   application_id: app_a9d2f388030d4f4296f80fc327e08d0d
     get:
       description: List all loan agreements on your account
-      operationId: loans_getAll
+      operationId: loanAgreements_getAll
       tags:
-        - Loans
+        - LoanAgreements
       parameters: []
       responses:
         '200':
@@ -1282,9 +1323,9 @@ paths:
       description: >-
         Electronically signs a loan document and updates the application's
         status to `accepted`
-      operationId: loans_sign
+      operationId: loanAgreements_sign
       tags:
-        - Loans
+        - LoanAgreements
       parameters:
         - name: loan_agreement_id
           in: path
@@ -1328,9 +1369,9 @@ paths:
   /loan_agreements/{loan_agreement_id}:
     get:
       description: Retrieve a loan agreement by its id
-      operationId: loans_get
+      operationId: loanAgreements_get
       tags:
-        - Loans
+        - LoanAgreements
       parameters:
         - name: loan_agreement_id
           in: path

@@ -69,7 +69,7 @@
             "auth": null,
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"requested_amount\": 200000\n}",
+              "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"requested_amount\": 200000\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -106,7 +106,7 @@
                 "auth": null,
                 "body": {
                   "mode": "raw",
-                  "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"revolving_line_of_credit\",\n    \"requested_amount\": 200000\n}",
+                  "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"requested_amount\": 200000\n}",
                   "options": {
                     "raw": {
                       "language": "json"
@@ -1377,6 +1377,84 @@
         },
         {
           "_type": "endpoint",
+          "name": "Retrieve statements for a facility",
+          "request": {
+            "description": "Retrieve statements for a facility by its id",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/statements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "statements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve statements for",
+                  "value": "doc_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve statements for a facility by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/statements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "statements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve statements for",
+                      "value": "doc_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"stmt_deb6aba913d84feb987934f50c32bf03\",\n        \"statement_date\": \"2023-03-17\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"url\": \"https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
           "name": "List all facilities",
           "request": {
             "description": "List all facilities on your account",
@@ -1442,7 +1520,7 @@
     {
       "_type": "container",
       "description": "Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. \nThe loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. \nLoan agreements that are not signed within 24 hours expire and need to be re-created\n",
-      "name": "Loans",
+      "name": "Loan Agreements",
       "item": [
         {
           "_type": "endpoint",
