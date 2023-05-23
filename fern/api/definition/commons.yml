@@ -13,6 +13,19 @@ types:
         type: string
         docs: 5-digit US zip code
 
+  BankAccount:
+    properties:
+      bank_account_number: string
+      bank_routing_number: string
+      type:
+        type: BankAccountType
+        docs: The type of bank account, either checking or savings
+
+  BankAccountType:
+    enum:
+      - checking
+      - savings
+
   CreditType:
     enum:
       - consumer_installment_loan
@@ -90,4 +103,8 @@ errors:
 
   FacilityCannotBeClosedError:
     status-code: 400
+    type: ErrorBody
+
+  PaymentNotFoundError:
+    status-code: 404
     type: ErrorBody

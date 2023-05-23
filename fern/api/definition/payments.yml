@@ -25,6 +25,34 @@ service:
           response:
             body: $Payment.Pending
 
+    get:
+      display-name: Get a payment by ID
+      docs: Get a payment by its id
+      path: /{payment_id}
+      path-parameters:
+        payment_id: PaymentId
+      method: GET
+      response: Payment
+      errors:
+        - commons.PaymentNotFoundError
+      examples:
+        - path-parameters:
+            payment_id: $PaymentId.Example0
+          response:
+            body: $Payment.Pending
+
+    getAll:
+      display-name: List all payments
+      docs: List all payments associated with your account
+      path: ""
+      method: GET
+      response: list<Payment>
+      examples:
+        - response:
+            body:
+              - $Payment.Pending
+              - $Payment.Processing
+
 types:
   PaymentId:
     type: string

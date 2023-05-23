@@ -106,7 +106,11 @@ service:
               - $Facility.Active
 
 types:
-  FacilityId: string
+  FacilityId:
+    type: string
+    examples:
+      - name: Example0
+        value: fac_18e5a3726b3943cda2635f40e1041ba4
 
   Statement:
     properties:
