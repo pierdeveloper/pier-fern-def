@@ -1900,6 +1900,144 @@
               "_postman_previewlanguage": "json"
             }
           ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Get a payment by ID",
+          "request": {
+            "description": "Get a payment by its id",
+            "url": {
+              "raw": "{{baseUrl}}/payments/:payment_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                ":payment_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "payment_id",
+                  "description": null,
+                  "value": "pmt_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Get a payment by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/payments/:payment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments",
+                    ":payment_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "payment_id",
+                      "description": null,
+                      "value": "pmt_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"pmt_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"status\": \"pending\",\n    \"transfer_type\": \"standard\",\n    \"created_on\": \"2023-02-27T00:00:00Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all payments",
+          "request": {
+            "description": "List all payments associated with your account",
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List all payments associated with your account",
+                "url": {
+                  "raw": "{{baseUrl}}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"pmt_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"status\": \"pending\",\n        \"transfer_type\": \"standard\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    },\n    {\n        \"id\": \"pmt_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"status\": \"processing\",\n        \"transfer_type\": \"standard\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
         }
       ]
     }

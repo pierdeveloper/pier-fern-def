@@ -1450,6 +1450,77 @@ paths:
                   facility_id: fac_234259b117854d0194bc5864a6c45b42
                   amount: 100000
                   transfer_type: standard
+    get:
+      description: List all payments associated with your account
+      operationId: payments_getAll
+      tags:
+        - Payments
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Payment'
+              examples:
+                Example1:
+                  value:
+                    - id: pmt_234259b117854d0194bc5864a6c45b42
+                      amount: 100000
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      status: pending
+                      transfer_type: standard
+                      created_on: '2023-02-27T00:00:00Z'
+                    - id: pmt_234259b117854d0194bc5864a6c45b42
+                      amount: 100000
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      status: processing
+                      transfer_type: standard
+                      created_on: '2023-02-27T00:00:00Z'
+      summary: List all payments
+      security: *ref_0
+  /payments/{payment_id}:
+    get:
+      description: Get a payment by its id
+      operationId: payments_get
+      tags:
+        - Payments
+      parameters:
+        - name: payment_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/PaymentId'
+          examples:
+            Example1:
+              value: pmt_18e5a3726b3943cda2635f40e1041ba4
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Payment'
+              examples:
+                Example1:
+                  value:
+                    id: pmt_234259b117854d0194bc5864a6c45b42
+                    amount: 100000
+                    facility_id: fac_234259b117854d0194bc5864a6c45b42
+                    status: pending
+                    transfer_type: standard
+                    created_on: '2023-02-27T00:00:00Z'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Get a payment by ID
+      security: *ref_0
 components:
   schemas:
     ApplicationId:
@@ -2117,6 +2188,27 @@ components:
         - city
         - state
         - zip
+    BankAccount:
+      title: BankAccount
+      type: object
+      properties:
+        bank_account_number:
+          type: string
+        bank_routing_number:
+          type: string
+        type:
+          $ref: '#/components/schemas/BankAccountType'
+          description: The type of bank account, either checking or savings
+      required:
+        - bank_account_number
+        - bank_routing_number
+        - type
+    BankAccountType:
+      title: BankAccountType
+      type: string
+      enum:
+        - checking
+        - savings
     CreditType:
       title: CreditType
       type: string
