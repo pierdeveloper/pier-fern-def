@@ -286,8 +286,8 @@ types:
       origination_fee:
         type: integer
         docs:
-          The origination fee charged to originate the line in cents (e.g. '20000'
-          for $200)
+          The origination fee charged to originate the line in basis points (e.g. '150'
+          for 1.50%)
       term:
         type: integer
         docs: The term of the line in months
@@ -308,7 +308,7 @@ types:
         docs: The interest rate (in basis points) charged on the loan principal (e.g. 750 for 7.50%)
       origination_fee:
         type: integer
-        docs: The origination fee charged to originate the loan in cents (e.g. 20000 for $200)
+        docs: The origination fee charged to originate the loan in basis points (e.g. 150 for 1.50%)
       repayment_frequency:
         type: string
         docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, bimonthly, or quarterly. Should be monthly for consumer loans
@@ -317,7 +317,7 @@ types:
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
       term:
         type: integer
-        docs: The repayment term of the loan, in months
+        docs: The term of the loan as a number of payments (e.g. 12 for a loan with a monthly repayment frequency would represent 1 year)
       third_party_disbursement_destination:
         type: optional<string>
         docs: For buy-now-pay-later loans, the name of the company the loan funds will be disbursed to (required for applications with credit_type consumer_bnpl or commercial_bnpl)
