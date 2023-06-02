@@ -1665,8 +1665,8 @@ components:
         origination_fee:
           type: integer
           description: >-
-            The origination fee charged to originate the line in cents (e.g.
-            '20000' for $200)
+            The origination fee charged to originate the line in basis points
+            (e.g. '150' for 1.50%)
         term:
           type: integer
           description: The term of the line in months
@@ -1705,8 +1705,8 @@ components:
         origination_fee:
           type: integer
           description: >-
-            The origination fee charged to originate the loan in cents (e.g.
-            20000 for $200)
+            The origination fee charged to originate the loan in basis points
+            (e.g. 150 for 1.50%)
         repayment_frequency:
           type: string
           description: >-
@@ -1720,7 +1720,9 @@ components:
             (e.g. 2500 for $25.00)
         term:
           type: integer
-          description: The repayment term of the loan, in months
+          description: >-
+            The term of the loan as a number of payments (e.g. 12 for a loan
+            with a monthly repayment frequency would represent 1 year)
         third_party_disbursement_destination:
           type: string
           description: >-
