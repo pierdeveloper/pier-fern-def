@@ -1708,11 +1708,14 @@ components:
             The origination fee charged to originate the loan in basis points
             (e.g. 150 for 1.50%)
         repayment_frequency:
-          type: string
+          $ref: '#/components/schemas/RepaymentFrequency'
           description: >-
             The repayment frequency for the loan. Accepted values weekly,
-            biweekly, monthly, bimonthly, or quarterly. Should be monthly for
-            consumer loans
+            biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th,
+            semi_monthly
+        first_payment_date:
+          type: string
+          description: The date of the first payment, in ISO 8601 format (e.g. 2022-12-31)
         late_payment_fee:
           type: integer
           description: >-
@@ -1736,6 +1739,16 @@ components:
         - repayment_frequency
         - late_payment_fee
         - term
+    RepaymentFrequency:
+      title: RepaymentFrequency
+      type: string
+      enum:
+        - weekly
+        - biweekly
+        - monthly
+        - semi_monthly_first_15th
+        - semi_monthly_last_15th
+        - semi_monthly
     RejectionReason:
       title: RejectionReason
       type: string

@@ -310,8 +310,11 @@ types:
         type: integer
         docs: The origination fee charged to originate the loan in basis points (e.g. 150 for 1.50%)
       repayment_frequency:
-        type: string
-        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, bimonthly, or quarterly. Should be monthly for consumer loans
+        type: RepaymentFrequency
+        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
+      first_payment_date:
+        type: optional<string>
+        docs: The date of the first payment, in ISO 8601 format (e.g. 2022-12-31)
       late_payment_fee:
         type: integer
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
@@ -321,6 +324,21 @@ types:
       third_party_disbursement_destination:
         type: optional<string>
         docs: For buy-now-pay-later loans, the name of the company the loan funds will be disbursed to (required for applications with credit_type consumer_bnpl or commercial_bnpl)
+
+  RepaymentFrequency:
+    enum:
+      - value: weekly
+        docs: Weekly payment period
+      - value: biweekly
+        docs: Biweekly payment period
+      - value: monthly
+        docs: Monthly payment period
+      - value: semi_monthly_first_15th
+        docs: Semi-monthly payment period, with payments due on the 1st and 15th of each month
+      - value: semi_monthly_last_15th
+        docs: Semi-monthly payment period, with payments due on the 15th and last day of each month
+      - value: semi_monthly
+        docs: Semi-monthly payment period
 
   RejectionReason:
     enum:
