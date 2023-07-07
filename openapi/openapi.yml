@@ -1138,7 +1138,7 @@ paths:
             $ref: '#/components/schemas/FacilityId'
           examples:
             Example1:
-              value: doc_234259b117854d0194bc5864a6c45b42
+              value: fac_234259b117854d0194bc5864a6c45b42
       responses:
         '200':
           description: ''
@@ -1225,6 +1225,72 @@ paths:
                     bank_routing_number: '021000012'
                     type: checking
                   additional_amount: 0
+  /facilities/{facility_id}/disable_autopay:
+    post:
+      description: Disable autopay for a facility
+      operationId: facilities_disable_autopay
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+              examples:
+                Example1:
+                  value:
+                    terms:
+                      type: loan
+                      amount: 1000000
+                      grace_period: 0
+                      grace_period_interest_rate: 0
+                      interest_rate: 0
+                      origination_fee: 0
+                      repayment_frequency: monthly
+                      late_payment_fee: 0
+                      term: 36
+                    id: fac_7264c6575a894548a386939434b0adf3
+                    application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+                    borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+                    loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+                    credit_type: consumer_installment_loan
+                    status: active
+                    created_on: '2023-05-12T19:46:09.293Z'
+                    account_number: '401542198'
+                    balance: 5000000
+                    origination_date: '2023-05-12'
+                    disbursement_date: '2023-05-12'
+                    remaining_term: 48
+                    payments_due: []
+                    monthly_payment: 124425
+                    next_payment_amount: 124425
+                    next_payment_due_date: '2023-06-12'
+                    current_payment_due_date: '2023-06-12'
+                    last_payment_date: null
+                    principal_paid_thru: '2023-05-11'
+                    next_billing_date: '2023-05-28'
+                    interest_accrued_thru: '2023-05-11'
+                    next_accrual_cutoff_date: '2023-06-11'
+                    scheduled_payoff_date: '2027-05-12'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Disable autopay for a facility
+      security: *ref_0
   /facilities/{facility_id}:
     get:
       description: Retrieve a facility by its id

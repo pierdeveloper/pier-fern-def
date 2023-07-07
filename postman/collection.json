@@ -1319,7 +1319,7 @@
                 {
                   "key": "facility_id",
                   "description": null,
-                  "value": "doc_234259b117854d0194bc5864a6c45b42"
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
                 }
               ]
             },
@@ -1364,7 +1364,7 @@
                     {
                       "key": "facility_id",
                       "description": null,
-                      "value": "doc_234259b117854d0194bc5864a6c45b42"
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
                     }
                   ]
                 },
@@ -1389,6 +1389,84 @@
               },
               "description": null,
               "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": true,\n        \"bank_account\": {\n            \"bank_account_number\": \"98989898\",\n            \"bank_routing_number\": \"021000021\",\n            \"type\": \"checking\"\n        },\n        \"authorization_timestamp\": \"2023-05-12T19:46:09.293Z\",\n        \"additional_amount\": 0\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Disable autopay for a facility",
+          "request": {
+            "description": "Disable autopay for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disable_autopay",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disable_autopay"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Disable autopay for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disable_autopay",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disable_autopay"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
               "_postman_previewlanguage": "json"
             }
           ]
