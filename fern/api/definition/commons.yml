@@ -13,6 +13,20 @@ types:
         type: string
         docs: 5-digit US zip code
 
+  Autopay:
+    properties:
+      authorized:
+        type: boolean
+        docs: a bollean indicating whether autopay is authorized
+      authorization_timestamp:
+        type: datetime
+        docs: the timestamp when autopay was authorized
+      bank_account:
+        type: optional<BankAccount>
+      additional_amount:
+        type: optional<integer>
+        docs: the additional amount to be paid on top of the minimum payment, in cents
+
   BankAccount:
     properties:
       bank_account_number: string

@@ -57,6 +57,38 @@ service:
           response:
             body: $Facility.Closed
 
+    enable_autopay:
+      display-name: Enable autopay for a facility
+      docs: Enables autopay for a facility
+      path: /{facility_id}/enable_autopay
+      path-parameters:
+        facility_id: FacilityId
+      method: POST
+      request:
+        name: EnableAutopayRequest
+        body:
+          properties:
+            bank_account:
+              type: commons.BankAccount
+              docs: The bank account details to use for scheduled payments
+            additional_amount:
+              type: integer
+              docs: The additional amount to pay on top of the minimum payment, in cents (e.g. 1000 = $10.00)
+      response: Facility
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: doc_234259b117854d0194bc5864a6c45b42
+          request:
+            bank_account:
+              bank_account_number: "1234567890"
+              bank_routing_number: "021000012"
+              type: checking
+            additional_amount: 0
+          response:
+            body: $Facility.AutopayEnabled
+
     get:
       display-name: Retrieve a facility
       docs: Retrieve a facility by its id
@@ -211,6 +243,9 @@ types:
       terms:
         type: applications.Offer
         docs: An object containing a summary of the terms of the facility.
+      autopay:
+        type: optional<commons.Autopay>
+        docs: Whether or not autopay is enabled for the facility.
     examples:
       - name: Active
         value:
@@ -238,6 +273,41 @@ types:
           interest_accrued_thru: "2023-05-11"
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
+
+      - name: AutopayEnabled
+        value:
+          terms: $applications.Offer.Loan
+          id: fac_7264c6575a894548a386939434b0adf3
+          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          credit_type: consumer_installment_loan
+          status: active
+          created_on: "2023-05-12T19:46:09.293Z"
+          account_number: "401542198"
+          balance: 5000000
+          origination_date: "2023-05-12"
+          disbursement_date: "2023-05-12"
+          remaining_term: 48
+          payments_due: []
+          monthly_payment: 124425
+          next_payment_amount: 124425
+          next_payment_due_date: "2023-06-12"
+          current_payment_due_date: "2023-06-12"
+          last_payment_date: null
+          principal_paid_thru: "2023-05-11"
+          next_billing_date: "2023-05-28"
+          interest_accrued_thru: "2023-05-11"
+          next_accrual_cutoff_date: "2023-06-11"
+          scheduled_payoff_date: "2027-05-12"
+          autopay:
+            authorized: true
+            bank_account:
+              bank_account_number: "98989898"
+              bank_routing_number: "021000021"
+              type: checking
+            authorization_timestamp: "2023-05-12T19:46:09.293Z"
+            additional_amount: 0
 
       - name: Closed
         value:
