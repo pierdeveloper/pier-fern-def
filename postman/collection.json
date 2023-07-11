@@ -1223,6 +1223,100 @@
         },
         {
           "_type": "endpoint",
+          "name": "Create a disbursement for a facility",
+          "request": {
+            "description": "Create a disbursement for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\": 100000,\n    \"disbursement_bank_account\": {\n        \"bank_account_number\": \"1234567890\",\n        \"bank_routing_number\": \"021000012\",\n        \"type\": \"checking\"\n    },\n    \"transfer_type\": \"standard\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Create a disbursement for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\": 100000,\n    \"disbursement_bank_account\": {\n        \"bank_account_number\": \"1234567890\",\n        \"bank_routing_number\": \"021000012\",\n        \"type\": \"checking\"\n    },\n    \"transfer_type\": \"standard\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"status\": \"pending\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"transfer_type\": \"standard\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
           "name": "Close a facility",
           "request": {
             "description": "Closes an active facility by setting its status to `closed`",
@@ -1241,7 +1335,7 @@
                 {
                   "key": "facility_id",
                   "description": null,
-                  "value": "doc_234259b117854d0194bc5864a6c45b42"
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
                 }
               ]
             },
@@ -1278,7 +1372,7 @@
                     {
                       "key": "facility_id",
                       "description": null,
-                      "value": "doc_234259b117854d0194bc5864a6c45b42"
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
                     }
                   ]
                 },
@@ -1473,6 +1567,164 @@
         },
         {
           "_type": "endpoint",
+          "name": "Add repayment bank details for a facility",
+          "request": {
+            "description": "Add repayment bank details for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/repayment_bank_details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "repayment_bank_details"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_account_number\": \"1234567890\",\n    \"bank_routing_number\": \"021000012\",\n    \"type\": \"checking\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Add repayment bank details for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/repayment_bank_details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "repayment_bank_details"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_account_number\": \"1234567890\",\n    \"bank_routing_number\": \"021000012\",\n    \"type\": \"checking\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all disbursements for your account",
+          "request": {
+            "description": "List disbursements for your account",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List disbursements for your account",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
           "name": "Retrieve a facility",
           "request": {
             "description": "Retrieve a facility by its id",
@@ -1549,9 +1801,9 @@
         },
         {
           "_type": "endpoint",
-          "name": "Retrieve statements for a facility",
+          "name": "List statements for a facility",
           "request": {
-            "description": "Retrieve statements for a facility by its id",
+            "description": "List statements for a facility",
             "url": {
               "raw": "{{baseUrl}}/facilities/:facility_id/statements",
               "host": [
@@ -1566,8 +1818,8 @@
               "variable": [
                 {
                   "key": "facility_id",
-                  "description": "The facility_id of the facility you want to retrieve statements for",
-                  "value": "doc_234259b117854d0194bc5864a6c45b42"
+                  "description": "The facility_id of the facility you want to list statements for",
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
                 }
               ]
             },
@@ -1588,7 +1840,7 @@
               "status": "OK",
               "code": 200,
               "originalRequest": {
-                "description": "Retrieve statements for a facility by its id",
+                "description": "List statements for a facility",
                 "url": {
                   "raw": "{{baseUrl}}/facilities/:facility_id/statements",
                   "host": [
@@ -1603,8 +1855,8 @@
                   "variable": [
                     {
                       "key": "facility_id",
-                      "description": "The facility_id of the facility you want to retrieve statements for",
-                      "value": "doc_234259b117854d0194bc5864a6c45b42"
+                      "description": "The facility_id of the facility you want to list statements for",
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
                     }
                   ]
                 },
@@ -1621,6 +1873,174 @@
               },
               "description": null,
               "body": "[\n    {\n        \"id\": \"stmt_deb6aba913d84feb987934f50c32bf03\",\n        \"statement_date\": \"2023-03-17\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"url\": \"https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve a disbursement by its id",
+          "request": {
+            "description": "Retrieve a disbursement by its id",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements/:disbursement_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements",
+                ":disbursement_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve",
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                },
+                {
+                  "key": "disbursement_id",
+                  "description": "The disbursement_id of the disbursement you want to retrieve",
+                  "value": "dsb_134259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a disbursement by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements/:disbursement_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements",
+                    ":disbursement_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve",
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    },
+                    {
+                      "key": "disbursement_id",
+                      "description": "The disbursement_id of the disbursement you want to retrieve",
+                      "value": "dsb_134259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"status\": \"pending\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"transfer_type\": \"standard\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List disbursements for a facility",
+          "request": {
+            "description": "List disbursements for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to list disbursements for",
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List disbursements for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to list disbursements for",
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]

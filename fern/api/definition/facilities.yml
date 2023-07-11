@@ -39,6 +39,28 @@ service:
           response:
             body: $Facility.Active
 
+    disburse:
+      display-name: Create a disbursement for a facility
+      docs: Create a disbursement for a facility
+      path: "/{facility_id}/disbursements"
+      path-parameters:
+        facility_id: FacilityId
+      method: POST
+      request: DisbursementRequest
+      response: Disbursement
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+          request:
+            amount: 100000
+            disbursement_bank_account:
+              bank_account_number: "1234567890"
+              bank_routing_number: "021000012"
+              type: "checking"
+            transfer_type: "standard"
+          response:
+            body: $Disbursement.Pending
+
     close:
       display-name: Close a facility
       docs: Closes an active facility by setting its status to `closed`
@@ -52,7 +74,7 @@ service:
         - commons.FacilityCannotBeClosedError
       examples:
         - path-parameters:
-            facility_id: doc_234259b117854d0194bc5864a6c45b42
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
           request:
           response:
             body: $Facility.Closed
@@ -105,6 +127,50 @@ service:
           response:
             body: $Facility.Active
 
+    addRepaymentBankDetails:
+      display-name: Add repayment bank details for a facility
+      docs: Add repayment bank details for a facility
+      path: /{facility_id}/repayment_bank_details
+      path-parameters:
+        facility_id: FacilityId
+      method: POST
+      request:
+        name: AddRepaymentBankDetailsRequest
+        body:
+          properties:
+            bank_account_number:
+              type: string
+              docs: The bank account number to use for scheduled payments
+            bank_routing_number:
+              type: string
+              docs: The bank routing number to use for scheduled payments
+            type:
+              type: string
+              docs: The type of bank account to use for scheduled payments
+      response: Facility
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+          request:
+            bank_account_number: "1234567890"
+            bank_routing_number: "021000012"
+            type: checking
+          response:
+            body: $Facility.Active
+
+    listDisbursements:
+      display-name: List all disbursements for your account
+      docs: List disbursements for your account
+      path: /disbursements
+      method: GET
+      response: list<Disbursement>
+      examples:
+        - response:
+            body:
+              - $Disbursement.Pending
+
     get:
       display-name: Retrieve a facility
       docs: Retrieve a facility by its id
@@ -123,24 +189,65 @@ service:
           response:
             body: $Facility.Active
 
-    getStatementsForFacility:
-      display-name: Retrieve statements for a facility
-      docs: Retrieve statements for a facility by its id
+    listStatementsForFacility:
+      display-name: List statements for a facility
+      docs: List statements for a facility
       path: /{facility_id}/statements
       path-parameters:
         facility_id:
           type: FacilityId
-          docs: The facility_id of the facility you want to retrieve statements for
+          docs: The facility_id of the facility you want to list statements for
       method: GET
       response: list<Statement>
       errors:
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: doc_234259b117854d0194bc5864a6c45b42
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
           response:
             body:
               - $Statement.Default
+
+    getDisbursementById:
+      display-name: Retrieve a disbursement by its id
+      docs: Retrieve a disbursement by its id
+      path: /{facility_id}/disbursements/{disbursement_id}
+      path-parameters:
+        facility_id:
+          type: FacilityId
+          docs: The facility_id of the facility you want to retrieve
+        disbursement_id:
+          type: DisbursementId
+          docs: The disbursement_id of the disbursement you want to retrieve
+      method: GET
+      response: Disbursement
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            disbursement_id: dsb_134259b117854d0194bc5864a6c45b42
+          response:
+            body: $Disbursement.Pending
+
+    listDisbursementsForFacility:
+      display-name: List disbursements for a facility
+      docs: List disbursements for a facility
+      path: /{facility_id}/disbursements
+      path-parameters:
+        facility_id:
+          type: FacilityId
+          docs: The facility_id of the facility you want to list disbursements for
+      method: GET
+      response: list<Disbursement>
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+          response:
+            body:
+              - $Disbursement.Pending
 
     listAll:
       display-name: List all facilities
@@ -159,6 +266,12 @@ types:
     examples:
       - name: Example0
         value: fac_18e5a3726b3943cda2635f40e1041ba4
+
+  DisbursementId:
+    type: string
+    examples:
+      - name: Example0
+        value: dsb_18e5a3726b3943cda2635f40e1041ba4
 
   Statement:
     properties:
@@ -183,6 +296,46 @@ types:
           facility_id: fac_234259b117854d0194bc5864a6c45b42
           url: https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
           created_on: 2023-02-27T00:00:00Z
+
+  Disbursement:
+    properties:
+      id:
+        type: string
+        docs: The id of the disbursement
+      facility_id: FacilityId
+      amount:
+        type: integer
+        docs: The amount of the disbursement, in cents (e.g. 1000 = $10.00)
+      status:
+        type: commons.TransferStatus
+        docs: The status of the disbursement
+      created_on:
+        type: datetime
+        docs: Timestamp the disbursement object is created on
+      transfer_type:
+        type: commons.TransferType
+        docs: The type of transfer to use for the disbursement
+    examples:
+      - name: Pending
+        value:
+          id: dsb_234259b117854d0194bc5864a6c45b42
+          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          amount: 100000
+          status: pending
+          created_on: 2023-02-27T00:00:00Z
+          transfer_type: standard
+
+  DisbursementRequest:
+    properties:
+      amount:
+        type: integer
+        docs: The amount of the disbursement, in cents (e.g. 1000 = $10.00)
+      disbursement_bank_account:
+        type: commons.BankAccount
+        docs: The bank account to disburse to
+      transfer_type:
+        type: commons.TransferType
+        docs: The type of transfer to use for the disbursement
 
   Facility:
     properties:

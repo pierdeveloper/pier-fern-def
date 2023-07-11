@@ -40,6 +40,20 @@ types:
       - checking
       - savings
 
+  TransferType:
+    enum:
+      - standard
+      - next_day
+      - same_day
+
+  TransferStatus:
+    enum:
+      - pending
+      - processing
+      - settled
+      - failed
+      - cancelled
+
   CreditType:
     enum:
       - consumer_installment_loan

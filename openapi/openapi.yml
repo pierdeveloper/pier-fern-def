@@ -1052,6 +1052,95 @@ paths:
                       scheduled_payoff_date: '2027-05-12'
       summary: List all facilities
       security: *ref_0
+  /facilities/{facility_id}/disbursements:
+    post:
+      description: Create a disbursement for a facility
+      operationId: facilities_disburse
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disbursement'
+              examples:
+                Example1:
+                  value:
+                    id: dsb_234259b117854d0194bc5864a6c45b42
+                    facility_id: fac_234259b117854d0194bc5864a6c45b42
+                    amount: 100000
+                    status: pending
+                    created_on: '2023-02-27T00:00:00Z'
+                    transfer_type: standard
+      summary: Create a disbursement for a facility
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DisbursementRequest'
+            examples:
+              Example1:
+                value:
+                  amount: 100000
+                  disbursement_bank_account:
+                    bank_account_number: '1234567890'
+                    bank_routing_number: '021000012'
+                    type: checking
+                  transfer_type: standard
+    get:
+      description: List disbursements for a facility
+      operationId: facilities_listDisbursementsForFacility
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          description: The facility_id of the facility you want to list disbursements for
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disbursement'
+              examples:
+                Example1:
+                  value:
+                    - id: dsb_234259b117854d0194bc5864a6c45b42
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      amount: 100000
+                      status: pending
+                      created_on: '2023-02-27T00:00:00Z'
+                      transfer_type: standard
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: List disbursements for a facility
+      security: *ref_0
   /facilities/{facility_id}/close:
     post:
       description: Closes an active facility by setting its status to `closed`
@@ -1066,7 +1155,7 @@ paths:
             $ref: '#/components/schemas/FacilityId'
           examples:
             Example1:
-              value: doc_234259b117854d0194bc5864a6c45b42
+              value: fac_234259b117854d0194bc5864a6c45b42
       responses:
         '200':
           description: ''
@@ -1291,6 +1380,128 @@ paths:
                 $ref: '#/components/schemas/ErrorBody'
       summary: Disable autopay for a facility
       security: *ref_0
+  /facilities/{facility_id}/repayment_bank_details:
+    post:
+      description: Add repayment bank details for a facility
+      operationId: facilities_addRepaymentBankDetails
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Facility'
+              examples:
+                Example1:
+                  value:
+                    terms:
+                      type: loan
+                      amount: 1000000
+                      grace_period: 0
+                      grace_period_interest_rate: 0
+                      interest_rate: 0
+                      origination_fee: 0
+                      repayment_frequency: monthly
+                      late_payment_fee: 0
+                      term: 36
+                    id: fac_7264c6575a894548a386939434b0adf3
+                    application_id: app_ad1564ffb1d745f9ad482bb5182708e2
+                    borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
+                    loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+                    credit_type: consumer_installment_loan
+                    status: active
+                    created_on: '2023-05-12T19:46:09.293Z'
+                    account_number: '401542198'
+                    balance: 5000000
+                    origination_date: '2023-05-12'
+                    disbursement_date: '2023-05-12'
+                    remaining_term: 48
+                    payments_due: []
+                    monthly_payment: 124425
+                    next_payment_amount: 124425
+                    next_payment_due_date: '2023-06-12'
+                    current_payment_due_date: '2023-06-12'
+                    last_payment_date: null
+                    principal_paid_thru: '2023-05-11'
+                    next_billing_date: '2023-05-28'
+                    interest_accrued_thru: '2023-05-11'
+                    next_accrual_cutoff_date: '2023-06-11'
+                    scheduled_payoff_date: '2027-05-12'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Add repayment bank details for a facility
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                bank_account_number:
+                  type: string
+                  description: The bank account number to use for scheduled payments
+                  example: '1234567890'
+                bank_routing_number:
+                  type: string
+                  description: The bank routing number to use for scheduled payments
+                  example: '021000012'
+                type:
+                  type: string
+                  description: The type of bank account to use for scheduled payments
+                  example: checking
+              required:
+                - bank_account_number
+                - bank_routing_number
+                - type
+            examples:
+              Example1:
+                value:
+                  bank_account_number: '1234567890'
+                  bank_routing_number: '021000012'
+                  type: checking
+  /facilities/disbursements:
+    get:
+      description: List disbursements for your account
+      operationId: facilities_listDisbursements
+      tags:
+        - Facilities
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disbursement'
+              examples:
+                Example1:
+                  value:
+                    - id: dsb_234259b117854d0194bc5864a6c45b42
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      amount: 100000
+                      status: pending
+                      created_on: '2023-02-27T00:00:00Z'
+                      transfer_type: standard
+      summary: List all disbursements for your account
+      security: *ref_0
   /facilities/{facility_id}:
     get:
       description: Retrieve a facility by its id
@@ -1360,20 +1571,20 @@ paths:
       security: *ref_0
   /facilities/{facility_id}/statements:
     get:
-      description: Retrieve statements for a facility by its id
-      operationId: facilities_getStatementsForFacility
+      description: List statements for a facility
+      operationId: facilities_listStatementsForFacility
       tags:
         - Facilities
       parameters:
         - name: facility_id
           in: path
-          description: The facility_id of the facility you want to retrieve statements for
+          description: The facility_id of the facility you want to list statements for
           required: true
           schema:
             $ref: '#/components/schemas/FacilityId'
           examples:
             Example1:
-              value: doc_234259b117854d0194bc5864a6c45b42
+              value: fac_234259b117854d0194bc5864a6c45b42
       responses:
         '200':
           description: ''
@@ -1398,7 +1609,56 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorBody'
-      summary: Retrieve statements for a facility
+      summary: List statements for a facility
+      security: *ref_0
+  /facilities/{facility_id}/disbursements/{disbursement_id}:
+    get:
+      description: Retrieve a disbursement by its id
+      operationId: facilities_getDisbursementById
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          description: The facility_id of the facility you want to retrieve
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+        - name: disbursement_id
+          in: path
+          description: The disbursement_id of the disbursement you want to retrieve
+          required: true
+          schema:
+            $ref: '#/components/schemas/DisbursementId'
+          examples:
+            Example1:
+              value: dsb_134259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disbursement'
+              examples:
+                Example1:
+                  value:
+                    id: dsb_234259b117854d0194bc5864a6c45b42
+                    facility_id: fac_234259b117854d0194bc5864a6c45b42
+                    amount: 100000
+                    status: pending
+                    created_on: '2023-02-27T00:00:00Z'
+                    transfer_type: standard
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Retrieve a disbursement by its id
       security: *ref_0
   /loan_agreements:
     post:
@@ -2412,6 +2672,22 @@ components:
       enum:
         - checking
         - savings
+    TransferType:
+      title: TransferType
+      type: string
+      enum:
+        - standard
+        - next_day
+        - same_day
+    TransferStatus:
+      title: TransferStatus
+      type: string
+      enum:
+        - pending
+        - processing
+        - settled
+        - failed
+        - cancelled
     CreditType:
       title: CreditType
       type: string
@@ -2514,6 +2790,9 @@ components:
     FacilityId:
       title: FacilityId
       type: string
+    DisbursementId:
+      title: DisbursementId
+      type: string
     Statement:
       title: Statement
       type: object
@@ -2544,6 +2823,56 @@ components:
         - facility_id
         - url
         - created_on
+    Disbursement:
+      title: Disbursement
+      type: object
+      properties:
+        id:
+          type: string
+          description: The id of the disbursement
+          example: dsb_234259b117854d0194bc5864a6c45b42
+        facility_id:
+          $ref: '#/components/schemas/FacilityId'
+        amount:
+          type: integer
+          description: The amount of the disbursement, in cents (e.g. 1000 = $10.00)
+          example: 100000
+        status:
+          $ref: '#/components/schemas/TransferStatus'
+          description: The status of the disbursement
+        created_on:
+          type: string
+          format: date-time
+          description: Timestamp the disbursement object is created on
+          example: '2023-02-27T00:00:00Z'
+        transfer_type:
+          $ref: '#/components/schemas/TransferType'
+          description: The type of transfer to use for the disbursement
+      required:
+        - id
+        - facility_id
+        - amount
+        - status
+        - created_on
+        - transfer_type
+    DisbursementRequest:
+      title: DisbursementRequest
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: The amount of the disbursement, in cents (e.g. 1000 = $10.00)
+          example: 100000
+        disbursement_bank_account:
+          $ref: '#/components/schemas/BankAccount'
+          description: The bank account to disburse to
+        transfer_type:
+          $ref: '#/components/schemas/TransferType'
+          description: The type of transfer to use for the disbursement
+      required:
+        - amount
+        - disbursement_bank_account
+        - transfer_type
     Facility:
       title: Facility
       type: object
@@ -2785,7 +3114,7 @@ components:
           description: The facility_id of the credit facility to make a payment for
           example: fac_234259b117854d0194bc5864a6c45b42
         status:
-          $ref: '#/components/schemas/PaymentStatus'
+          $ref: '#/components/schemas/TransferStatus'
           description: The status of the payment
         transfer_type:
           $ref: '#/components/schemas/TransferType'
@@ -2802,21 +3131,6 @@ components:
         - status
         - transfer_type
         - created_on
-    PaymentStatus:
-      title: PaymentStatus
-      type: string
-      enum:
-        - pending
-        - processing
-        - settled
-        - failed
-    TransferType:
-      title: TransferType
-      type: string
-      enum:
-        - standard
-        - next_day
-        - same_day
   securitySchemes:
     BasicAuth:
       type: http
