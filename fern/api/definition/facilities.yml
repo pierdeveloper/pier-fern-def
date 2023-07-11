@@ -94,7 +94,7 @@ service:
               type: commons.BankAccount
               docs: The bank account details to use for scheduled payments
             additional_amount:
-              type: integer
+              type: optional<integer>
               docs: The additional amount to pay on top of the minimum payment, in cents (e.g. 1000 = $10.00)
       response: Facility
       errors:

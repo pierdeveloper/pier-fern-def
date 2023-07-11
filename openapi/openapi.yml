@@ -1302,10 +1302,8 @@ paths:
                   description: >-
                     The additional amount to pay on top of the minimum payment,
                     in cents (e.g. 1000 = $10.00)
-                  example: 0
               required:
                 - bank_account
-                - additional_amount
             examples:
               Example1:
                 value:
