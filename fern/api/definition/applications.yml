@@ -33,6 +33,9 @@ service:
               docs:
                 If the borrower requests an amount in their application, the requested
                 loan or credit line amount (in cents).
+            third_party_disbursement_destination:
+              type: optional<string>
+              docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
       response: Application
       errors:
         - commons.InvalidInputError
@@ -184,7 +187,7 @@ types:
         type: optional<datetime>
         docs: Timestamp when the application is either approved or rejected on
       offer:
-        type: optional<Offer>
+        type: optional<list<Offer>>
         docs:
           If the application is approved, an object containing the credit offer
           details
@@ -201,6 +204,11 @@ types:
           requested  loan or credit line amount in cents (e.g. 500000 for
           $5,000)
       status: ApplicationStatus
+      third_party_disbursement_destination:
+        type: optional<string>
+        docs:
+          For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
+          specified here
     examples:
       - name: PendingApplication
         value:
@@ -219,7 +227,7 @@ types:
           status: approved
           created_on: "2022-12-31T01:36:52.606Z"
           decisioned_on: "2023-01-17T05:31:52.955Z"
-          offer: $Offer.Loan
+          offer: [$Offer.Loan]
       - name: RejectedApplication
         value:
           rejection_reasons:
@@ -238,13 +246,13 @@ types:
         docs: The amount (in cents) of the credit line offer (e.g. '200000' for
           $2,000.00)
       apr:
-        type: integer
-        docs: The apr (in basis points) of the credit line offer (e.g. '750' for 7.50%)
+        type: optional<integer>
+        docs: The annual percentage rate (in basis points) of the credit line
       annual_fee:
         type: integer
         docs: The annual fee charged for the credit line (e.g. '5000' for $50.00)
       billing_cycle:
-        type: integer
+        type: optional<integer>
         docs: |
           The time in days between the last statement's closing date and the next statement's closing date. 
           For consumer lines of credit, the minimum is '21'
@@ -254,7 +262,7 @@ types:
           If your platform charges a monthly finance charge for access to the line,
           the amount in cents
       grace_period:
-        type: integer
+        type: optional<integer>
         docs:
           The time in days between the end of a billing cycle and the bill's due
           date. For consumer lines of credit, the minimum is '21'
@@ -279,17 +287,17 @@ types:
           If you offer an introductory period with a reduced interest rate, the term
           in months
       late_payment_fee:
-        type: integer
+        type: optional<integer>
         docs:
           The fee charged if a borrower misses the payment due date, in cents (e.g.
           '2500' for $25.00)
       origination_fee:
-        type: integer
+        type: optional<integer>
         docs:
           The origination fee charged to originate the line in basis points (e.g. '150'
           for 1.50%)
       term:
-        type: integer
+        type: optional<integer>
         docs: The term of the line in months
 
   LoanOffer:
@@ -316,14 +324,11 @@ types:
         type: optional<string>
         docs: The date of the first payment, in ISO 8601 format (e.g. 2022-12-31)
       late_payment_fee:
-        type: integer
+        type: optional<integer>
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
       term:
         type: integer
         docs: The term of the loan as a number of payments (e.g. 12 for a loan with a monthly repayment frequency would represent 1 year)
-      third_party_disbursement_destination:
-        type: optional<string>
-        docs: For buy-now-pay-later loans, the name of the company the loan funds will be disbursed to (required for applications with credit_type consumer_bnpl or commercial_bnpl)
 
   RepaymentFrequency:
     enum:
