@@ -209,7 +209,7 @@
                 }
               },
               "description": null,
-              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    }\n}",
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": [\n        {\n            \"type\": \"loan\",\n            \"amount\": 1000000,\n            \"grace_period\": 0,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"repayment_frequency\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"term\": 36\n        }\n    ]\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -379,7 +379,7 @@
                 "body": null
               },
               "description": null,
-              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    }\n}",
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n    \"offer\": [\n        {\n            \"type\": \"loan\",\n            \"amount\": 1000000,\n            \"grace_period\": 0,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"repayment_frequency\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"term\": 36\n        }\n    ]\n}",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -441,7 +441,7 @@
                 "body": null
               },
               "description": null,
-              "body": "[\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"credit_type\": \"consumer_revolving_line_of_credit\",\n        \"rejection_reasons\": [],\n        \"status\": \"approved\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\",\n        \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n        \"offer\": {\n            \"type\": \"loan\",\n            \"amount\": 1000000,\n            \"grace_period\": 0,\n            \"grace_period_interest_rate\": 0,\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"repayment_frequency\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"term\": 36\n        }\n    },\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"rejection_reasons\": [],\n        \"status\": \"pending\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\"\n    }\n]",
+              "body": "[\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"credit_type\": \"consumer_revolving_line_of_credit\",\n        \"rejection_reasons\": [],\n        \"status\": \"approved\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\",\n        \"decisioned_on\": \"2023-01-17T05:31:52.955Z\",\n        \"offer\": [\n            {\n                \"type\": \"loan\",\n                \"amount\": 1000000,\n                \"grace_period\": 0,\n                \"grace_period_interest_rate\": 0,\n                \"interest_rate\": 0,\n                \"origination_fee\": 0,\n                \"repayment_frequency\": \"monthly\",\n                \"late_payment_fee\": 0,\n                \"term\": 36\n            }\n        ]\n    },\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"rejection_reasons\": [],\n        \"status\": \"pending\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\"\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]
@@ -1661,70 +1661,6 @@
         },
         {
           "_type": "endpoint",
-          "name": "List all disbursements for your account",
-          "request": {
-            "description": "List disbursements for your account",
-            "url": {
-              "raw": "{{baseUrl}}/facilities/disbursements",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "facilities",
-                "disbursements"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "header": [
-              {
-                "type": "text",
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "method": "GET",
-            "auth": null,
-            "body": null
-          },
-          "response": [
-            {
-              "name": "Success",
-              "status": "OK",
-              "code": 200,
-              "originalRequest": {
-                "description": "List disbursements for your account",
-                "url": {
-                  "raw": "{{baseUrl}}/facilities/disbursements",
-                  "host": [
-                    "{{baseUrl}}"
-                  ],
-                  "path": [
-                    "facilities",
-                    "disbursements"
-                  ],
-                  "query": [],
-                  "variable": []
-                },
-                "header": [
-                  {
-                    "type": "text",
-                    "key": "Content-Type",
-                    "value": "application/json"
-                  }
-                ],
-                "method": "GET",
-                "auth": null,
-                "body": null
-              },
-              "description": null,
-              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
-              "_postman_previewlanguage": "json"
-            }
-          ]
-        },
-        {
-          "_type": "endpoint",
           "name": "Retrieve a facility",
           "request": {
             "description": "Retrieve a facility by its id",
@@ -1795,6 +1731,70 @@
               },
               "description": null,
               "body": "{\n    \"terms\": {\n        \"type\": \"loan\",\n        \"amount\": 1000000,\n        \"grace_period\": 0,\n        \"grace_period_interest_rate\": 0,\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"repayment_frequency\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"term\": 36\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"monthly_payment\": 124425,\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all disbursements for your account",
+          "request": {
+            "description": "List disbursements for your account",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List disbursements for your account",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
               "_postman_previewlanguage": "json"
             }
           ]

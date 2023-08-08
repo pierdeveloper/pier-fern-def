@@ -160,17 +160,6 @@ service:
           response:
             body: $Facility.Active
 
-    listDisbursements:
-      display-name: List all disbursements for your account
-      docs: List disbursements for your account
-      path: /disbursements
-      method: GET
-      response: list<Disbursement>
-      examples:
-        - response:
-            body:
-              - $Disbursement.Pending
-
     get:
       display-name: Retrieve a facility
       docs: Retrieve a facility by its id
@@ -188,6 +177,17 @@ service:
             facility_id: doc_234259b117854d0194bc5864a6c45b42
           response:
             body: $Facility.Active
+
+    listDisbursements:
+      display-name: List all disbursements for your account
+      docs: List disbursements for your account
+      path: /disbursements
+      method: GET
+      response: list<Disbursement>
+      examples:
+        - response:
+            body:
+              - $Disbursement.Pending
 
     listStatementsForFacility:
       display-name: List statements for a facility

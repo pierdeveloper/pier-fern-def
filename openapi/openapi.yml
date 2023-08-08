@@ -59,6 +59,11 @@ paths:
                   description: >-
                     If the borrower requests an amount in their application, the
                     requested loan or credit line amount (in cents).
+                third_party_disbursement_destination:
+                  type: string
+                  description: >-
+                    For credit applications of type `consumer_bnpl`, the third
+                    party (i.e. merchant) receiving the funds is
               required:
                 - borrower_id
                 - credit_type
@@ -94,15 +99,15 @@ paths:
                       created_on: '2022-12-31T01:36:52.606Z'
                       decisioned_on: '2023-01-17T05:31:52.955Z'
                       offer:
-                        type: loan
-                        amount: 1000000
-                        grace_period: 0
-                        grace_period_interest_rate: 0
-                        interest_rate: 0
-                        origination_fee: 0
-                        repayment_frequency: monthly
-                        late_payment_fee: 0
-                        term: 36
+                        - type: loan
+                          amount: 1000000
+                          grace_period: 0
+                          grace_period_interest_rate: 0
+                          interest_rate: 0
+                          origination_fee: 0
+                          repayment_frequency: monthly
+                          late_payment_fee: 0
+                          term: 36
                     - id: app_f0467657bba948e6a87292e182132848
                       borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
                       credit_type: consumer_installment_loan
@@ -143,15 +148,15 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      type: loan
-                      amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
-                      interest_rate: 0
-                      origination_fee: 0
-                      repayment_frequency: monthly
-                      late_payment_fee: 0
-                      term: 36
+                      - type: loan
+                        amount: 1000000
+                        grace_period: 0
+                        grace_period_interest_rate: 0
+                        interest_rate: 0
+                        origination_fee: 0
+                        repayment_frequency: monthly
+                        late_payment_fee: 0
+                        term: 36
         '400':
           description: ''
           content:
@@ -284,15 +289,15 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      type: loan
-                      amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
-                      interest_rate: 0
-                      origination_fee: 0
-                      repayment_frequency: monthly
-                      late_payment_fee: 0
-                      term: 36
+                      - type: loan
+                        amount: 1000000
+                        grace_period: 0
+                        grace_period_interest_rate: 0
+                        interest_rate: 0
+                        origination_fee: 0
+                        repayment_frequency: monthly
+                        late_payment_fee: 0
+                        term: 36
         '404':
           description: ''
           content:
@@ -1473,33 +1478,6 @@ paths:
                   bank_account_number: '1234567890'
                   bank_routing_number: '021000012'
                   type: checking
-  /facilities/disbursements:
-    get:
-      description: List disbursements for your account
-      operationId: facilities_listDisbursements
-      tags:
-        - Facilities
-      parameters: []
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Disbursement'
-              examples:
-                Example1:
-                  value:
-                    - id: dsb_234259b117854d0194bc5864a6c45b42
-                      facility_id: fac_234259b117854d0194bc5864a6c45b42
-                      amount: 100000
-                      status: pending
-                      created_on: '2023-02-27T00:00:00Z'
-                      transfer_type: standard
-      summary: List all disbursements for your account
-      security: *ref_0
   /facilities/{facility_id}:
     get:
       description: Retrieve a facility by its id
@@ -1566,6 +1544,33 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorBody'
       summary: Retrieve a facility
+      security: *ref_0
+  /facilities/disbursements:
+    get:
+      description: List disbursements for your account
+      operationId: facilities_listDisbursements
+      tags:
+        - Facilities
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Disbursement'
+              examples:
+                Example1:
+                  value:
+                    - id: dsb_234259b117854d0194bc5864a6c45b42
+                      facility_id: fac_234259b117854d0194bc5864a6c45b42
+                      amount: 100000
+                      status: pending
+                      created_on: '2023-02-27T00:00:00Z'
+                      transfer_type: standard
+      summary: List all disbursements for your account
       security: *ref_0
   /facilities/{facility_id}/statements:
     get:
@@ -2006,7 +2011,9 @@ components:
           format: date-time
           description: Timestamp when the application is either approved or rejected on
         offer:
-          $ref: '#/components/schemas/Offer'
+          type: array
+          items:
+            $ref: '#/components/schemas/Offer'
           description: >-
             If the application is approved, an object containing the credit
             offer details
@@ -2026,6 +2033,11 @@ components:
             $5,000)
         status:
           $ref: '#/components/schemas/ApplicationStatus'
+        third_party_disbursement_destination:
+          type: string
+          description: >-
+            For credit applications of type `consumer_bnpl`, the third party
+            (i.e. merchant) receiving the funds is specified here
       required:
         - status
     LineOfCreditOffer:
@@ -2039,9 +2051,7 @@ components:
             $2,000.00)
         apr:
           type: integer
-          description: >-
-            The apr (in basis points) of the credit line offer (e.g. '750' for
-            7.50%)
+          description: The annual percentage rate (in basis points) of the credit line
         annual_fee:
           type: integer
           description: The annual fee charged for the credit line (e.g. '5000' for $50.00)
@@ -2097,14 +2107,8 @@ components:
           description: The term of the line in months
       required:
         - amount
-        - apr
         - annual_fee
-        - billing_cycle
-        - grace_period
         - interest_rate
-        - late_payment_fee
-        - origination_fee
-        - term
     LoanOffer:
       title: LoanOffer
       type: object
@@ -2151,18 +2155,11 @@ components:
           description: >-
             The term of the loan as a number of payments (e.g. 12 for a loan
             with a monthly repayment frequency would represent 1 year)
-        third_party_disbursement_destination:
-          type: string
-          description: >-
-            For buy-now-pay-later loans, the name of the company the loan funds
-            will be disbursed to (required for applications with credit_type
-            consumer_bnpl or commercial_bnpl)
       required:
         - amount
         - interest_rate
         - origination_fee
         - repayment_frequency
-        - late_payment_fee
         - term
     RepaymentFrequency:
       title: RepaymentFrequency
