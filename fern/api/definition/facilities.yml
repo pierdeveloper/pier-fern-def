@@ -93,6 +93,9 @@ service:
             bank_account:
               type: commons.BankAccount
               docs: The bank account details to use for scheduled payments
+            amount_type:
+              type: commons.AutopayAmountType
+              docs: The type of autopay amount, either minimum_payment or statement_balance
             additional_amount:
               type: optional<integer>
               docs: The additional amount to pay on top of the minimum payment, in cents (e.g. 1000 = $10.00)
@@ -108,6 +111,7 @@ service:
               bank_routing_number: "021000012"
               type: checking
             additional_amount: 0
+            amount_type: statement_balance
           response:
             body: $Facility.AutopayEnabled
 
@@ -477,6 +481,7 @@ types:
               type: checking
             authorization_timestamp: "2023-05-12T19:46:09.293Z"
             additional_amount: 0
+            amount_type: "statement_balance"
 
       - name: Closed
         value:

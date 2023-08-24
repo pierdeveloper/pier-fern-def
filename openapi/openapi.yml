@@ -99,15 +99,18 @@ paths:
                       created_on: '2022-12-31T01:36:52.606Z'
                       decisioned_on: '2023-01-17T05:31:52.955Z'
                       offer:
-                        - type: loan
+                        - type: line_of_credit
                           amount: 1000000
-                          grace_period: 0
+                          apr: 0
+                          annual_fee: 0
+                          billing_cycle: 30
+                          finance_charge: 0
+                          grace_period: 21
                           grace_period_interest_rate: 0
                           interest_rate: 0
-                          origination_fee: 0
-                          repayment_frequency: monthly
                           late_payment_fee: 0
-                          term: 36
+                          origination_fee: 0
+                          term: 24
                     - id: app_f0467657bba948e6a87292e182132848
                       borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
                       credit_type: consumer_installment_loan
@@ -148,15 +151,18 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      - type: loan
+                      - type: line_of_credit
                         amount: 1000000
-                        grace_period: 0
+                        apr: 0
+                        annual_fee: 0
+                        billing_cycle: 30
+                        finance_charge: 0
+                        grace_period: 21
                         grace_period_interest_rate: 0
                         interest_rate: 0
-                        origination_fee: 0
-                        repayment_frequency: monthly
                         late_payment_fee: 0
-                        term: 36
+                        origination_fee: 0
+                        term: 24
         '400':
           description: ''
           content:
@@ -289,15 +295,18 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      - type: loan
+                      - type: line_of_credit
                         amount: 1000000
-                        grace_period: 0
+                        apr: 0
+                        annual_fee: 0
+                        billing_cycle: 30
+                        finance_charge: 0
+                        grace_period: 21
                         grace_period_interest_rate: 0
                         interest_rate: 0
-                        origination_fee: 0
-                        repayment_frequency: monthly
                         late_payment_fee: 0
-                        term: 36
+                        origination_fee: 0
+                        term: 24
         '404':
           description: ''
           content:
@@ -1284,6 +1293,7 @@ paths:
                         type: checking
                       authorization_timestamp: '2023-05-12T19:46:09.293Z'
                       additional_amount: 0
+                      amount_type: statement_balance
         '404':
           description: ''
           content:
@@ -1302,6 +1312,11 @@ paths:
                 bank_account:
                   $ref: '#/components/schemas/BankAccount'
                   description: The bank account details to use for scheduled payments
+                amount_type:
+                  $ref: '#/components/schemas/AutopayAmountType'
+                  description: >-
+                    The type of autopay amount, either minimum_payment or
+                    statement_balance
                 additional_amount:
                   type: integer
                   description: >-
@@ -1309,6 +1324,7 @@ paths:
                     in cents (e.g. 1000 = $10.00)
               required:
                 - bank_account
+                - amount_type
             examples:
               Example1:
                 value:
@@ -1317,6 +1333,7 @@ paths:
                     bank_routing_number: '021000012'
                     type: checking
                   additional_amount: 0
+                  amount_type: statement_balance
   /facilities/{facility_id}/disable_autopay:
     post:
       description: Disable autopay for a facility
@@ -2097,6 +2114,9 @@ components:
           description: >-
             The fee charged if a borrower misses the payment due date, in cents
             (e.g. '2500' for $25.00)
+        minimum_payment:
+          $ref: '#/components/schemas/MinimumPayment'
+          description: The minimum payment due each billing cycle
         origination_fee:
           type: integer
           description: >-
@@ -2171,6 +2191,28 @@ components:
         - semi_monthly_first_15th
         - semi_monthly_last_15th
         - semi_monthly
+    MinimumPayment:
+      title: MinimumPayment
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/MinimumPaymentType'
+          description: >-
+            The type of minimum payment structure. Accepted values are
+            interest_plus_percentage_of_principal
+        value:
+          type: integer
+          description: >-
+            The minimum payment percentage due each billing cycle (e.g. 500 for
+            5.00%)
+      required:
+        - type
+        - value
+    MinimumPaymentType:
+      title: MinimumPaymentType
+      type: string
+      enum:
+        - interest_plus_percentage_of_principal
     RejectionReason:
       title: RejectionReason
       type: string
@@ -2638,6 +2680,11 @@ components:
           description: the timestamp when autopay was authorized
         bank_account:
           $ref: '#/components/schemas/BankAccount'
+        amount_type:
+          $ref: '#/components/schemas/AutopayAmountType'
+          description: >-
+            the type of autopay amount, either minimum_payment or
+            statement_balance
         additional_amount:
           type: integer
           description: >-
@@ -2646,6 +2693,7 @@ components:
       required:
         - authorized
         - authorization_timestamp
+        - amount_type
     BankAccount:
       title: BankAccount
       type: object
@@ -2661,6 +2709,12 @@ components:
         - bank_account_number
         - bank_routing_number
         - type
+    AutopayAmountType:
+      title: AutopayAmountType
+      type: string
+      enum:
+        - minimum_payment
+        - statement_balance
     BankAccountType:
       title: BankAccountType
       type: string

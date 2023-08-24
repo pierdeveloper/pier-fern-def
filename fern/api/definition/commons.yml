@@ -23,6 +23,9 @@ types:
         docs: the timestamp when autopay was authorized
       bank_account:
         type: optional<BankAccount>
+      amount_type:
+        type: AutopayAmountType
+        docs: the type of autopay amount, either minimum_payment or statement_balance
       additional_amount:
         type: optional<integer>
         docs: the additional amount to be paid on top of the minimum payment, in cents
@@ -34,6 +37,11 @@ types:
       type:
         type: BankAccountType
         docs: The type of bank account, either checking or savings
+
+  AutopayAmountType:
+    enum:
+      - minimum_payment
+      - statement_balance
 
   BankAccountType:
     enum:
