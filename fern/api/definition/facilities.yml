@@ -371,6 +371,9 @@ types:
       balance:
         type: integer
         docs: The remaining balance of the loan, in cents
+      payoff_balance:
+        type: integer
+        docs: The current payoff balance of the loan, in cents
       origination_date:
         type: string
         docs: The date the loan was originated (YYYY-MM-DD)
@@ -432,6 +435,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 5000000
+          payoff_balance: 5000000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
@@ -459,6 +463,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 5000000
+          payoff_balance: 5000000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
@@ -495,6 +500,7 @@ types:
           status: closed
           account_number: "401542198"
           balance: 5000000
+          payoff_balance: 5000000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48

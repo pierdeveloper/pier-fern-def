@@ -967,6 +967,7 @@ paths:
                     created_on: '2023-05-12T19:46:09.293Z'
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -1050,6 +1051,7 @@ paths:
                       created_on: '2023-05-12T19:46:09.293Z'
                       account_number: '401542198'
                       balance: 5000000
+                      payoff_balance: 5000000
                       origination_date: '2023-05-12'
                       disbursement_date: '2023-05-12'
                       remaining_term: 48
@@ -1199,6 +1201,7 @@ paths:
                     status: closed
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -1271,6 +1274,7 @@ paths:
                     created_on: '2023-05-12T19:46:09.293Z'
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -1378,6 +1382,7 @@ paths:
                     created_on: '2023-05-12T19:46:09.293Z'
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -1444,6 +1449,7 @@ paths:
                     created_on: '2023-05-12T19:46:09.293Z'
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -1540,6 +1546,7 @@ paths:
                     created_on: '2023-05-12T19:46:09.293Z'
                     account_number: '401542198'
                     balance: 5000000
+                    payoff_balance: 5000000
                     origination_date: '2023-05-12'
                     disbursement_date: '2023-05-12'
                     remaining_term: 48
@@ -2961,6 +2968,10 @@ components:
           type: integer
           description: The remaining balance of the loan, in cents
           example: 5000000
+        payoff_balance:
+          type: integer
+          description: The current payoff balance of the loan, in cents
+          example: 5000000
         origination_date:
           type: string
           description: The date the loan was originated (YYYY-MM-DD)
@@ -3034,6 +3045,7 @@ components:
         - status
         - account_number
         - balance
+        - payoff_balance
         - origination_date
         - disbursement_date
         - remaining_term
