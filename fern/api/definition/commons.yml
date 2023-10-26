@@ -68,6 +68,8 @@ types:
       - consumer_bnpl
       - consumer_revolving_line_of_credit
       - consumer_closed_line_of_credit
+      - consumer_secured_installment_loan
+      - consumer_secured_revolving_line_of_credit
 
   ErrorBody:
     properties:
