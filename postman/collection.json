@@ -943,6 +943,157 @@
     },
     {
       "_type": "container",
+      "description": "Webhooks\n",
+      "name": "Configuration",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Set webhook URL",
+          "request": {
+            "description": null,
+            "url": {
+              "raw": "{{baseUrl}}/configuration/webhook",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "webhook"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"url\": \"https://example.com/webhook\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": null,
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/webhook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "webhook"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/webhook\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "\"Ok.\"",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Remove a webhook",
+          "request": {
+            "description": null,
+            "url": {
+              "raw": "{{baseUrl}}/configuration/webhook",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "webhook"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": null,
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/webhook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "webhook"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "\"Ok.\"",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
       "description": "Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. \n`min` and `max` amounts are in cents, and `max_apr` is in basis points. \nStates not yet supported are represented as an empty object\n",
       "name": "Coverage",
       "item": [
