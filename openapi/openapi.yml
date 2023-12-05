@@ -796,6 +796,64 @@ paths:
                       created_on: '2022-12-30T07:23:36.665Z'
       summary: List all borrowers
       security: *ref_0
+  /configuration/webhook:
+    post:
+      operationId: configuration_create
+      tags:
+        - Configuration
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                Example1:
+                  value: Ok.
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Set webhook URL
+      security: *ref_0
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: The `url` to send webhooks to
+                  example: https://example.com/webhook
+              required:
+                - url
+            examples:
+              Example1:
+                value:
+                  url: https://example.com/webhook
+    delete:
+      operationId: configuration_delete
+      tags:
+        - Configuration
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+              examples:
+                Example1:
+                  value: Ok.
+      summary: Remove a webhook
+      security: *ref_0
   /coverage/commercial:
     get:
       description: Retrieve state-by-state commercial coverage

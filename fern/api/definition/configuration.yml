@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+docs: |
+  Webhooks
+
+imports:
+  commons: commons.yml
+
+service:
+  base-path: /configuration
+  auth: true
+  endpoints:
+    create:
+      display-name: Set webhook URL
+      path: "/webhook"
+      method: POST
+      request:
+        name: CreateWebhookRequest
+        body:
+          properties:
+            url:
+              type: string
+              docs: The `url` to send webhooks to
+      response: string
+      errors:
+        - commons.InvalidInputError
+      examples:
+        - request:
+            url: "https://example.com/webhook"
+          response:
+            body: Ok.
+
+    delete:
+      display-name: Remove a webhook
+      path: "/webhook"
+      method: DELETE
+      response: string
+      examples:
+        - request:
+          response:
+            body: Ok.
