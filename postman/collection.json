@@ -2570,7 +2570,7 @@
           "_type": "endpoint",
           "name": "Submit a loan payment",
           "request": {
-            "description": "Instructs Pier to initiate an ACH payment for a loan.\n",
+            "description": "Instructs Pier to initiate an ACH payment for a loan\n",
             "url": {
               "raw": "{{baseUrl}}/payments",
               "host": [
@@ -2607,7 +2607,7 @@
               "status": "OK",
               "code": 200,
               "originalRequest": {
-                "description": "Instructs Pier to initiate an ACH payment for a loan.\n",
+                "description": "Instructs Pier to initiate an ACH payment for a loan\n",
                 "url": {
                   "raw": "{{baseUrl}}/payments",
                   "host": [

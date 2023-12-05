@@ -13,7 +13,7 @@ service:
     submitPayment:
       display-name: Submit a loan payment
       docs: |
-        Instructs Pier to initiate an ACH payment for a loan.
+        Instructs Pier to initiate an ACH payment for a loan
       path: ""
       method: POST
       request: PaymentRequest
