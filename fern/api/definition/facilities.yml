@@ -264,6 +264,24 @@ service:
             body:
               - $Facility.Active
 
+    getPayoffAmounts:
+      display-name: Retrieve payoff amounts for a facility
+      docs: Retrieve a list of payoff amount/date pairs for a facility for the next 10 days
+      path: "/{facility_id}/payoff_amounts"
+      path-parameters:
+        facility_id:
+          type: FacilityId
+          docs: The facility_id of the facility you want to retrieve payoff amounts for
+      method: GET
+      response: PayoffAmounts
+      errors:
+        - commons.FacilityNotFoundError
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+          response:
+            body: $PayoffAmounts.Default
+
 types:
   FacilityId:
     type: string
@@ -520,3 +538,43 @@ types:
     enum:
       - active
       - closed
+
+  PayoffAmount:
+    properties:
+      amount:
+        type: integer
+        docs: The amount of the payoff, in cents (e.g. 1000 = $10.00)
+      date:
+        type: string
+        docs: The date the payoff is due (YYYY-MM-DD)
+    examples:
+      - name: Default
+        value:
+          amount: 100000
+          date: "2023-05-12"
+
+  PayoffAmounts:
+    type: list<PayoffAmount>
+    examples:
+      - name: Default
+        value:
+          - amount: 504889
+            date: "2023-12-08"
+          - amount: 505112
+            date: "2023-12-09"
+          - amount: 505334
+            date: "2023-12-10"
+          - amount: 505556
+            date: "2023-12-11"
+          - amount: 505778
+            date: "2023-12-12"
+          - amount: 506001
+            date: "2023-12-13"
+          - amount: 506223
+            date: "2023-12-14"
+          - amount: 506445
+            date: "2023-12-15"
+          - amount: 506667
+            date: "2023-12-16"
+          - amount: 506866
+            date: "2023-12-17"

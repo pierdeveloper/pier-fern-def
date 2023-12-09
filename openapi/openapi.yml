@@ -1745,6 +1745,64 @@ paths:
                 $ref: '#/components/schemas/ErrorBody'
       summary: Retrieve a disbursement by its id
       security: *ref_0
+  /facilities/{facility_id}/payoff_amounts:
+    get:
+      description: >-
+        Retrieve a list of payoff amount/date pairs for a facility for the next
+        10 days
+      operationId: facilities_getPayoffAmounts
+      tags:
+        - Facilities
+      parameters:
+        - name: facility_id
+          in: path
+          description: >-
+            The facility_id of the facility you want to retrieve payoff amounts
+            for
+          required: true
+          schema:
+            $ref: '#/components/schemas/FacilityId'
+          examples:
+            Example1:
+              value: fac_234259b117854d0194bc5864a6c45b42
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayoffAmounts'
+              examples:
+                Example1:
+                  value:
+                    - amount: 504889
+                      date: '2023-12-08'
+                    - amount: 505112
+                      date: '2023-12-09'
+                    - amount: 505334
+                      date: '2023-12-10'
+                    - amount: 505556
+                      date: '2023-12-11'
+                    - amount: 505778
+                      date: '2023-12-12'
+                    - amount: 506001
+                      date: '2023-12-13'
+                    - amount: 506223
+                      date: '2023-12-14'
+                    - amount: 506445
+                      date: '2023-12-15'
+                    - amount: 506667
+                      date: '2023-12-16'
+                    - amount: 506866
+                      date: '2023-12-17'
+        '404':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBody'
+      summary: Retrieve payoff amounts for a facility
+      security: *ref_0
   /loan_agreements:
     post:
       description: >-
@@ -3126,6 +3184,26 @@ components:
       enum:
         - active
         - closed
+    PayoffAmount:
+      title: PayoffAmount
+      type: object
+      properties:
+        amount:
+          type: integer
+          description: The amount of the payoff, in cents (e.g. 1000 = $10.00)
+          example: 100000
+        date:
+          type: string
+          description: The date the payoff is due (YYYY-MM-DD)
+          example: '2023-05-12'
+      required:
+        - amount
+        - date
+    PayoffAmounts:
+      title: PayoffAmounts
+      type: array
+      items:
+        $ref: '#/components/schemas/PayoffAmount'
     LoanAgreementId:
       title: LoanAgreementId
       type: string

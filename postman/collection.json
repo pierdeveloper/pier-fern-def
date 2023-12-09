@@ -2257,6 +2257,84 @@
               "_postman_previewlanguage": "json"
             }
           ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve payoff amounts for a facility",
+          "request": {
+            "description": "Retrieve a list of payoff amount/date pairs for a facility for the next 10 days",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/payoff_amounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "payoff_amounts"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve payoff amounts for",
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a list of payoff amount/date pairs for a facility for the next 10 days",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/payoff_amounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "payoff_amounts"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve payoff amounts for",
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"amount\": 504889,\n        \"date\": \"2023-12-08\"\n    },\n    {\n        \"amount\": 505112,\n        \"date\": \"2023-12-09\"\n    },\n    {\n        \"amount\": 505334,\n        \"date\": \"2023-12-10\"\n    },\n    {\n        \"amount\": 505556,\n        \"date\": \"2023-12-11\"\n    },\n    {\n        \"amount\": 505778,\n        \"date\": \"2023-12-12\"\n    },\n    {\n        \"amount\": 506001,\n        \"date\": \"2023-12-13\"\n    },\n    {\n        \"amount\": 506223,\n        \"date\": \"2023-12-14\"\n    },\n    {\n        \"amount\": 506445,\n        \"date\": \"2023-12-15\"\n    },\n    {\n        \"amount\": 506667,\n        \"date\": \"2023-12-16\"\n    },\n    {\n        \"amount\": 506866,\n        \"date\": \"2023-12-17\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
         }
       ]
     },
