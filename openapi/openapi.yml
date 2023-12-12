@@ -99,7 +99,7 @@ paths:
                       created_on: '2022-12-31T01:36:52.606Z'
                       decisioned_on: '2023-01-17T05:31:52.955Z'
                       offer:
-                        - type: line_of_credit
+                        - type: revolving_line_of_credit_offer
                           amount: 1000000
                           apr: 0
                           annual_fee: 0
@@ -110,7 +110,6 @@ paths:
                           interest_rate: 0
                           late_payment_fee: 0
                           origination_fee: 0
-                          term: 24
                     - id: app_f0467657bba948e6a87292e182132848
                       borrower_id: bor_a1d0c30d77104f35b4c842b99132624e
                       credit_type: consumer_installment_loan
@@ -151,7 +150,7 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      - type: line_of_credit
+                      - type: revolving_line_of_credit_offer
                         amount: 1000000
                         apr: 0
                         annual_fee: 0
@@ -162,7 +161,6 @@ paths:
                         interest_rate: 0
                         late_payment_fee: 0
                         origination_fee: 0
-                        term: 24
         '400':
           description: ''
           content:
@@ -182,19 +180,25 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Offer'
+              type: array
+              items:
+                $ref: '#/components/schemas/Offer'
             examples:
               Example1:
                 value:
-                  type: loan
-                  amount: 1000000
-                  grace_period: 0
-                  grace_period_interest_rate: 0
-                  interest_rate: 0
-                  origination_fee: 0
-                  repayment_frequency: monthly
-                  late_payment_fee: 0
-                  term: 36
+                  - type: loan_offer
+                    amount: 1000000
+                    grace_period:
+                      term: 0
+                      interest_rate: 0
+                    interest_rate: 0
+                    origination_fee: 0
+                    payment_period: monthly
+                    late_payment_fee: 0
+                    first_payment_date: '2022-12-31'
+                    term:
+                      term_type: months
+                      term: 36
   /applications/{application_id}/reject:
     post:
       description: >-
@@ -295,7 +299,7 @@ paths:
                     created_on: '2022-12-31T01:36:52.606Z'
                     decisioned_on: '2023-01-17T05:31:52.955Z'
                     offer:
-                      - type: line_of_credit
+                      - type: revolving_line_of_credit_offer
                         amount: 1000000
                         apr: 0
                         annual_fee: 0
@@ -306,7 +310,6 @@ paths:
                         interest_rate: 0
                         late_payment_fee: 0
                         origination_fee: 0
-                        term: 24
         '404':
           description: ''
           content:
@@ -1007,15 +1010,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1091,15 +1098,19 @@ paths:
                 Example1:
                   value:
                     - terms:
-                        type: loan
+                        type: loan_offer
                         amount: 1000000
-                        grace_period: 0
-                        grace_period_interest_rate: 0
+                        grace_period:
+                          term: 0
+                          interest_rate: 0
                         interest_rate: 0
                         origination_fee: 0
-                        repayment_frequency: monthly
+                        payment_period: monthly
                         late_payment_fee: 0
-                        term: 36
+                        first_payment_date: '2022-12-31'
+                        term:
+                          term_type: months
+                          term: 36
                       id: fac_7264c6575a894548a386939434b0adf3
                       application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                       borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1241,15 +1252,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1314,15 +1329,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1422,15 +1441,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1489,15 +1512,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -1586,15 +1613,19 @@ paths:
                 Example1:
                   value:
                     terms:
-                      type: loan
+                      type: loan_offer
                       amount: 1000000
-                      grace_period: 0
-                      grace_period_interest_rate: 0
+                      grace_period:
+                        term: 0
+                        interest_rate: 0
                       interest_rate: 0
                       origination_fee: 0
-                      repayment_frequency: monthly
+                      payment_period: monthly
                       late_payment_fee: 0
-                      term: 36
+                      first_payment_date: '2022-12-31'
+                      term:
+                        term_type: months
+                        term: 36
                     id: fac_7264c6575a894548a386939434b0adf3
                     application_id: app_ad1564ffb1d745f9ad482bb5182708e2
                     borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
@@ -2115,7 +2146,7 @@ components:
                 type:
                   type: string
                   enum:
-                    - line_of_credit
+                    - revolving_line_of_credit_offer
             - $ref: '#/components/schemas/LineOfCreditOffer'
           required:
             - type
@@ -2126,7 +2157,7 @@ components:
                 type:
                   type: string
                   enum:
-                    - loan
+                    - loan_offer
             - $ref: '#/components/schemas/LoanOffer'
           required:
             - type
@@ -2217,6 +2248,9 @@ components:
           description: >-
             The interest rate (in basis points) charged during the grace period.
             Must be '0' for consumer lines of credit. Defaults to `0` if omitted
+        interest_free_period:
+          type: integer
+          description: The interest-free period in days
         interest_rate:
           type: integer
           description: >-
@@ -2245,13 +2279,8 @@ components:
           description: >-
             The origination fee charged to originate the line in basis points
             (e.g. '150' for 1.50%)
-        term:
-          type: integer
-          description: The term of the line in months
       required:
         - amount
-        - annual_fee
-        - interest_rate
     LoanOffer:
       title: LoanOffer
       type: object
@@ -2260,15 +2289,7 @@ components:
           type: integer
           description: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
         grace_period:
-          type: integer
-          description: >-
-            If offering an introductory grace period where payments wont be
-            required, the period in months
-        grace_period_interest_rate:
-          type: integer
-          description: >-
-            If offering an introductory grace period where payments wont be
-            required, the interest rate in basis points
+          $ref: '#/components/schemas/GracePeriod'
         interest_rate:
           type: integer
           description: >-
@@ -2279,7 +2300,7 @@ components:
           description: >-
             The origination fee charged to originate the loan in basis points
             (e.g. 150 for 1.50%)
-        repayment_frequency:
+        payment_period:
           $ref: '#/components/schemas/RepaymentFrequency'
           description: >-
             The repayment frequency for the loan. Accepted values weekly,
@@ -2294,15 +2315,44 @@ components:
             The fee charged if a borrower misses the payment due date, in cents
             (e.g. 2500 for $25.00)
         term:
+          $ref: '#/components/schemas/Term'
+          description: The type of term. Accepted values are months, days, payments
+        security_amount:
           type: integer
           description: >-
-            The term of the loan as a number of payments (e.g. 12 for a loan
-            with a monthly repayment frequency would represent 1 year)
+            The amount (in cents) of the value of the loan collateral (e.g.
+            200000 for $2,000.00). Required for secured loan application types.
       required:
         - amount
-        - interest_rate
-        - origination_fee
-        - repayment_frequency
+        - term
+    GracePeriod:
+      title: GracePeriod
+      type: object
+      properties:
+        term:
+          type: integer
+          description: >-
+            The time in days between the end of a billing cycle and the bill's
+            due date. For consumer lines of credit, the minimum is '21'
+        interest_rate:
+          type: integer
+          description: >-
+            The interest rate (in basis points) charged during the grace period.
+            Must be '0' for consumer lines of credit. Defaults to 0 if omitted
+    Term:
+      title: Term
+      type: object
+      properties:
+        term_type:
+          $ref: '#/components/schemas/TermType'
+        term:
+          type: integer
+          description: >-
+            The term of the loan according to the term type. A minimum of 3 is
+            required for monthly payment_period, 6 for semi-monthly, 7 for
+            biweekly and 13 for weekly.
+      required:
+        - term_type
         - term
     RepaymentFrequency:
       title: RepaymentFrequency
@@ -2369,6 +2419,13 @@ components:
           description: The id of the borrower you're requesting to retrieve
       required:
         - application_id
+    TermType:
+      title: TermType
+      type: string
+      enum:
+        - months
+        - days
+        - payments
     BusinessBorrowerId:
       title: BusinessBorrowerId
       type: string
