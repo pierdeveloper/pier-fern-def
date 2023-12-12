@@ -206,7 +206,7 @@ types:
       decisioned_on:
         type: optional<datetime>
         docs: Timestamp when the application is either approved or rejected on
-      offer:
+      offers:
         type: optional<list<Offer>>
         docs:
           If the application is approved, an object containing the credit offer
@@ -247,7 +247,7 @@ types:
           status: approved
           created_on: "2022-12-31T01:36:52.606Z"
           decisioned_on: "2023-01-17T05:31:52.955Z"
-          offer: [$Offer.LineOfCredit]
+          offers: [$Offer.LineOfCredit]
       - name: RejectedApplication
         value:
           rejection_reasons:
