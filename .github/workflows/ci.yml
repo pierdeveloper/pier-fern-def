@@ -1,0 +1,27 @@
+name: ci
+
+on: [push]
+
+jobs:
+  fern-generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install Fern
+        run:  npm install -g fern-api
+
+      - name: Generate and Publish Documentation with Fern
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
+        run: fern generate
+
+  fern-upload:
+    needs: fern-generate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run `openapi` command 🚀
+        uses: readmeio/rdme@v8
+        with:
+          rdme: openapi openapi/openapi.yml --key=${{ secrets.README_API_KEY }} --id=64681e7578f3e900117d08bc
