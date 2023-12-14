@@ -170,7 +170,6 @@ types:
           repayment_frequency: monthly
           late_payment_fee: 0
           term: 36
-          security_amount: 20000
 
   Application:
     properties:
@@ -333,12 +332,6 @@ types:
       term:
         type: integer
         docs: The term of the loan as a number of payments (e.g. 12 for a loan with a monthly repayment frequency would represent 1 year)
-      security_amount:
-        type: integer
-        docs: The amount of a secured loan in cents (E.g. $200 is 20000).
-        # TODO: @jannainm how to make not required?
-        # TODO: @jannainm how to get fern check to pass
-        # TODO: @jannainm remember to run generate and commit
 
   RepaymentFrequency:
     enum:
