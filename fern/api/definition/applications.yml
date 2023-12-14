@@ -198,7 +198,7 @@ types:
         type: optional<borrowers.ConsumerBorrowerId>
         docs: The `borrower_id` of the borrower the application belongs to
       created_on:
-        type: optional<datetimesadasd>
+        type: optional<datetime>
         docs: Timestamp the application object is created on
       credit_type:
         type: optional<commons.CreditType>
