@@ -414,7 +414,7 @@ types:
         type: string
         docs: The borrower's last name
       kyc_completion_date:
-        type: string
+        type: optional<string>
         docs: Date kyc completed on the borrower (YYYY-MM-DD)
       phone:
         type: optional<string>

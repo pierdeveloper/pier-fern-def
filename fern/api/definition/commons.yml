@@ -3,9 +3,15 @@
 types:
   Address:
     properties:
-      line_1: string
-      line_2: optional<string>
-      city: string
+      line_1:
+        type: string
+        docs: A string of 1-256 characters
+      line_2:
+        type: optional<string>
+        docs: A string of 1-256 characters
+      city:
+        type: string
+        docs: A string of 1-30 characters
       state:
         type: string
         docs: 2-digit US state code (e.g. CA, IL, FL)

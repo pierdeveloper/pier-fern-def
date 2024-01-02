@@ -25,3 +25,7 @@ To trigger the generators run:
 ```bash
 fern generate
 ```
+
+## Where are the docs?
+
+- [Pier Fern Api Docs](https://pier.docs.buildwithfern.com/api-reference/)
