@@ -19,6 +19,7 @@ service:
       request: BusinessBorrowerRequest
       response: BusinessBorrower
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.DuplicateEinError
       examples:
@@ -38,6 +39,7 @@ service:
       request: UpdateBusinessBorrowerRequest
       response: BusinessBorrower
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
         - commons.DuplicateEinError
@@ -58,6 +60,7 @@ service:
       request: ConsumerBorrowerRequest
       response: ConsumerBorrowerResponse
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.DuplicateSsnError
       examples:
@@ -77,6 +80,7 @@ service:
       request: UpdateConsumerBorrowerRequest
       response: ConsumerBorrowerResponse
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:

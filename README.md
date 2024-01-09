@@ -29,3 +29,6 @@ fern generate
 ## Where are the docs?
 
 - [Pier Fern Api Docs](https://pier.docs.buildwithfern.com/api-reference/)
+    - This is what we will be showing customers in the future
+- [Readme Api Docs](https://pier-dev.readme.io/reference/introduction)
+    - Same docs as fern just different format

@@ -68,6 +68,7 @@ types:
       - failed
       - cancelled
 
+  # TODO: make sure this lines up with either validator.js or Application.CreditTypes in Pier api...what is truth source?
   CreditType:
     enum:
       - consumer_installment_loan
@@ -76,6 +77,11 @@ types:
       - consumer_closed_line_of_credit
       - consumer_secured_installment_loan
       - consumer_secured_revolving_line_of_credit
+      - commercial_installment_loan
+      - commercial_revolving_line_of_credit
+      - commercial_closed_line_of_credit
+      - commercial_bnpl
+      - commercial_merchant_advance
 
   ErrorBody:
     properties:
@@ -94,6 +100,7 @@ types:
 errors:
   ServerError:
     status-code: 500
+    type: ErrorBody
 
   RateLimitError:
     status-code: 429
@@ -119,6 +126,10 @@ errors:
 
   ApplicationNotFoundError:
     status-code: 404
+    type: ErrorBody
+
+  InvalidApplicationIdError:
+    status-code: 400
     type: ErrorBody
 
   DocumentCannotBeCreatedError:
@@ -151,4 +162,8 @@ errors:
 
   PaymentNotFoundError:
     status-code: 404
+    type: ErrorBody
+
+  InvalidWebhookError:
+    status-code: 400
     type: ErrorBody

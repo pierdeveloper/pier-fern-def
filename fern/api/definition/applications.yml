@@ -24,7 +24,7 @@ service:
           properties:
             borrower_id:
               type: string
-              docs: The `borrower_id` of the borrower the application is for
+              docs: The `borrower_id` of the borrower the application is for (1-256 chars)
             credit_type:
               type: commons.CreditType
               docs: The type of credit product.
@@ -38,6 +38,7 @@ service:
               docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
       response: Application
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:
@@ -57,6 +58,7 @@ service:
       request: list<Offer>
       response: Application
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:
@@ -83,6 +85,7 @@ service:
             rejection_reasons: list<RejectionReason>
       response: Application
       errors:
+        - commons.ServerError
         - commons.InvalidInputError
         - commons.ApplicationNotFoundError
       examples:
@@ -102,7 +105,9 @@ service:
       method: GET
       response: Application
       errors:
+        - commons.ServerError
         - commons.ApplicationNotFoundError
+        - commons.InvalidApplicationIdError
       examples:
         - path-parameters:
             application_id: $ApplicationId.Example0
@@ -115,6 +120,8 @@ service:
       path: ""
       method: GET
       response: list<Application>
+      errors:
+        - commons.ServerError
       examples:
         - response:
             body:
@@ -136,10 +143,12 @@ types:
         docs: the application is approved with an offer
       - value: accepted
         docs: the application offer has been accepted by the borrower
+      - value: declined
+        docs: the application is declined
+      - value: incomplete
+        docs: the application is incomplete
       - value: rejected
         docs: the application is rejected
-      - value: expired
-        docs: the application has expired
 
   Offer:
     union:
@@ -154,11 +163,15 @@ types:
           annual_fee: 0
           billing_cycle: 30
           finance_charge: 0
-          grace_period: 21
-          grace_period_interest_rate: 0
+          grace_period:
+            term: 21
+            interest_rate: 0
           interest_rate: 0
           late_payment_fee: 0
           origination_fee: 0
+          minimum_payment:
+            type: interest_plus_percentage_of_principal
+            value: 500
       - name: Loan
         value:
           type: loan_offer
@@ -229,6 +242,10 @@ types:
         docs:
           For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
           specified here
+      lender_of_record:
+        type: optional<string>
+        docs: The lender of record (default "pier")
+      credit_data: optional<CreditData>
     examples:
       - name: PendingApplication
         value:
@@ -237,6 +254,7 @@ types:
           credit_type: consumer_installment_loan
           rejection_reasons: []
           status: pending
+          lender_of_record: pier
           created_on: "2022-12-31T01:36:52.606Z"
       - name: ApprovedApplication
         value:
@@ -245,9 +263,10 @@ types:
           credit_type: consumer_revolving_line_of_credit
           rejection_reasons: []
           status: approved
+          offers: [ $Offer.LineOfCredit ]
+          lender_of_record: pier
           created_on: "2022-12-31T01:36:52.606Z"
           decisioned_on: "2023-01-17T05:31:52.955Z"
-          offers: [$Offer.LineOfCredit]
       - name: RejectedApplication
         value:
           rejection_reasons:
@@ -256,6 +275,7 @@ types:
           borrower_id: bor_1677bbbaf21a4954bb114bd9c4348d8a
           credit_type: consumer_installment_loan
           status: rejected
+          lender_of_record: pier
           created_on: "2022-12-31T02:20:35.934Z"
           decisioned_on: "2022-12-31T02:21:01.842Z"
 
@@ -281,39 +301,17 @@ types:
         docs:
           If your platform charges a monthly finance charge for access to the line,
           the amount in cents
-      grace_period:
-        type: optional<integer>
-        docs:
-          The time in days between the end of a billing cycle and the bill's due
-          date. For consumer lines of credit, the minimum is '21'
-      grace_period_interest_rate:
-        type: optional<integer>
-        docs:
-          The interest rate (in basis points) charged during the grace period. Must
-          be '0' for consumer lines of credit. Defaults to `0` if omitted
-      interest_free_period:
-        type: optional<integer>
-        docs: The interest-free period in days
+      grace_period: optional<GracePeriod>
       interest_rate:
         type: optional<integer>
         docs:
           The interest rate (in basis points) of the loan or credit line offer (e.g.
           '750' for 7.50%)
-      introductory_offer_interest_rate:
-        type: optional<integer>
-        docs:
-          If you offer an introductory period with a reduced interest rate, the
-          interest rate in basis points
-      introductory_offer_interest_rate_term:
-        type: optional<integer>
-        docs:
-          If you offer an introductory period with a reduced interest rate, the term
-          in months
       late_payment_fee:
         type: optional<integer>
         docs:
           The fee charged if a borrower misses the payment due date, in cents (e.g.
-          '2500' for $25.00)
+          '2500' for $25.00; default to 0)
       minimum_payment:
         type: optional<MinimumPayment>
         docs: The minimum payment due each billing cycle
@@ -443,14 +441,20 @@ types:
         docs: Multiple Returned checks or Insufficient Fund Fees detected
       - value: fraud_risk_too_high
         docs: Bank account has been flagged as potential fraud risk
-      - value: bankruptcy
-        docs: Outstanding balance from previous loan
+      - value: has_bankruptcy_history
+        docs: History of bankruptcy
+      - value: unable_to_verify_credit_information
+        docs: Unable to verify credit information
+      - value: credit_file_frozen
+        docs: Credit file is currently frozen
       - value: processor_suspended
         docs: Payment processor is unable to authenticate user
       - value: cash_flow_verification_failed
         docs:
           Cash flow analysis - income funds are quickly depleted from bank account
           after income deposit
+      - value: credit_score_too_low
+        docs: Your credit score does not meet our requirement
 
   GetApplicationRequest:
     properties:
@@ -466,3 +470,12 @@ types:
         docs: The term of the line is in days
       - value: payments
         docs: The term of the line is in number of payments
+
+  CreditData:
+    properties:
+      fico:
+        type: optional<integer>
+        docs: A FICO score (e.g. 750)
+      has_bankruptcy_history:
+        type: optional<boolean>
+        docs: Whether or not there is bankruptcy history
