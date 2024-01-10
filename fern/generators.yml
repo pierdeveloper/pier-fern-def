@@ -6,11 +6,11 @@ groups:
         version: 0.0.28
         output:
           location: local-file-system
-          path: ../generated/openapi
+          path: ../openapi
         config:
           format: yaml
       - name: fernapi/fern-postman
         version: 0.0.46
         output:
           location: local-file-system
-          path: ../generated/postman
+          path: ../postman
