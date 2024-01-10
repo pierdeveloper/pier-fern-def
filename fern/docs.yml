@@ -3,17 +3,25 @@ instances:
     custom-domain: https://docs.pier-finance.com
 title: Pier | Documentation
 navigation:
+  - section: Overview
+    contents:
+      - page: Quickstart
+        path: ./docs/pages/quickstart.mdx
   - api: API Reference
 colors:
   accentPrimary: 
     dark: '#aa8ff6'
-    light: '#aa8ff6'
+    light: '#6f5ea0'
 logo: 
   dark: ./docs/assets/logo-white.png
   light: ./docs/assets/logo-black.png
+  height: 35
 favicon: ./docs/assets/favicon.ico
 
 navbar-links:
+  - type: secondary 
+    text: Home
+    url: https://www.pier-finance.com/
   - type: primary
     text: See a Demo
     url: https://www.pier-finance.com/contact

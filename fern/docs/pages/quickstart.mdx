@@ -1,0 +1,133 @@
+# Welcome 👋
+
+This guide provides an introduction to getting started with our APIs.
+
+# Environments 
+
+The Pier API is accessible in two environments:
+
+| Environment | API url                                  |
+|-------------|------------------------------------------|
+| Sandbox     | `sandbox.pier-finance.com/api`           |
+| Production  | `production.pier-finance.com/api`        |
+
+The sandbox is designed to mimic the production environment, with a few exceptions. Loan agreements created in the sandbox will have large 'draft' watermarks and funds flows will only occur in production. Sandbox API keys are prefixed with `test_` while production API keys are prefixed with `prod_`. Otherwise, sandbox and production behavior is identical.
+
+### Postman Collection
+
+You can fork our Postman collection to immediately start interacting with the API. You'll need to set a few variables to get started:
+
+| Variable   | Description       |
+|------------|-------------------|
+| `client_id` | Your API client ID |
+| `api_secret` | Your API secret     |
+| `base_url`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
+
+### Authentication
+
+Pier uses basic auth to authenticate API requests. All calls should be made with the `username` field set to your `client_id` and the `password` field set to your `api_secret`.
+
+## Rate limits and retrying API requests
+
+Only 5xx (Server Errors) and 429 (Rate Limits) errors should be retried.
+
+> Pier's rate limit is set to 1,000 requests per minute. The limit applies to both the sandbox and production environments. If a rate limit is triggered, we will respond with a 429 status code.
+
+## Platform Status
+
+See [Pier's Status Page](https://status.pier-finance.com/) for platform availability and feel free to subscribe for updates.
+
+## High-level origination flow
+
+The following diagram outlines how the Pier origination flow works with the Borrower, Application, Loan Agreement and Facility resources:
+
+![quickstart diagram](https://fern-image-hosting.s3.amazonaws.com/pier/Pier-quickstart-diagram.png)
+
+### Step 1: Create Borrower
+
+```shell
+curl -X POST https://sandbox.pier-finance.com/api/borrowers/consumer \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{
+    "address": {
+        "line_1": "15 Main Street",
+        "line_2": "Unit 220",
+        "city": "Seattle",
+        "state": "WA",
+        "zip": "98101"
+    },
+    "date_of_birth": "1991-06-19",
+    "email": "pmartin@email.com",
+    "first_name": "Pierre",
+    "last_name": "Martin",
+    "ssn": "111111111",
+    "kyc_completion_date": "2023-03-27"
+}'
+```
+
+### Step 2: Create application
+
+```shell
+curl -X POST https://sandbox.pier-finance.com/api/applications \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{
+    "borrower_id": "bor_7b1b1f0d97554532a2681e4159ec2a8a",
+    "credit_type": "consumer_installment_loan"
+}'
+```
+
+### Step 3: Approve application
+
+```shell
+curl -X POST https://sandbox.pier-finance.com/api/applications/app_ae982db618544da9ac6fad552cede6f0/approve \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{
+    "offers":[{
+        "amount": 2000000,
+        "interest_rate": 1300,
+        "payment_period": "monthly",
+        "origination_fee": 0,
+        "late_payment_fee": 0,
+        "type": "loan_offer",
+        "loan_term": {
+            "term_type": "months",
+            "term": 12
+        }
+    }]
+}'
+```
+
+### Step 4: Create loan agreement
+
+```shell
+curl -X POST https://sandbox.pier-finance.com/api/loan_agreements \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{
+    "application_id": "app_ae982db618544da9ac6fad552cede6f0",
+    "accepted_offer_id": "off_b71c4524ac57467e982ce5414800c27f"
+}'
+```
+
+### Step 5: Sign loan agreement
+
+```shell
+curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667024d5f837ae5a0fb942a8a/sign \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{}'
+```
+
+### Step 6. Create credit facility
+
+```shell 
+curl -X POST https://sandbox.pier-finance.com/api/facilities \
+-H 'Content-Type: application/json' \
+-H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-d '{
+    "loan_agreement_id": "doc_6f9c7af667024d5f837ae5a0fb942a8a"
+}'
+```
