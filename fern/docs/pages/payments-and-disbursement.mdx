@@ -1,0 +1,59 @@
+Pier's Payments and Disbursements APIs handle the end-to-end fund flows for loans and lines of credit. Pier uses standard ACH for ACH debits and credits by default, but can also support next- and same-day ACH.
+
+## Payments
+
+A Payment represents a payment made by a borrower on a Facility. A payment can be made in one of two ways:
+
+1. Autopayment (i.e., a scheduled payment)
+2. One-time payment (i.e., manual payments)
+
+## Autopayments
+
+Pier Autopay will automatically debit a user's account for the amount due on each payment due date. Once Autopay is enabled, no further action needs to be taken to process the payment for the user; they will be processed automatically by Pier on the due date. Updates to Autopay settings on a Facility must be made before 12am UTC of the payment due date.
+
+### Enabling Autopay
+
+Call the [`/facilities/enable_autopay`](/api-reference/facilities/enable-autopay-for-a-facility) endpoint to configure the Facility for Autopay. This endpoint should also be used for updating existing Autopay details on a Facility.
+
+### Disable Autopay
+
+Call the [`/facilities/disable_autopay`](/api-reference/facilities/disable-autopay-for-a-facility) endpoint to disable the Facility for scheduled payments.
+
+## Autopay Amount Types
+
+When enabling a Facility for Autopay, `amount_type` is required and can be one of two values:
+- `statement_balance`: the periodic payment due on a loan
+- `minimum_payment`: the minimum payment configured for the line of credit (not applicable for loans)
+
+## Setting Additional Amounts
+
+For loans, give users the option to schedule an additional amount in addition to the periodic payment amount by setting `additional_amount` on your call to `/enable_autopay`.
+
+## One-time Payments
+
+If a user has not set up Autopay, they'll need to manually make one-time payments for each due payment. One-time payments can also be used if a user has set up Autopay and wants to make an additional payment.
+
+### Add bank account details
+
+In order to make a one-time payment, the first step is to set the user's bank account details on the Facility for one-time payments by calling the `/add_repayment_bank_details` endpoint (note: if Autopay is enabled for a Facility, the bank account info still needs to be added with this endpoint to successfully make the one-time payment).
+
+### Submit one-time payment
+
+Once the bank account details are set on the Facility, you can submit a one-time payment by calling the `/payments` endpoint.
+
+## Disbursements
+
+A Disbursement is the principal of a Facility advanced to a Borrower. For loans, there is typically one Disbursement created shortly after origination, while lines of credit can have multiple disbursements (also commonly referred to as drawdowns) over the life of the line. To create a Disbursement, call the `/disbursements` endpoint.
+
+## Payment & Disbursement Statuses
+
+A payment (one-time or Autopay) can have the following statuses:
+
+| Status      | Description                                                      |
+|-------------|------------------------------------------------------------------|
+| `pending`   | The Pier Payment resource has been created but not processed with our ACH provider |
+| `processing`| The payment has been submitted                                   |
+| `settled`   | The payment has successfully posted from the user’s account      |
+| `failed`    | The payment has failed (i.e. due to insufficient funds)          |
+
+

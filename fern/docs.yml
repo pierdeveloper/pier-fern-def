@@ -7,6 +7,8 @@ navigation:
     contents:
       - page: Quickstart
         path: ./docs/pages/quickstart.mdx
+      - page: Payments and Disbursements
+        path: ./docs/pages/payments-and-disbursements.mdx
   - api: API Reference
 colors:
   accentPrimary: 
