@@ -1,5 +1,6 @@
 instances:
   - url: https://pier.docs.buildwithfern.com
+    custom-domain: https://docs.pier-finance.com
 title: Pier | Documentation
 navigation:
   - api: API Reference
