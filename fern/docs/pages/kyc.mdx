@@ -1,0 +1,19 @@
+Pier allows you to bring-your-own KYC or use our KYC is service.
+
+When Pier KYC is enabled for your account, Pier will submit an OFAC and AML screening for the Borrower. The check is initiated in the background after you create an Application, and is required to be completed for a [`/applications/approve`](/api-reference/applications/approve-an-application) call to succeed.
+
+### KYC failures
+
+If a borrower does not pass Pier's KYC check, the `KYC_NOT_APPROVED` error will be returned in the `applications/approve` call:
+
+```json
+// Application cannot be approved due to KYC incompleteness or failure
+{
+  "error_code": "KYC_NOT_APPROVED",
+  "error_message": "The borrower's KYC status must be approved",
+  "error_status": 400,
+  "error_type": "BORROWER_ERROR"
+}
+
+You can bypass Pier's KYC by having your KYC process be approved by Pier's compliance team. In this case, you'll just need to pass the `kyc_completion_date` representing the date you completed KYC in the [`/borrowers/consumer`](/api-reference/borrowers/create-a-consumer-borrower) API call.
+
