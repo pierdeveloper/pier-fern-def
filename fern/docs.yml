@@ -13,6 +13,8 @@ navigation:
         path: ./docs/pages/errors.mdx
       - page: Webhooks
         path: ./docs/pages/webhooks.mdx
+  - section: Guides
+    contents:
       - page: KYC
         path: ./docs/pages/kyc.mdx
       - page: Line of Credit program
@@ -31,9 +33,9 @@ logo:
 favicon: ./docs/assets/favicon.ico
 
 navbar-links:
-  - type: secondary 
-    text: Home
-    url: https://www.pier-finance.com/
+  - type: secondary
+    text: Request Sandbox Keys
+    url: https://www.pier-finance.com/request-sandbox-access
   - type: primary
     text: See a Demo
     url: https://www.pier-finance.com/contact
