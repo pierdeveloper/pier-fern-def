@@ -15,10 +15,16 @@ jobs:
         run:  npm install -g fern-api
 
       - name: Generate docs
-        id: generate
+        id: generate-docs
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
         run: fern generate --docs
+
+      - name: Generate OpenAPI
+        id: generate
+        env:
+          FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
+        run: fern generate
 
       - name: Run `openapi` command 🚀
         if: steps.generate.outcome == 'success'
