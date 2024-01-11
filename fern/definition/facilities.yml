@@ -650,19 +650,19 @@ types:
     examples:
       - name: Default0
         value:
-          payment_date: "2023-11-02",
-          interest_payment_amount: 0,
-          principal_payment_amount: 8333,
-          other_payment_amount: 0,
-          total_payment_amount: 8333,
-          balance_amount: 91667,
+          payment_date: "2023-11-02"
+          interest_payment_amount: 0
+          principal_payment_amount: 8333
+          other_payment_amount: 0
+          total_payment_amount: 8333
+          balance_amount: 91667
           item_index: 1
       - name:  Default1
         value:
-          payment_date: "2023-12-02",
-          interest_payment_amount: 0,
-          principal_payment_amount: 8333,
-          other_payment_amount: 0,
-          total_payment_amount: 8333,
-          balance_amount: 83334,
+          payment_date: "2023-12-02"
+          interest_payment_amount: 0
+          principal_payment_amount: 8333
+          other_payment_amount: 0
+          total_payment_amount: 8333
+          balance_amount: 83334
           item_index: 2
