@@ -9,6 +9,10 @@ navigation:
         path: ./docs/pages/quickstart.mdx
       - page: Payments and Disbursements
         path: ./docs/pages/payments-and-disbursements.mdx
+      - page: Errors 
+        path: ./docs/pages/errors.mdx
+      - page: Webhooks
+        path: ./docs/pages/webhooks.mdx
   - api: API Reference
 colors:
   accentPrimary: 

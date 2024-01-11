@@ -56,4 +56,14 @@ A payment (one-time or Autopay) can have the following statuses:
 | `settled`   | The payment has successfully posted from the user’s account      |
 | `failed`    | The payment has failed (i.e. due to insufficient funds)          |
 
+## Failed payments
 
+In the event a payment fails, the ACH return code will be returned on the Payment's `failure_reason`. The table below provides descriptions for the common return codes.
+
+| Failure reason (ACH return code) | Description                |
+|----------------------------------|----------------------------|
+| `R01`                            | Insufficient funds         |
+| `R02`                            | Bank account closed        |
+| `R03`                            | Bank account not found     |
+| `R04`                            | Invalid bank account number|
+| `R10`                            | Originator not authorized  |

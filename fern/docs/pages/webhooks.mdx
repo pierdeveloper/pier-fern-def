@@ -1,0 +1,95 @@
+You can configure a single webhook URL to be notified about events from Pier. All events go to the same URL and are distinguished by an event type and code. If you configure the webhook multiple times, the URL will be overwritten and all events will only be delivered to the most recently configured endpoint URL. In addition, deleting the webhook URL will clear it and no events will be delivered, even if the webhook was configured multiple times.
+
+### Setup webhook endpoint
+
+[Configuration Create Endpoint](/api-reference/configuration/set-webhook-url)
+
+### Delete webhook endpoint
+
+[Configuration Delete Endpoint](/api-reference/configuration/remove-a-webhook)
+
+### Webhook Authentication (optional, recommended)
+
+Webhooks include a JWT in the `pier-webhook-verification` header. The JWT payload contains a `sha256` signature for the webhook body in the `request_body_sha256` field.
+
+To ensure the payload is sourced from Pier:
+
+1. The JWT should be verified using a library for your stack and the Pier public key.
+1. Extract the payload from the JWT.
+1. Extract the SHA256 signature from the JWT payload `request_body_sha256` field.
+1. Compute the SHA256 signature of the webhook payload.
+1. Ensure that the computed SHA256 and the SHA256 from the JWT match.
+
+Take care not to process the webhook body prior to computing the signature, otherwise you may get a false negative when comparing signatures.
+
+### Webhook Object
+
+- `type`: High-level webhook event type.
+- `code`: Detailed event type.
+- `env`: The Pier environment from which the event was sent (see above).
+- `url`: The url the webhook was sent to.
+- `timestamp`: The time at which the event occurred.
+- `identifiers`: Event-specific identity of the object acted upon in the event.
+- `details`: Event-specific supplemental details about the event.
+
+More details about `identifiers` and `details` for each event can be found in the detailed documentation for each event type/code below.
+
+## Webhook payload example
+
+```json
+{
+	"type": "payment",
+  "code": "transaction_failed",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2023-12-05T01:04:44+0000",
+  "identifiers": {
+	"statement_id": "sta_7b1b1f0d97554532a2681e4159ec2a8a",
+    "facility_id": "fac_b71c4524ac57467e982ce5414800c27f",
+  }
+  "details": {
+		"failure": {
+	    "reason_code": "R01",
+      "description": "Insufficient Funds"
+  }
+}   
+}
+```
+
+## Webhook event types
+
+At a high level, Pier events fall into three types as shown:
+
+| Type        | Description                          |
+|-------------|--------------------------------------|
+| Payment     | A payment event occurred             |
+| Disbursement| A facility disbursement occurred     |
+| Statement   | A new account statement was generated|
+
+In addition to an event type, each event has a more detailed code as summarized in the table below. More detailed descriptions of each event code and the data returned are included in the following section.
+
+## Webhook codes
+
+The following webhook codes provide more detail about the nature of the event:
+
+- `transaction_succeeded`
+- `transaction_failed`
+- `transaction_initiated`
+- `statement_ready`
+- `autopay_scheduled`
+- `payment_due`
+- `payment_late_5_days`
+- `payment_late_10_days`
+- `payment_late_15_days`
+- `payment_late_30_days`
+- `payment_late_45_days`
+
+## Identifiers
+
+Certain event types also include identifiers for relevant Pier entities when appropriate:
+
+| Webhook type | Identifiers                         |
+|--------------|-------------------------------------|
+| Disbursement | `facility_id` and `disbursement_id` |
+| Payment      | `facility_id` and `payment_id`      |
+| Statement    | `facility_id` and `statement_id`    |
