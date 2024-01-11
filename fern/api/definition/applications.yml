@@ -154,6 +154,7 @@ types:
     union:
       revolving_line_of_credit_offer: LineOfCreditOffer
       loan_offer: LoanOffer
+      merchant_advance_offer: MerchantAdvanceOfferSchema
     examples:
       - name: LineOfCredit
         value:
@@ -203,6 +204,17 @@ types:
             term_type: "months"
             term: 36
           security_amount: 10000
+      - name: MerchantAdvanceOfferSchema
+        value:
+          type: merchant_advance_offer
+          amount: 1000000,
+          factor_rate: 150
+          payment_periond: monthly
+          origination_fee: 0
+          late_payment_fee: 0
+          receivables_portion: 1500
+          minimum_payment: 500
+          maximum_payment: 5000
 
   Application:
     properties:
@@ -293,23 +305,23 @@ types:
         docs: The annual fee charged for the credit line (e.g. '5000' for $50.00)
       billing_cycle:
         type: optional<integer>
-        docs: |
+        docs: >
           The time in days between the last statement's closing date and the next statement's closing date. 
           For consumer lines of credit, the minimum is '21'
       finance_charge:
         type: optional<integer>
-        docs:
+        docs: >
           If your platform charges a monthly finance charge for access to the line,
           the amount in cents
       grace_period: optional<GracePeriod>
       interest_rate:
         type: optional<integer>
-        docs:
+        docs: >
           The interest rate (in basis points) of the loan or credit line offer (e.g.
           '750' for 7.50%)
       late_payment_fee:
         type: optional<integer>
-        docs:
+        docs: >
           The fee charged if a borrower misses the payment due date, in cents (e.g.
           '2500' for $25.00; default to 0)
       minimum_payment:
@@ -317,7 +329,7 @@ types:
         docs: The minimum payment due each billing cycle
       origination_fee:
         type: optional<integer>
-        docs:
+        docs: >
           The origination fee charged to originate the line in basis points (e.g. '150'
           for 1.50%)
 
@@ -348,6 +360,30 @@ types:
       security_amount:
         type: optional<integer>
         docs: The amount (in cents) of the value of the loan collateral (e.g. 200000 for $2,000.00). Required for secured loan application types.
+
+  MerchantAdvanceOfferSchema:
+    properties:
+      amount:
+        type: integer
+        docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
+      factor_rate:
+        type: integer
+        docs: The cost of the merchant advance (in basis points) and will be multiplied by the loan amount (e.g. 150 for 1.50%)
+      payment_period:
+        type: optional<RepaymentFrequency>
+        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
+      late_payment_fee:
+        type: optional<integer>
+        docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
+      receivables_portion:
+        type: optional<integer>
+        docs: The portion collected from each sale until the advance is repayed
+      minimum_payment:
+        type: optional<integer>
+        docs: The minimum payment due each billing cycle
+      maximum_payment:
+        type: optional<integer>
+        docs: The minimum payment due each billing cycle
 
   GracePeriod:
     properties:

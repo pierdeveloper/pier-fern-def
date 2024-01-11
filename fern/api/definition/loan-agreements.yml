@@ -15,7 +15,8 @@ service:
   endpoints:
     create:
       display-name: Create a loan agreement
-      docs: A loan agreement can be created for an application with a status of
+      docs: > 
+        A loan agreement can be created for an application with a status of
         approved. Expect 4-8 seconds of latency
       path: ""
       method: POST
@@ -32,13 +33,13 @@ service:
         - commons.DocumentCannotBeCreatedError
       examples:
         - request:
-            application_id: app_a9d2f388030d4f4296f80fc327e08d0d
+            application_id: applications.ApplicationId.Example0
           response:
             body: $LoanAgreement.Pending
 
     sign:
       display-name: Sign a loan agreement
-      docs:
+      docs: >
         Electronically signs a loan document and updates the application's status
         to `accepted`
       path: /{loan_agreement_id}/sign
@@ -51,7 +52,7 @@ service:
         - commons.DocumentCannotBeSignedError
       examples:
         - path-parameters:
-            loan_agreement_id: doc_96d13bec673c4eba8d44c9cda3bbb811
+            loan_agreement_id: $LoanAgreementId.Example0
           response:
             body: $SignLoanAgreementResponse.Signed
 
@@ -67,7 +68,7 @@ service:
         - commons.DocumentNotFoundError
       examples:
         - path-parameters:
-            loan_agreement_id: doc_43da3b3f95c745e1985a71e9a00d6c27
+            loan_agreement_id: $LoanAgreementId.Example0
           response:
             body: $LoanAgreement.Pending
 
@@ -84,6 +85,9 @@ service:
 
 types:
   LoanAgreementId: string
+  examples:
+    - name: Example0
+      value: doc_43da3b3f95c745e1985a71e9a00d6c27
 
   LoanAgreement:
     properties:

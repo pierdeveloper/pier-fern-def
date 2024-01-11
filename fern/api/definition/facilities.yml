@@ -31,11 +31,14 @@ service:
               docs: The `loan_agreement_id` of the loan agreement to create a facility for
       response: Facility
       errors:
+        - commons.ServerError
         - commons.FacilityCannotBeCreatedError
         - commons.FacilityAlreadyExistsError
+        - commons.DocumentNotFoundError
+        - commons.ProductNotSupportedError
       examples:
         - request:
-            loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+            loan_agreement_id: $DisbursementId.Example0
           response:
             body: $Facility.Active
 
@@ -48,15 +51,21 @@ service:
       method: POST
       request: DisbursementRequest
       response: Disbursement
+      errors:
+        - commons.ServerError
+        - commons.InvalidInputError
+        - commons.FacilityNotFoundError
+        - commons.LedgeringNotSupportedError
+        - commons.DisbursementAchDisabledError
+        - commons.DisbursementAmountExceedsFacilityAmountError
+        - commons.DisbursementAmountExceedsAvailableLimitError
+        - commons.MissingDisbursementBankDetails
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
           request:
             amount: 100000
-            disbursement_bank_account:
-              bank_account_number: "1234567890"
-              bank_routing_number: "021000012"
-              type: "checking"
+            disbursement_bank_account: $commons.BankAccount.Default
             transfer_type: "standard"
           response:
             body: $Disbursement.Pending
@@ -70,11 +79,12 @@ service:
       method: POST
       response: Facility
       errors:
+        - commons.ServerError
         - commons.FacilityNotFoundError
         - commons.FacilityCannotBeClosedError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           request:
           response:
             body: $Facility.Closed
@@ -101,15 +111,14 @@ service:
               docs: The additional amount to pay on top of the minimum payment, in cents (e.g. 1000 = $10.00)
       response: Facility
       errors:
+        - commons.ServerError
+        - commons.InvalidInputError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
           request:
-            bank_account:
-              bank_account_number: "1234567890"
-              bank_routing_number: "021000012"
-              type: checking
+            bank_account: $commons.BankAccount.Default
             additional_amount: 0
             amount_type: statement_balance
           response:
@@ -124,10 +133,12 @@ service:
       method: POST
       response: Facility
       errors:
+        - commons.ServerError
+        - commons.AutopayAlreadyDisabledError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           response:
             body: $Facility.Active
 
@@ -138,29 +149,16 @@ service:
       path-parameters:
         facility_id: FacilityId
       method: POST
-      request:
-        name: AddRepaymentBankDetailsRequest
-        body:
-          properties:
-            bank_account_number:
-              type: string
-              docs: The bank account number to use for scheduled payments
-            bank_routing_number:
-              type: string
-              docs: The bank routing number to use for scheduled payments
-            type:
-              type: string
-              docs: The type of bank account to use for scheduled payments
+      request: commons.BankAccount
       response: Facility
       errors:
+        - commons.ServerError
+        - commons.InvalidInputError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
-          request:
-            bank_account_number: "1234567890"
-            bank_routing_number: "021000012"
-            type: checking
+          request: $commons.BankAccount.Default
           response:
             body: $Facility.Active
 
@@ -175,10 +173,12 @@ service:
       method: GET
       response: Facility
       errors:
+        - commons.ServerError
+        - commons.InvalidFacilityIdError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: doc_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           response:
             body: $Facility.Active
 
@@ -188,6 +188,8 @@ service:
       path: /disbursements
       method: GET
       response: list<Disbursement>
+      errors:
+        - commons.ServerError
       examples:
         - response:
             body:
@@ -204,10 +206,12 @@ service:
       method: GET
       response: list<Statement>
       errors:
+        - commons.ServerError
+        - commons.InvalidFacilityIdError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           response:
             body:
               - $Statement.Default
@@ -226,11 +230,13 @@ service:
       method: GET
       response: Disbursement
       errors:
-        - commons.FacilityNotFoundError
+        - commons.ServerError
+        - commons.InvalidDisbursementIdError
+        - commons.DisbursementNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
-            disbursement_id: dsb_134259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
           response:
             body: $Disbursement.Pending
 
@@ -245,10 +251,10 @@ service:
       method: GET
       response: list<Disbursement>
       errors:
-        - commons.FacilityNotFoundError
+        - commons.ServerError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           response:
             body:
               - $Disbursement.Pending
@@ -259,6 +265,8 @@ service:
       path: ""
       method: GET
       response: list<Facility>
+      errors:
+        - commons.ServerError
       examples:
         - response:
             body:
@@ -275,10 +283,11 @@ service:
       method: GET
       response: PayoffAmounts
       errors:
+        - commons.ServerError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           response:
             body: $PayoffAmounts.Default
 
@@ -331,6 +340,12 @@ types:
       status:
         type: commons.TransferStatus
         docs: The status of the disbursement
+      failure_reason:
+        type: optional<string>
+        docs: A reason for the failure if any exists
+      date:
+        type: optional<string>
+        docs: The date of the disbursement (YYYY-MM-DD)
       created_on:
         type: datetime
         docs: Timestamp the disbursement object is created on
@@ -344,6 +359,8 @@ types:
           facility_id: fac_234259b117854d0194bc5864a6c45b42
           amount: 100000
           status: pending
+          failure_reason: null
+          date: 2023-02-27
           created_on: 2023-02-27T00:00:00Z
           transfer_type: standard
 
@@ -364,14 +381,15 @@ types:
       id: FacilityId
       application_id:
         type: applications.ApplicationId
-        docs: The `application_id` of the corresponding loan application for the
+        docs: > 
+          The `application_id` of the corresponding loan application for the
           facility
       borrower_id:
         type: borrowers.ConsumerBorrowerId
         docs: The `borrower_id` of the corresponding borrower the facility is for
       loan_agreement_id:
         type: string
-        docs:
+        docs: >
           The `loan_agreement_id` of the corresponding loan agreement the facility
           is for
       credit_type:
@@ -386,53 +404,63 @@ types:
       account_number:
         type: string
         docs: The account number of the credit facility
+      amortization_schedule:
+        type: optional<AmmortizationSchedules>
+        docs: The amortization schedule of the loan
+      repayment_bank_details:
+        type: optional<commons.BankAccount>
+        docs: The bank account information used to repay the loan
+      # TODO: double check this
+      transactions:
+        type: list<string>
+        docs: An array of transactions made (empty if no payments are due)
+      statements:
+        type: list<Statement>
+        docs: An array of statements for the loan (empty if no statements exist)
       balance:
-        type: integer
+        type: optional<integer>
         docs: The remaining balance of the loan, in cents
       payoff_balance:
-        type: integer
+        type: optional<integer>
         docs: The current payoff balance of the loan, in cents
       origination_date:
-        type: string
+        type: optional<string>
         docs: The date the loan was originated (YYYY-MM-DD)
       disbursement_date:
-        type: string
+        type: optional<string>
         docs: The date the loan was disbursed (YYYY-MM-DD)
       remaining_term:
-        type: integer
+        type: optional<integer>
         docs: The remaining term of the loan, in months
       payments_due:
         type: list<string>
         docs: An array of payments due (empty if no payments are due)
-      monthly_payment:
-        type: integer
-        docs: The monthly payment amount, in cents
       next_payment_amount:
-        type: integer
+        type: optional<integer>
         docs: The amount of the next payment, in cents
       next_payment_due_date:
-        type: string
+        type: optional<string>
         docs: The date the next payment is due (YYYY-MM-DD)
       current_payment_due_date:
-        type: string
+        type: optional<string>
         docs: The date the current payment is due (YYYY-MM-DD)
       last_payment_date:
         type: optional<string>
         docs: The date the last payment was made (YYYY-MM-DD)
       principal_paid_thru:
-        type: string
+        type: optional<string>
         docs: The date the principal is paid through (YYYY-MM-DD)
       next_billing_date:
-        type: string
+        type: optional<string>
         docs: The next billing date of the loan (YYYY-MM-DD)
       interest_accrued_thru:
-        type: string
+        type: optional<string>
         docs: The date the interest is accrued through (YYYY-MM-DD)
       next_accrual_cutoff_date:
-        type: string
+        type: optional<string>
         docs: The next accrual cutoff date of the loan (YYYY-MM-DD)
       scheduled_payoff_date:
-        type: string
+        type: optional<string>
         docs: The scheduled payoff date of the loan (YYYY-MM-DD)
       terms:
         type: applications.Offer
@@ -457,7 +485,12 @@ types:
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
+          # TODO: add values here if possible
           payments_due: []
+          amortization_schedule: $AmmortizationSchedules.Default
+          repayment_bank_details: $commons.BankAccount.Default
+          # TODO: add values here if possible
+          transactions: []
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
@@ -486,6 +519,8 @@ types:
           disbursement_date: "2023-05-12"
           remaining_term: 48
           payments_due: []
+          amortization_schedule: $AmmortizationSchedules.Default
+          repayment_bank_account: null
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
@@ -523,6 +558,8 @@ types:
           disbursement_date: "2023-05-12"
           remaining_term: 48
           payments_due: []
+          amortization_schedule: []
+          repayment_bank_details: $commons.BankAccount.Default
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
@@ -578,3 +615,42 @@ types:
             date: "2023-12-16"
           - amount: 506866
             date: "2023-12-17"
+
+  AmmortizationSchedules:
+    type: list<AmortizationSchedule>
+    examples:
+      - name: Default
+        value:
+          - $AmortizationSchedule.Default0
+          - $AmortizationSchedule.Default1
+
+  AmortizationSchedule:
+    properties:
+      payment_date:
+        type: string
+        docs: The date of this payment in the schedule
+      interest_payment_amount:
+      principal_payment_amount:
+      other_payment_amount:
+      total_payment_amount:
+      balance_amount:
+      item_index:
+    examples:
+      - name: Default0
+        value:
+          payment_date: "2023-11-02",
+          interest_payment_amount: 0,
+          principal_payment_amount: 8333,
+          other_payment_amount: 0,
+          total_payment_amount: 8333,
+          balance_amount: 91667,
+          item_index: 1
+      - name:  Default1
+        value:
+          payment_date: "2023-12-02",
+          interest_payment_amount: 0,
+          principal_payment_amount: 8333,
+          other_payment_amount: 0,
+          total_payment_amount: 8333,
+          balance_amount: 83334,
+          item_index: 2

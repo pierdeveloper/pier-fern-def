@@ -1,5 +1,6 @@
 name: api
 display-name: Pier API
+# TODO: add non-basic auth and the token generation endpoint in docs
 auth:
   scheme: basic
   docs: |
