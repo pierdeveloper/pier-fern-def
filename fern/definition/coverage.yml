@@ -19,6 +19,8 @@ service:
       path: /coverage/commercial
       method: GET
       response: map<string, CommercialCoverage>
+      errors:
+        - commons.ServerError
       examples:
         - response:
             body:
@@ -40,6 +42,8 @@ service:
       path: /coverage/consumer
       method: GET
       response: map<string, ConsumerCoverage>
+      errors:
+        - commons.ServerError
       examples:
         - response:
             body:
@@ -57,6 +61,9 @@ service:
       method: GET
       path: /rejection_reasons
       response: RetrieveRejectionReasonsResponse
+      errors:
+        - commons.ServerError
+        - commons.InvalidInputError
       examples:
         - response:
             body: $RetrieveRejectionReasonsResponse.Default
@@ -136,10 +143,16 @@ types:
             Multiple Returned checks or Insufficient Fund Fees detected
           fraud_risk_too_high: >
             Bank account has been flagged as potential fraud risk
-          bankruptcy: >
-            Outstanding balance from previous loan
+          has_bankruptcy_history: >
+            History of bankruptcy
+          unable_to_verify_credit_information: >
+            Unable to verify credit information
+          credit_file_frozen: >
+            Credit file is currently frozen
           processor_suspended: >
             Payment processor is unable to authenticate user
           cash_flow_verification_failed: >
             Cash flow analysis - income funds are quickly
             depleted from bank account after income deposit
+          credit_score_too_low: >
+            Your credit score does not meet our requirement

@@ -28,3 +28,10 @@ fern generate
 ```
 
 The outputs will be available locally in the `./fern/generated` folder.
+
+## Where are the docs?
+
+- [Pier Fern Api Docs](https://docs.pier-finance.com/)
+    - Live fern docs, what we will show customers
+- [Readme Api Docs](https://pier-dev.readme.io/reference/introduction)
+    - Same docs as fern just different format but allows requests in browser

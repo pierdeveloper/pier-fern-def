@@ -3,9 +3,15 @@
 types:
   Address:
     properties:
-      line_1: string
-      line_2: optional<string>
-      city: string
+      line_1:
+        type: string
+        docs: A string of 1-256 characters
+      line_2:
+        type: optional<string>
+        docs: A string of 1-256 characters
+      city:
+        type: string
+        docs: A string of 1-30 characters
       state:
         type: string
         docs: 2-digit US state code (e.g. CA, IL, FL)
@@ -32,11 +38,21 @@ types:
 
   BankAccount:
     properties:
-      bank_account_number: string
-      bank_routing_number: string
+      bank_account_number:
+        type: string
+        docs: The bank account number to use for scheduled payments
+      bank_routing_number:
+        type: string
+        docs: The bank routing number to use for scheduled payments
       type:
         type: BankAccountType
         docs: The type of bank account, either checking or savings
+    examples:
+      - name: Default
+        value:
+          bank_account_number: "98989898"
+          bank_routing_number: "021000021"
+          type: checking
 
   AutopayAmountType:
     enum:
@@ -53,6 +69,7 @@ types:
       - standard
       - next_day
       - same_day
+      - none
 
   TransferStatus:
     enum:
@@ -62,6 +79,7 @@ types:
       - failed
       - cancelled
 
+  # TODO: make sure this lines up with either validator.js or Application.CreditTypes in Pier api...what is truth source?
   CreditType:
     enum:
       - consumer_installment_loan
@@ -70,6 +88,11 @@ types:
       - consumer_closed_line_of_credit
       - consumer_secured_installment_loan
       - consumer_secured_revolving_line_of_credit
+      - commercial_installment_loan
+      - commercial_revolving_line_of_credit
+      - commercial_closed_line_of_credit
+      - commercial_bnpl
+      - commercial_merchant_advance
 
   ErrorBody:
     properties:
@@ -88,6 +111,7 @@ types:
 errors:
   ServerError:
     status-code: 500
+    type: ErrorBody
 
   RateLimitError:
     status-code: 429
@@ -113,6 +137,10 @@ errors:
 
   ApplicationNotFoundError:
     status-code: 404
+    type: ErrorBody
+
+  InvalidApplicationIdError:
+    status-code: 400
     type: ErrorBody
 
   DocumentCannotBeCreatedError:
@@ -143,6 +171,70 @@ errors:
     status-code: 400
     type: ErrorBody
 
+  InvalidFacilityIdError:
+    status-code: 400
+    type: ErrorBody
+
+  AutopayAlreadyDisabledError:
+    status-code: 400
+    type: ErrorBody
+
+  ProductNotSupportedError:
+    status-code: 403
+    type: ErrorBody
+
+  LedgeringNotSupportedError:
+    status-code: 400
+    type: ErrorBody
+
+  DisbursementAchDisabledError:
+    status-code: 400
+    type: ErrorBody
+
+  DisbursementAmountExceedsFacilityAmountError:
+    status-code: 400
+    type: ErrorBody
+
+  DisbursementAmountExceedsAvailableLimitError:
+    status-code: 400
+    type: ErrorBody
+
+  DisbursementNotFoundError:
+    status-code: 404
+    type: ErrorBody
+
+  InvalidDisbursementIdError:
+    status-code: 400
+    type: ErrorBody
+
+  MissingDisbursementBankDetails:
+    status-code: 400
+    type: ErrorBody
+
   PaymentNotFoundError:
     status-code: 404
+    type: ErrorBody
+
+  PaymentBalanceLessThanAmountError:
+    status-code: 400
+    type: ErrorBody
+
+  RepaymentAchDisabledError:
+    status-code: 400
+    type: ErrorBody
+
+  MissingRepaymentBankDetailsError:
+    status-code: 400
+    type: ErrorBody
+
+  InvalidPaymentIdError:
+    status-code: 400
+    type: ErrorBody
+
+  UnableToInitiatePaymentError:
+    status-code: 400
+    type: ErrorBody
+
+  InvalidWebhookError:
+    status-code: 400
     type: ErrorBody

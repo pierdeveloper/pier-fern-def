@@ -1,6 +1,6 @@
 This guide provides an introduction to getting started with our APIs.
 
-## Environments 
+## Environments
 
 The Pier API is accessible in two environments:
 
@@ -13,7 +13,7 @@ The sandbox is designed to mimic the production environment, with a few exceptio
 
 ### Postman Collection
 
-You can fork our Postman collection to immediately start interacting with the API. You'll need to set a few variables to get started:
+You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/14754440-cf96aaa5-d588-4a09-b4a0-66c32b77e33c?action=share&creator=14754440) to immediately start interacting with the API. You'll need to set a few variables to get started:
 
 | Variable   | Description       |
 |------------|-------------------|
@@ -23,7 +23,7 @@ You can fork our Postman collection to immediately start interacting with the AP
 
 ### Authentication
 
-Pier uses basic auth to authenticate API requests. All calls should be made with the `username` field set to your `client_id` and the `password` field set to your `api_secret`.
+Pier uses basic auth to authenticate API requests. All calls should be made with the `username` field set to your `client_id` and the `password` field set to your `api_secret`. Make sure to `base64` encode the `username:password` portion.
 
 ## Rate limits and retrying API requests
 
@@ -121,7 +121,7 @@ curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667
 
 ### Step 6. Create credit facility
 
-```shell 
+```shell
 curl -X POST https://sandbox.pier-finance.com/api/facilities \
 -H 'Content-Type: application/json' \
 -H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \

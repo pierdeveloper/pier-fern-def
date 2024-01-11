@@ -23,7 +23,8 @@ service:
               docs: The `url` to send webhooks to
       response: string
       errors:
-        - commons.InvalidInputError
+        - commons.ServerError
+        - commons.InvalidWebhookError
       examples:
         - request:
             url: "https://example.com/webhook"
@@ -35,6 +36,8 @@ service:
       path: "/webhook"
       method: DELETE
       response: string
+      errors:
+        - commons.ServerError
       examples:
         - request:
           response:

@@ -9,7 +9,7 @@ navigation:
         path: ./docs/pages/quickstart.mdx
       - page: Payments and Disbursements
         path: ./docs/pages/payments-and-disbursements.mdx
-      - page: Errors 
+      - page: Errors
         path: ./docs/pages/errors.mdx
       - page: Webhooks
         path: ./docs/pages/webhooks.mdx
@@ -23,13 +23,13 @@ navigation:
         path: ./docs/pages/buy-now-pay-later.mdx
   - api: API Reference
 colors:
-  accentPrimary: 
+  accentPrimary:
     dark: '#aa8ff6'
     light: '#6f5ea0'
-logo: 
+logo:
   dark: ./docs/assets/logo-white.png
   light: ./docs/assets/logo-black.png
-  height: 35
+  height: 25
 favicon: ./docs/assets/favicon.ico
 
 navbar-links:
