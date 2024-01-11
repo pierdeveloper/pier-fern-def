@@ -1,0 +1,19 @@
+instances:
+  - url: https://pier.docs.buildwithfern.com
+    custom-domain: https://docs.pier-finance.com
+title: Pier | Documentation
+navigation:
+  - api: API Reference
+colors:
+  accentPrimary: 
+    dark: '#aa8ff6'
+    light: '#aa8ff6'
+logo: 
+  dark: ./docs/assets/logo-white.png
+  light: ./docs/assets/logo-black.png
+favicon: ./docs/assets/favicon.ico
+
+navbar-links:
+  - type: primary
+    text: See a Demo
+    url: https://www.pier-finance.com/contact
