@@ -1,0 +1,54 @@
+Pier uses HTTP codes to indicate the status of an API request. Generally, `2xx` indicates success, `4xx` indicates something was wrong with the information provided, and `5xx` indicates something went wrong on Pier's servers.
+
+### Attributes
+
+- `error_type` string: The type of error, which can be one of `APPLICATION_ERROR`, `BORROWER_ERROR`, `LOAN_AGREEMENT_ERROR`, `INVALID_REQUEST_ERROR`, or `API_ERROR`.
+- `error_code` string: The specific error that occurred, which can be used programmatically.
+- `error_message` string: A human-readable error message for developers. These can change and should generally not be used programmatically.
+- `error_detail` list of objects: In some cases, like a validation error, we'll return a list of objects with more information about the parameter that is invalid.
+
+```js
+{
+    "error_type": "BORROWER_ERROR",
+    "error_code": "INVALID_INPUT",
+    "error_message": "A value provided in the body is incorrect. See error_detail for more",
+    "error_detail": [
+      {
+        "value": "12708921",
+        "msg": "EIN must be 9 digits",
+        "param": "ein",
+        "location": "body"
+      }
+    ]
+}
+```
+
+### Error Codes
+
+| error_code | error_type | status | error_message |
+|------------|------------|--------|---------------|
+| UNAUTHORIZED | INVALID_REQUEST_ERROR | 401 | The API key is invalid. Make sure your API key is being prefixed with a colon. |
+| UNSUPPORTED_OFFER_TERMS | APPLICATION_ERROR | 400 | The requested offer terms are not supported for this state. |
+| STATE_NOT_SUPPORTED | APPLICATION_ERROR | 400 | The applicant's state or territory is not supported. |
+| LOAN_AGREEMENT_CREATION_FAILED | LOAN_AGREEMENT_ERROR | 400 | The loan agreement could not be created. Please retry. |
+| LOAN_AGREEMENT_CANNOT_BE_SIGNED | LOAN_AGREEMENT_ERROR | 400 | The loan agreement's status must be pending in order to sign it. |
+| LOAN_AGREEMENT_CANNOT_BE_CREATED | LOAN_AGREEMENT_ERROR | 400 | Can only create loan agreements for approved applications. |
+| INVALID_LOAN_AGREEMENT_ID | LOAN_AGREEMENT_ERROR | 400 | The loan_agreement_id specified is invalid. |
+| LOAN_AGREEMENT_NOT_FOUND | LOAN_AGREEMENT_ERROR | 404 | The loan agreement resource does not exist. |
+| LOAN_AGREEMENT_CANNOT_BE_SIGNED | LOAN_AGREEMENT_ERROR | 400 | The loan agreement's status must be pending_signature in order to sign it. |
+| INVALID_APPLICATION_ID | APPLICATION_ERROR | 400 | The application_id specified is invalid. |
+| INVALID_BORROWER_ID | BORROWER_ERROR | 400 | The borrower_id specified is invalid. |
+| BORROWER_NOT_FOUND | BORROWER_ERROR | 404 | The borrower resource does not exist. |
+| KYC_NOT_APPROVED | BORROWER_ERROR | 400 | The borrower's KYC status must be approved. |
+| APPLICATION_CANNOT_BE_REJECTED | APPLICATION_ERROR | 400 | The application's status must be pending in order to reject it. |
+| APPLICATION_CANNOT_BE_APPROVED | APPLICATION_ERROR | 400 | The application's status must be pending in order to approve it. |
+| APPLICATION_NOT_FOUND | APPLICATION_ERROR | 404 | The application resource does not exist. |
+| DUPLICATE_SSN | BORROWER_ERROR | 400 | A borrower with that SSN already exists. |
+| DUPLICATE_EIN | BORROWER_ERROR | 400 | A borrower with that EIN already exists. |
+| INTERNAL_SERVER_ERROR | API_ERROR | 500 | An unexpected error occurred. |
+| FACILITY_ALREADY_EXISTS | FACILITY_ERROR | 400 | A facility already exists for this loan agreement. |
+| FACILITY_CANNOT_BE_CREATED | FACILITY_ERROR | 400 | The loan agreement must have a status of signed in order to create a facility for it. |
+| FACILITY_NOT_FOUND | FACILITY_ERROR | 404 | The facility resource does not exist. |
+| INVALID_FACILITY_ID | FACILITY_ERROR | 400 | The facility_id specified is invalid. |
+| FACILITY_CANNOT_BE_CLOSED | FACILITY_ERROR | 400 | The facility is already closed. |
+| LOAN_AGREEMENT_ALREADY_EXISTS | LOAN_AGREEMENT_ERROR | 400 | A pending loan agreement for the application already exists. |

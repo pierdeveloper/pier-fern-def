@@ -1,0 +1,96 @@
+A revolving line of credit is a type of financial arrangement that allows individuals to borrow money up to a predetermined credit limit. Unlike a traditional term loan, where a lump sum of money is repaid over a fixed period, a revolving line of credit provides access to a pool of funds that can be used as needed, repaid, and then borrow again, much like a revolving door.
+
+Here are some key features of a revolving line of credit:
+
+1. **Credit Limit**: total amount that can be borrowed on the line of credit.
+2. **Drawdowns**: funds from the line of credit can be accessed at any time, up to the credit limit. Drawdowns are disbursed via ACH to your desired destination bank account. Also commonly referred to as withdrawals.
+3. **Repayments**: Regular payments based on the outstanding balance, the interest rate, and the terms of the agreement must be valid. Unlike term loans, where a fixed monthly installment is due, the minimum payment on a revolving line of credit depends on the balance and the minimum payment (as a percentage of principal due) set in the credit agreement.
+4. **Revolving Nature**: As payments are made on the borrowed amount, the funds become available to borrow again. This makes a revolving line of credit a flexible and reusable source of financing. Pier also supports non-revolving lines of credit.
+5. **Interest Charges**: Interest is charged only on the outstanding balance of the line of credit. Paying off the balance promptly minimizes the interest costs.
+
+## The Line of Credit Offer
+
+The Pier Line of Credit offer consists of three primary parameters:
+
+1. `amount`: the line amount or limit that the borrower can borrow up to (in cents).
+2. `interest_rate`: the interest rate that will be applied to the outstanding principal balance on the line (in basis points).
+3. `minimum_payment`: the minimum payment due each month. The minimum payment due is the interest due from the billing cycle plus a percentage of the principal. The percentage of principal due is configurable from 0% to 100%.
+
+In general, the offer terms are not mutable once an offer is accepted by a borrower (in some cases the terms can be updated according to the credit policy if a borrower's credit worthiness materially change).
+
+The following example models a line of credit offer with an amount of $500.00, interest rate of 10% and minimum payment of interest + 2.50% of principal:
+
+```json
+{
+        "type": "revolving_line_of_credit_offer",
+        "amount": 50000,
+        "interest_rate": 1000,
+        "late_payment_fee": 0,
+        "origination_fee": 0,
+        "minimum_payment": {
+            "type": "interest_plus_percentage_of_principal",
+            "value": 250
+        }
+    }
+```
+
+## The Line of Credit Facility
+
+The Pier Line of Credit Facility resource is the source of truth for the line of credit's ledger details including the balance, interest accruals, and due dates.
+
+```json
+ {
+    "terms": {
+        "grace_period": {
+            "term": 0,
+            "interest_rate": 0
+        },
+        "minimum_payment": {
+            "type": "interest_plus_percentage_of_principal",
+            "value": 250
+        },
+        "amount": 50000,
+        "apr": 1000,
+        "annual_fee": 0,
+        "type": "revolving_line_of_credit_offer",
+        "interest_rate": 1000,
+        "late_payment_fee": 0,
+        "origination_fee": 0,
+        "id": "off_cfd66aa4d1004b2f8c22491a9296ea8f",
+        "interest_type": "fixed"
+    },
+    "id": "fac_1f7720f303eb469ea748258d85f1f8a9",
+    "application_id": "app_bc6501b77fd2418db12af13bbf294b73",
+    "borrower_id": "bor_9a78389c4a68431b87489d42d9560f75",
+    "loan_agreement_id": "doc_78e6a9dc93f74ce3bf2c6d76cb3a50da",
+    "account_number": "277465526",
+    "credit_type": "consumer_revolving_line_of_credit",
+    "status": "active",
+    "autopay": {
+        "authorized": false
+    },
+    "autopay_enabled": false,
+    "balance": 0,
+    "origination_date": "2023-12-08",
+    "disbursement_date": null,
+    "payments_due": [],
+    "transactions": [],
+    "statements": [],
+    "created_on": "2023-12-08T21:55:48.782Z",
+    "amortization_schedule": [],
+    "next_payment_amount": 0,
+    "next_payment_due_date": "2024-01-08",
+    "current_payment_due_date": "2024-01-08",
+    "last_payment_date": null,
+    "payoff_balance": 0,
+    "principal_paid_thru": "2023-12-07",
+    "next_billing_date": "2023-12-29",
+    "interest_accrued_thru": "2023-12-07",
+    "next_accrual_cutoff_date": "2024-01-07",
+    "scheduled_payoff_date": null
+}
+```
+
+## Drawdowns
+
+The borrower submits a drawdown request, calling the [`/disbursements`](/api-reference/facilities/create-a-disbursement-for-a-facility) endpoint will process the Disbursement ACH to the receiver's account (either the borrower or 3rd party) and update the Facility balance. If a Disbursement request will fail if the amount in the request exceeds the available balance.
