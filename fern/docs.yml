@@ -13,6 +13,12 @@ navigation:
         path: ./docs/pages/errors.mdx
       - page: Webhooks
         path: ./docs/pages/webhooks.mdx
+      - page: KYC
+        path: ./docs/pages/kyc.mdx
+      - page: Line of Credit program
+        path: ./docs/pages/line-of-credit.mdx
+      - page: Buy Now Pay Later program
+        path: ./docs/pages/buy-now-pay-later.mdx
   - api: API Reference
 colors:
   accentPrimary: 
