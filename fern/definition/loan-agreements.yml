@@ -84,10 +84,11 @@ service:
               - $LoanAgreement.Pending
 
 types:
-  LoanAgreementId: string
-  examples:
-    - name: Example0
-      value: doc_43da3b3f95c745e1985a71e9a00d6c27
+  LoanAgreementId:
+    type: string
+    examples:
+      - name: Example0
+        value: doc_43da3b3f95c745e1985a71e9a00d6c27
 
   LoanAgreement:
     properties:
