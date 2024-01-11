@@ -18,7 +18,7 @@ jobs:
         id: generate
         env:
           FERN_TOKEN: ${{ secrets.FERN_TOKEN }}
-        run: fern generate
+        run: fern generate --docs
 
       - name: Run `openapi` command 🚀
         if: steps.generate.outcome == 'success'
