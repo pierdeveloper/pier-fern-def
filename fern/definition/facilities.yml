@@ -630,11 +630,23 @@ types:
         type: string
         docs: The date of this payment in the schedule
       interest_payment_amount:
+        type: integer
+        docs: The amount in cents of the payment going towards interest (e.g. 0 is $0.00)
       principal_payment_amount:
+        type: integer
+        docs: The amount in cents of the payment going towards principal (e.g. 8333 is $83.33)
       other_payment_amount:
+        type: integer
+        docs: Any other payments in cents to be made (e.g. 0 is $0.00)
       total_payment_amount:
+        type: integer
+        docs: The total payment in cents to be made comprised of all of the other payment amount fields (e.g. 8333 is $83.33)
       balance_amount:
+        type: integer
+        docs: The balance in cents that is left after making the `total_payment_amount` (e.g. 91667 is $916.67)
       item_index:
+        type: integer
+        docs: The number representing the order of the item in the list (one based)
     examples:
       - name: Default0
         value:
