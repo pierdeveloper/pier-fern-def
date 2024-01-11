@@ -43,7 +43,7 @@ service:
         - commons.BorrowerNotFoundError
       examples:
         - request:
-            borrower_id: $borrowers.ConsumerBorrowerId.Example0
+            borrower_id: $borrowers.ConsumerBorrowerId.Default
             credit_type: consumer_installment_loan
             requested_amount: 200000
           response:
@@ -207,9 +207,9 @@ types:
       - name: MerchantAdvanceOfferSchema
         value:
           type: merchant_advance_offer
-          amount: 1000000,
+          amount: 1000000
           factor_rate: 150
-          payment_periond: monthly
+          payment_period: monthly
           origination_fee: 0
           late_payment_fee: 0
           receivables_portion: 1500
@@ -262,7 +262,7 @@ types:
       - name: PendingApplication
         value:
           id: $ApplicationId.Example0
-          borrower_id: $borrowers.ConsumerBorrowerId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Default
           credit_type: consumer_installment_loan
           rejection_reasons: []
           status: pending
@@ -372,6 +372,11 @@ types:
       payment_period:
         type: optional<RepaymentFrequency>
         docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
+      origination_fee:
+        type: optional<integer>
+        docs: >
+          The origination fee charged to originate the line in basis points (e.g. '150'
+          for 1.50%)
       late_payment_fee:
         type: optional<integer>
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)

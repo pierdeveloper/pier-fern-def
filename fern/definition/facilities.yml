@@ -410,13 +410,15 @@ types:
       repayment_bank_details:
         type: optional<commons.BankAccount>
         docs: The bank account information used to repay the loan
-      # TODO: double check this
       transactions:
         type: list<string>
         docs: An array of transactions made (empty if no payments are due)
       statements:
         type: list<Statement>
         docs: An array of statements for the loan (empty if no statements exist)
+      monthly_payment:
+        type: optional<integer>
+        docs: The monthly payment amount, in cents
       balance:
         type: optional<integer>
         docs: The remaining balance of the loan, in cents
@@ -485,12 +487,11 @@ types:
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
-          # TODO: add values here if possible
           payments_due: []
           amortization_schedule: $AmmortizationSchedules.Default
           repayment_bank_details: $commons.BankAccount.Default
-          # TODO: add values here if possible
           transactions: []
+          statements: []
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
@@ -501,7 +502,6 @@ types:
           interest_accrued_thru: "2023-05-11"
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
-
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -520,7 +520,9 @@ types:
           remaining_term: 48
           payments_due: []
           amortization_schedule: $AmmortizationSchedules.Default
-          repayment_bank_account: null
+          repayment_bank_details: null
+          transactions: []
+          statements: []
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
@@ -540,7 +542,6 @@ types:
             authorization_timestamp: "2023-05-12T19:46:09.293Z"
             additional_amount: 0
             amount_type: "statement_balance"
-
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -560,6 +561,8 @@ types:
           payments_due: []
           amortization_schedule: []
           repayment_bank_details: $commons.BankAccount.Default
+          transactions: []
+          statements: []
           monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
