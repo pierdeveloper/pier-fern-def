@@ -79,7 +79,6 @@ types:
       - failed
       - cancelled
 
-  # TODO: make sure this lines up with either validator.js or Application.CreditTypes in Pier api...what is truth source?
   CreditType:
     enum:
       - consumer_installment_loan
@@ -237,4 +236,8 @@ errors:
 
   InvalidWebhookError:
     status-code: 400
+    type: ErrorBody
+
+  UnauthorizedError:
+    status-code: 401
     type: ErrorBody

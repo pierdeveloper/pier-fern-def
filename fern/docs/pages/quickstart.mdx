@@ -23,7 +23,9 @@ You can fork our [Postman Collection](https://www.postman.com/martian-comet-9598
 
 ### Authentication
 
-Pier uses basic auth to authenticate API requests. All calls should be made with the `username` field set to your `client_id` and the `password` field set to your `api_secret`. Make sure to `base64` encode the `username:password` portion.
+Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
+
+```shell
 
 ## Rate limits and retrying API requests
 
@@ -46,7 +48,7 @@ The following diagram outlines how the Pier origination flow works with the Borr
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/borrowers/consumer \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "address": {
         "line_1": "15 Main Street",
@@ -69,7 +71,7 @@ curl -X POST https://sandbox.pier-finance.com/api/borrowers/consumer \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/applications \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "borrower_id": "bor_7b1b1f0d97554532a2681e4159ec2a8a",
     "credit_type": "consumer_installment_loan"
@@ -81,7 +83,7 @@ curl -X POST https://sandbox.pier-finance.com/api/applications \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/applications/app_ae982db618544da9ac6fad552cede6f0/approve \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "offers":[{
         "amount": 2000000,
@@ -103,7 +105,7 @@ curl -X POST https://sandbox.pier-finance.com/api/applications/app_ae982db618544
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/loan_agreements \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "application_id": "app_ae982db618544da9ac6fad552cede6f0",
     "accepted_offer_id": "off_b71c4524ac57467e982ce5414800c27f"
@@ -115,7 +117,7 @@ curl -X POST https://sandbox.pier-finance.com/api/loan_agreements \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667024d5f837ae5a0fb942a8a/sign \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{}'
 ```
 
@@ -124,7 +126,7 @@ curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/facilities \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "loan_agreement_id": "doc_6f9c7af667024d5f837ae5a0fb942a8a"
 }'

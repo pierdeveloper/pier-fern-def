@@ -38,7 +38,6 @@ service:
               docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
       response: Application
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:
@@ -58,7 +57,6 @@ service:
       request: list<Offer>
       response: Application
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.BorrowerNotFoundError
       examples:
@@ -85,7 +83,6 @@ service:
             rejection_reasons: list<RejectionReason>
       response: Application
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.ApplicationNotFoundError
       examples:
@@ -105,7 +102,6 @@ service:
       method: GET
       response: Application
       errors:
-        - commons.ServerError
         - commons.ApplicationNotFoundError
         - commons.InvalidApplicationIdError
       examples:
@@ -120,8 +116,6 @@ service:
       path: ""
       method: GET
       response: list<Application>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:

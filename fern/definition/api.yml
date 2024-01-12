@@ -1,13 +1,18 @@
 name: api
 display-name: Pier API
-# TODO: add non-basic auth and the token generation endpoint in docs
 auth:
-  scheme: basic
-  docs: |
-    Use your API client ID as the username and your API client secret as the password.
+  scheme: bearer
+  docs: >
+    Use your API client ID and API client secret passed into the body of the `/token` endpoint to generate a JWT.
 environments:
   Production: https://production.pier-finance.com/api
   Sandbox: https://sandbox.pier-finance.com/api
 default-environment: Production
 error-discrimination:
   strategy: status-code
+imports:
+  commons: commons.yml
+errors:
+  - commons.ServerError
+  - commons.RateLimitError
+  - commons.UnauthorizedError

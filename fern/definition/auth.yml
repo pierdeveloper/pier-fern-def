@@ -1,0 +1,55 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+docs: |
+  The auth endpoint(s) support `Bearer` JWT authentication as a strong alternative to `basic` auth. 
+  To use this, you must first generate a JWT token by calling the `/token` endpoint with your API 
+  client ID and API client secret. This token will expire after 24 hours, at which point you will 
+  need to generate a new one.
+
+imports:
+  commons: commons.yml
+
+service:
+  base-path: /token
+  auth: false
+  endpoints:
+    getToken:
+      display-name: Get a JWT token
+      docs: >
+        Get a JWT token for use with the Pier API by passing in a valid `client_id`/`secret` in the body
+      path: ""
+      method: POST
+      request: AuthRequest
+      response: AuthResponse
+      errors:
+        - commons.ServerError
+        - commons.RateLimitError
+        - commons.UnauthorizedError
+      examples:
+        - request: $AuthRequest.Default
+          response:
+            body: $AuthResponse.Default
+
+types:
+    AuthRequest:
+      properties:
+        client_id:
+          type: string
+          docs: Your Pier API client ID
+        secret:
+          type: string
+          docs: Your Pier API client secret
+      examples:
+        - name: Default
+          value:
+            client_id: "1234567890"
+            secret: "1234567890"
+    AuthResponse:
+      properties:
+        token:
+          type: string
+          docs: A JWT token to use with the Pier API (24h expiration)
+      examples:
+        - name: Default
+          value:
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
