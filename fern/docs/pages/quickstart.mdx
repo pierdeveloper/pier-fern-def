@@ -25,8 +25,6 @@ You can fork our [Postman Collection](https://www.postman.com/martian-comet-9598
 
 Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
 
-```shell
-
 ## Rate limits and retrying API requests
 
 Only 5xx (Server Errors) and 429 (Rate Limits) errors should be retried.
