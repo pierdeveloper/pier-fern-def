@@ -44,13 +44,15 @@ service:
       display-name: Verify a webhook with Pier public key
       path: "/webhook-verification"
       method: GET
-      response:
-        body:
-          properties:
-            public_key:
-              type: string
-              docs: The `public_key` to use to verify Pier webhook signatures
+      response: VerificationResponse
       examples:
         - response:
             body:
               public_key: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ\njkdfhdfjskfhsd==\n-----END PUBLIC KEY-----"
+
+types:
+  VerificationResponse:
+    properties:
+        public_key:
+            type: string
+            docs: The `public_key` to use to verify Pier webhook signatures
