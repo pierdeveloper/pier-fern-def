@@ -21,10 +21,6 @@ service:
       method: POST
       request: AuthRequest
       response: AuthResponse
-      errors:
-        - commons.ServerError
-        - commons.RateLimitError
-        - commons.UnauthorizedError
       examples:
         - request: $AuthRequest.Default
           response:
