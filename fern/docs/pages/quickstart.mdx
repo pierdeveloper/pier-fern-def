@@ -11,7 +11,9 @@ The Pier API is accessible in two environments:
 
 The sandbox is designed to mimic the production environment, with a few exceptions. Loan agreements created in the sandbox will have large 'draft' watermarks and funds flows will only occur in production. Sandbox API keys are prefixed with `test_` while production API keys are prefixed with `prod_`. Otherwise, sandbox and production behavior is identical.
 
-### Postman Collection
+## Postman Collection
+
+# TODO: update this section with new postman collection; pre-request script reference; and new variable setup; talk about hitting token endpoint
 
 You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/14754440-cf96aaa5-d588-4a09-b4a0-66c32b77e33c?action=share&creator=14754440) to immediately start interacting with the API. You'll need to set a few variables to get started:
 
@@ -21,7 +23,7 @@ You can fork our [Postman Collection](https://www.postman.com/martian-comet-9598
 | `api_secret` | Your API secret     |
 | `base_url`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
 
-### Authentication
+## Authentication
 
 Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
 
