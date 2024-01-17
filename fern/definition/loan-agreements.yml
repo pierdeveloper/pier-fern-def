@@ -33,7 +33,7 @@ service:
         - commons.DocumentCannotBeCreatedError
       examples:
         - request:
-            application_id: applications.ApplicationId.Example0
+            application_id: $applications.ApplicationId.Example0
           response:
             body: $LoanAgreement.Pending
 
