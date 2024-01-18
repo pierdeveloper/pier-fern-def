@@ -106,7 +106,7 @@ types:
       failure_reason:
         type: optional<string>
         docs: A reason for the failure if one exists
-      is_autopay_scheduled:
+      is_autopay:
         type: optional<boolean>
         docs: If the payment was a result of an autopay
     examples:
@@ -118,7 +118,7 @@ types:
           status: pending
           transfer_type: standard
           created_on: 2023-02-27T00:00:00Z
-          is_autopay_scheduled: false
+          is_autopay: false
       - name: Processing
         value:
           id: $PaymentId.Example0
@@ -135,7 +135,7 @@ types:
           status: settled
           transfer_type: standard
           created_on: 2023-02-27T00:00:00Z
-          is_autopay_scheduled: false
+          is_autopay: false
       - name: Failed
         value:
           id: $PaymentId.Example0
@@ -144,4 +144,4 @@ types:
           status: failed
           transfer_type: standard
           created_on: 2023-02-27T00:00:00Z
-          is_autopay_scheduled: false
+          is_autopay: false
