@@ -20,7 +20,6 @@ service:
       request: PaymentRequest
       response: Payment
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.FacilityNotFoundError
         - commons.PaymentBalanceLessThanAmountError
@@ -41,7 +40,6 @@ service:
       method: GET
       response: Payment
       errors:
-        - commons.ServerError
         - commons.PaymentNotFoundError
         - commons.InvalidPaymentIdError
       examples:
@@ -56,8 +54,6 @@ service:
       path: ""
       method: GET
       response: list<Payment>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:

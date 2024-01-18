@@ -22,6 +22,7 @@ navigation:
       - page: Buy Now Pay Later program
         path: ./docs/pages/buy-now-pay-later.mdx
   - api: API Reference
+    display-errors: true
 colors:
   accentPrimary:
     dark: '#aa8ff6'

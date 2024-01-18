@@ -11,19 +11,40 @@ The Pier API is accessible in two environments:
 
 The sandbox is designed to mimic the production environment, with a few exceptions. Loan agreements created in the sandbox will have large 'draft' watermarks and funds flows will only occur in production. Sandbox API keys are prefixed with `test_` while production API keys are prefixed with `prod_`. Otherwise, sandbox and production behavior is identical.
 
-### Postman Collection
+## Postman Collection
 
-You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/14754440-cf96aaa5-d588-4a09-b4a0-66c32b77e33c?action=share&creator=14754440) to immediately start interacting with the API. You'll need to set a few variables to get started:
+You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/30375005-403d3b8d-925c-4f59-86c0-6e701a2ec6d4?action=share&creator=30375005) to immediately start interacting with the API. You'll need to set a few variables to get started:
 
 | Variable   | Description       |
 |------------|-------------------|
-| `client_id` | Your API client ID |
-| `api_secret` | Your API secret     |
-| `base_url`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
+| `clientId` | Your API client ID (add this to the collection level `Variables`) |
+| `secret` | Your API secret (add this to the collection level `Variables`)     |
+| `token` | The JWT token you get back from the `/token` endpoint (this goes in the `Authorization` header of each request; the `Pre-request Script` will set/update it for you) |
+| `baseUrl`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
 
-### Authentication
+When you open the collection click on the top level titled `Pier Api` and choose `Variables`. Create the variables `clientId`/`secret` and set the `Current value` field (prevents credentials leaking). You are good to go! The `Pre-request Script` will now automatically fill out the `token` variable for each request:
 
-Pier uses basic auth to authenticate API requests. All calls should be made with the `username` field set to your `client_id` and the `password` field set to your `api_secret`. Make sure to `base64` encode the `username:password` portion.
+```javascript
+pm.sendRequest({
+  url:  pm.collectionVariables.get('baseUrl') + '/token',
+  method: 'POST',
+  header: {
+    'Content-Type': 'application/json'
+  },
+  body: {
+    mode: 'raw',
+    raw: JSON.stringify({client_id: pm.collectionVariables.get('clientId'), secret: pm.collectionVariables.get('secret')})
+  }
+}, function (err, res) {
+    pm.collectionVariables.set('token', res.json().token);
+});
+```
+
+This is a convenience that sets the token automatically each request and is simply calling the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint like you would in your application.
+
+## Authentication
+
+Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
 
 ## Rate limits and retrying API requests
 
@@ -46,7 +67,7 @@ The following diagram outlines how the Pier origination flow works with the Borr
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/borrowers/consumer \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "address": {
         "line_1": "15 Main Street",
@@ -69,7 +90,7 @@ curl -X POST https://sandbox.pier-finance.com/api/borrowers/consumer \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/applications \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "borrower_id": "bor_7b1b1f0d97554532a2681e4159ec2a8a",
     "credit_type": "consumer_installment_loan"
@@ -81,7 +102,7 @@ curl -X POST https://sandbox.pier-finance.com/api/applications \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/applications/app_ae982db618544da9ac6fad552cede6f0/approve \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "offers":[{
         "amount": 2000000,
@@ -103,7 +124,7 @@ curl -X POST https://sandbox.pier-finance.com/api/applications/app_ae982db618544
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/loan_agreements \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "application_id": "app_ae982db618544da9ac6fad552cede6f0",
     "accepted_offer_id": "off_b71c4524ac57467e982ce5414800c27f"
@@ -115,7 +136,7 @@ curl -X POST https://sandbox.pier-finance.com/api/loan_agreements \
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667024d5f837ae5a0fb942a8a/sign \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{}'
 ```
 
@@ -124,7 +145,7 @@ curl -X POST https://sandbox.pier-finance.com/api/loan_agreements/doc_6f9c7af667
 ```shell
 curl -X POST https://sandbox.pier-finance.com/api/facilities \
 -H 'Content-Type: application/json' \
--H 'Authorization: Basic ${PIER_CREDENTIALS_BASE64_ENCODED}' \
+-H 'Authorization: Bearer ${PIER_ISSUED_JWT}' \
 -d '{
     "loan_agreement_id": "doc_6f9c7af667024d5f837ae5a0fb942a8a"
 }'

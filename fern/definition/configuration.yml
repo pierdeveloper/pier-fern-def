@@ -23,7 +23,6 @@ service:
               docs: The `url` to send webhooks to
       response: string
       errors:
-        - commons.ServerError
         - commons.InvalidWebhookError
       examples:
         - request:
@@ -36,9 +35,24 @@ service:
       path: "/webhook"
       method: DELETE
       response: string
-      errors:
-        - commons.ServerError
       examples:
         - request:
           response:
             body: Ok.
+
+    verification:
+      display-name: Verify a webhook with Pier public key
+      path: "/webhook-verification"
+      method: GET
+      response: VerificationResponse
+      examples:
+        - response:
+            body:
+              public_key: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ\njkdfhdfjskfhsd==\n-----END PUBLIC KEY-----"
+
+types:
+  VerificationResponse:
+    properties:
+        public_key:
+            type: string
+            docs: The `public_key` to use to verify Pier webhook signatures

@@ -10,7 +10,7 @@ imports:
   applications: applications.yml
 
 service:
-  base-path: /
+  base-path: ""
   auth: true
   endpoints:
     retrieveCommercialCoverage:
@@ -19,8 +19,6 @@ service:
       path: /coverage/commercial
       method: GET
       response: map<string, CommercialCoverage>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:
@@ -42,8 +40,6 @@ service:
       path: /coverage/consumer
       method: GET
       response: map<string, ConsumerCoverage>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:
@@ -62,7 +58,6 @@ service:
       path: /rejection_reasons
       response: RetrieveRejectionReasonsResponse
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
       examples:
         - response:

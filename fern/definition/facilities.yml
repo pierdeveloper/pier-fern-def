@@ -31,7 +31,6 @@ service:
               docs: The `loan_agreement_id` of the loan agreement to create a facility for
       response: Facility
       errors:
-        - commons.ServerError
         - commons.FacilityCannotBeCreatedError
         - commons.FacilityAlreadyExistsError
         - commons.DocumentNotFoundError
@@ -52,7 +51,6 @@ service:
       request: DisbursementRequest
       response: Disbursement
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.FacilityNotFoundError
         - commons.LedgeringNotSupportedError
@@ -79,7 +77,6 @@ service:
       method: POST
       response: Facility
       errors:
-        - commons.ServerError
         - commons.FacilityNotFoundError
         - commons.FacilityCannotBeClosedError
       examples:
@@ -111,7 +108,6 @@ service:
               docs: The additional amount to pay on top of the minimum payment, in cents (e.g. 1000 = $10.00)
       response: Facility
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.FacilityNotFoundError
       examples:
@@ -133,7 +129,6 @@ service:
       method: POST
       response: Facility
       errors:
-        - commons.ServerError
         - commons.AutopayAlreadyDisabledError
         - commons.FacilityNotFoundError
       examples:
@@ -152,7 +147,6 @@ service:
       request: commons.BankAccount
       response: Facility
       errors:
-        - commons.ServerError
         - commons.InvalidInputError
         - commons.FacilityNotFoundError
       examples:
@@ -173,7 +167,6 @@ service:
       method: GET
       response: Facility
       errors:
-        - commons.ServerError
         - commons.InvalidFacilityIdError
         - commons.FacilityNotFoundError
       examples:
@@ -188,8 +181,6 @@ service:
       path: /disbursements
       method: GET
       response: list<Disbursement>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:
@@ -206,7 +197,6 @@ service:
       method: GET
       response: list<Statement>
       errors:
-        - commons.ServerError
         - commons.InvalidFacilityIdError
         - commons.FacilityNotFoundError
       examples:
@@ -230,7 +220,6 @@ service:
       method: GET
       response: Disbursement
       errors:
-        - commons.ServerError
         - commons.InvalidDisbursementIdError
         - commons.DisbursementNotFoundError
       examples:
@@ -250,8 +239,6 @@ service:
           docs: The facility_id of the facility you want to list disbursements for
       method: GET
       response: list<Disbursement>
-      errors:
-        - commons.ServerError
       examples:
         - path-parameters:
             facility_id: $FacilityId.Example0
@@ -265,8 +252,6 @@ service:
       path: ""
       method: GET
       response: list<Facility>
-      errors:
-        - commons.ServerError
       examples:
         - response:
             body:
@@ -283,7 +268,6 @@ service:
       method: GET
       response: PayoffAmounts
       errors:
-        - commons.ServerError
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
@@ -416,9 +400,6 @@ types:
       statements:
         type: list<Statement>
         docs: An array of statements for the loan (empty if no statements exist)
-      monthly_payment:
-        type: optional<integer>
-        docs: The monthly payment amount, in cents
       balance:
         type: optional<integer>
         docs: The remaining balance of the loan, in cents
@@ -492,7 +473,6 @@ types:
           repayment_bank_details: $commons.BankAccount.Default
           transactions: []
           statements: []
-          monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
           current_payment_due_date: "2023-06-12"
@@ -523,7 +503,6 @@ types:
           repayment_bank_details: null
           transactions: []
           statements: []
-          monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
           current_payment_due_date: "2023-06-12"
@@ -563,7 +542,6 @@ types:
           repayment_bank_details: $commons.BankAccount.Default
           transactions: []
           statements: []
-          monthly_payment: 124425
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
           current_payment_due_date: "2023-06-12"
