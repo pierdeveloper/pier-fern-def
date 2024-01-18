@@ -14,7 +14,7 @@ Webhooks include a JWT in the `pier-webhook-verification` header. The JWT payloa
 
 To ensure the payload is sourced from Pier:
 
-1. The JWT should be verified using a library for your stack and the Pier public key (see [`/configuration/webhook-verification`](/api-reference/configuration/verify-a-webhook-with-pier-public-key)).
+1. The JWT should be verified using a library for your stack and the Pier public key (see [`/configuration/webhook-verification`](/api-reference/configuration/verify-a-webhook-with-pier-public-key)). You should replace \n with newlines in the public key before using it (e.g. `.replace(/\\n/g, "\n");`).
 1. Extract the payload from the JWT.
 1. Extract the SHA256 signature from the JWT payload `request_body_sha256` field.
 1. Compute the SHA256 signature of the webhook payload.
