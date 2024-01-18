@@ -13,15 +13,34 @@ The sandbox is designed to mimic the production environment, with a few exceptio
 
 ## Postman Collection
 
-# TODO: update this section with new postman collection; pre-request script reference; and new variable setup; talk about hitting token endpoint
-
-You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/14754440-cf96aaa5-d588-4a09-b4a0-66c32b77e33c?action=share&creator=14754440) to immediately start interacting with the API. You'll need to set a few variables to get started:
+You can fork our [Postman Collection](https://www.postman.com/martian-comet-959825/workspace/pier-public/collection/30375005-403d3b8d-925c-4f59-86c0-6e701a2ec6d4?action=share&creator=30375005) to immediately start interacting with the API. You'll need to set a few variables to get started:
 
 | Variable   | Description       |
 |------------|-------------------|
-| `client_id` | Your API client ID |
-| `api_secret` | Your API secret     |
-| `base_url`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
+| `clientId` | Your API client ID (add this to the collection level `Variables`) |
+| `secret` | Your API secret (add this to the collection level `Variables`)     |
+| `token` | The JWT token you get back from the `/token` endpoint (this goes in the `Authorization` header of each request; the `Pre-request Script` will set/update it for you) |
+| `baseUrl`  | This should generally be set to `https://sandbox.pier-finance.com/api` |
+
+When you open the collection click on the top level titled `Pier Api` and choose `Variables`. Create the variables `clientId`/`secret` and set the `Current value` field (prevents credentials leaking). You are good to go! The `Pre-request Script` will now automatically fill out the `token` variable for each request:
+
+```javascript
+pm.sendRequest({
+  url:  pm.collectionVariables.get('baseUrl') + '/token',
+  method: 'POST',
+  header: {
+    'Content-Type': 'application/json'
+  },
+  body: {
+    mode: 'raw',
+    raw: JSON.stringify({client_id: pm.collectionVariables.get('clientId'), secret: pm.collectionVariables.get('secret')})
+  }
+}, function (err, res) {
+    pm.collectionVariables.set('token', res.json().token);
+});
+```
+
+This is a convenience that sets the token automatically each request and is simply calling the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint like you would in your application.
 
 ## Authentication
 
