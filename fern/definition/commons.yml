@@ -241,3 +241,7 @@ errors:
   UnauthorizedError:
     status-code: 401
     type: ErrorBody
+
+  InvalidLendingDetailsError:
+    status-code: 400
+    type: ErrorBody

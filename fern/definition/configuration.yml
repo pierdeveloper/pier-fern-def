@@ -10,7 +10,7 @@ service:
   base-path: /configuration
   auth: true
   endpoints:
-    create:
+    create_webhook:
       display-name: Set webhook URL
       docs: Set a url to receive webhook events from Pier.
       path: "/webhook"
@@ -31,7 +31,7 @@ service:
           response:
             body: Ok.
 
-    delete:
+    delete_webhook:
       display-name: Remove a webhook
       docs: Delete the url that was set to receive webhook events from Pier.
       path: "/webhook"
@@ -42,7 +42,7 @@ service:
           response:
             body: Ok.
 
-    verification:
+    webhook_verification:
       display-name: Verify a webhook with Pier public key
       docs: The Pier public key to use to verify webhook signatures.
       path: "/webhook-verification"
@@ -53,9 +53,61 @@ service:
             body:
               public_key: "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ\njkdfhdfjskfhsd==\n-----END PUBLIC KEY-----"
 
+    set_lending_details:
+      display-name: Set lending details
+      docs: Only valid in Pilot Mode
+      path: "/lending_details"
+      method: POST
+      request:
+        name: SetLendingDetailsRequest
+        body: LendingDetails
+      response:
+        type: LendingDetails
+      errors:
+        - commons.InvalidLendingDetailsError
+      examples:
+        - request: $LendingDetails.Default
+          response:
+            body: $LendingDetails.Default
+
+    delete_lending_details:
+      display-name: Remove lending details
+      docs: Only valid when lending through Pier.
+      path: "/lending_details"
+      method: DELETE
+      response: string
+      errors:
+        - commons.InvalidLendingDetailsError
+      examples:
+        - request:
+          response:
+            body: Ok.
+
 types:
   VerificationResponse:
     properties:
         public_key:
             type: string
             docs: The `public_key` to use to verify Pier webhook signatures
+  LendingDetails:
+    properties:
+      address:
+        type: commons.Address
+        docs: Your address as lender of record
+      cs_phone:
+        type: string
+        docs: Your customer service phone number
+      cs_email:
+        type: string
+        docs: Your customer service email
+    examples:
+      - name: Default
+        value:
+          address:
+            line_1: "123 Main St"
+            line_2: "Suite 100"
+            city: "San Francisco"
+            state: "CA"
+            zip: "94105"
+          cs_phone: "415-555-5555"
+          cs_email: "support@example.com"
