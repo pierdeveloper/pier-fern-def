@@ -34,7 +34,7 @@ jobs:
 
       - name: PR OpenAPI docs
         run: |
-          git clone "https://${secrets.OPENAPI_REPO_PAT}@github.com/pierdeveloper/pierapi-openapi.git"
+          git clone https://${secrets.OPENAPI_REPO_PAT}@github.com/pierdeveloper/pierapi-openapi.git
           cd pierapi-openapi
           git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           rm openapi.yml -f
