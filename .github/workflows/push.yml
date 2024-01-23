@@ -34,7 +34,11 @@ jobs:
 
       - name: PR OpenAPI docs
         run: |
+<<<<<<< Updated upstream
           git clone https://github.com/pierdeveloper/pierapi-openapi.git
+=======
+          git clone "https://${secrets.OPENAPI_REPO_PAT}@github.com/pierdeveloper/pierapi-openapi.git"
+>>>>>>> Stashed changes
           cd pierapi-openapi
           git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           rm openapi.yml -f
