@@ -36,8 +36,6 @@ jobs:
         run: |
           git clone https://${{secrets.OPENAPI_REPO_PAT}}@github.com/pierdeveloper/pierapi-openapi.git
           cd pierapi-openapi
-          git config user.email "mike.jannain@pier-finance.com"
-          git config user.name "MJ"
           git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           rm openapi.yml -f
           cp ../openapi/openapi.yml .
@@ -45,3 +43,5 @@ jobs:
           git commit -m "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}"
           gh pr create --title "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --body "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --head "docsupdate-${{ github.run_id }}-${{ github.run_attempt }}" --base main
           gh pr merge --squash --delete-branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
