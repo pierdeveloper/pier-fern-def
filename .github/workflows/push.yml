@@ -34,8 +34,7 @@ jobs:
 
       - name: PR OpenAPI docs
         run: |
-          # TODO: is ssh needed?
-          git clone git@github.com:pierdeveloper/pierapi-openapi.git
+          git clone https://github.com/pierdeveloper/pierapi-openapi.git
           cd pierapi-openapi
           git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           rm openapi.yml -f
