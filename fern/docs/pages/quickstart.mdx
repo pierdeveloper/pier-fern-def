@@ -42,6 +42,19 @@ pm.sendRequest({
 
 This is a convenience that sets the token automatically each request and is simply calling the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint like you would in your application.
 
+## OpenAPI Client Generation
+
+Please see our [OpenAPI Spec Repo](https://github.com/pierdeveloper/pierapi-openapi) to access our `openapi.yml` spec file and generate a client in your language of choice. The following is an example on how to generate the typescript-axios SDK using openapi-generator on Mac:
+
+```shell
+brew install openapi-generator
+openapi-generator generate \
+  -i sdk-api.yaml \
+  -g typescript-axios \
+  -o ./stage-typescript \
+  --additional-properties=npmName=stage-typescript,supportsES6=true
+```
+
 ## Authentication
 
 Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
