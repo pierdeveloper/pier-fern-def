@@ -36,6 +36,8 @@ jobs:
         run: |
           git clone https://${{secrets.OPENAPI_REPO_PAT}}@github.com/pierdeveloper/pierapi-openapi.git
           cd pierapi-openapi
+          git config user.email "mike.jannain@pier-finance.com"
+          git config user.name "MJ"
           git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           rm openapi.yml -f
           cp ../openapi/openapi.yml .
