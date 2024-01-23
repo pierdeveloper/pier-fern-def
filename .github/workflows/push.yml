@@ -31,3 +31,16 @@ jobs:
         uses: readmeio/rdme@v8
         with:
           rdme: openapi openapi/openapi.yml --key=${{ secrets.README_API_KEY }} --id=64681e7578f3e900117d08bc
+
+      - name: PR OpenAPI docs
+        run: |
+          # TODO: is ssh needed?
+          git clone git@github.com:pierdeveloper/pierapi-openapi.git
+          cd pierapi-openapi
+          git checkout -b docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
+          rm openapi.yml
+          cp ../openapi/openapi.yml .
+          git add .
+          git commit -m "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}"
+          gh pr create --title "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --body "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --head "docsupdate-${{ github.run_id }}-${{ github.run_attempt }}" --base main
+          gh pr merge --squash --delete-branch
