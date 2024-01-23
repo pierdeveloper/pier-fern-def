@@ -42,7 +42,7 @@ jobs:
           rm openapi.yml -f
           cp ../openapi/openapi.yml .
           git add .
-          git commit -m "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}"
+          git commit --allow-empty -m "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}"
           git push -u origin docsupdate-${{ github.run_id }}-${{ github.run_attempt }}
           gh pr create --title "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --body "Update OpenAPI docs from ${GITHUB_REPOSITORY}@${GITHUB_SHA}" --head "docsupdate-${{ github.run_id }}-${{ github.run_attempt }}" --base main
           gh pr merge --squash --delete-branch
