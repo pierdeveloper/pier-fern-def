@@ -12,6 +12,7 @@ service:
   endpoints:
     create_webhook:
       display-name: Set webhook URL
+      docs: Set a url to receive webhook events from Pier.
       path: "/webhook"
       method: POST
       request:
@@ -32,6 +33,7 @@ service:
 
     delete_webhook:
       display-name: Remove a webhook
+      docs: Delete the url that was set to receive webhook events from Pier.
       path: "/webhook"
       method: DELETE
       response: string
@@ -42,6 +44,7 @@ service:
 
     webhook_verification:
       display-name: Verify a webhook with Pier public key
+      docs: The Pier public key to use to verify webhook signatures.
       path: "/webhook-verification"
       method: GET
       response: VerificationResponse
