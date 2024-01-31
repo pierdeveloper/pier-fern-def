@@ -15,8 +15,8 @@ navigation:
         path: ./docs/pages/webhooks.mdx
   - section: Guides
     contents:
-      - page: Pilot Mode
-        path: ./docs/pages/pilot-mode.mdx
+      - page: Starter Mode
+        path: ./docs/pages/starter-mode.mdx
       - page: KYC
         path: ./docs/pages/kyc.mdx
       - page: Line of Credit program
