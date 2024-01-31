@@ -36,7 +36,8 @@ service:
 
     retrieveConsumerCoverage:
       display-name: Retrieve consumer lending coverage
-      docs: Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your
+      docs: > 
+      Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your
         state coverage and compliant loan thresholds based on your use case. We configure this based on your licensing
         and compliance setup, upon our review to ensure you're compliant with state and federal requirements.
       path: /coverage/consumer
