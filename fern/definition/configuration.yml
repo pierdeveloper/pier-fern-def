@@ -55,7 +55,7 @@ service:
 
     set_lending_details:
       display-name: Set lending details
-      docs: Only valid in Pilot Mode
+      docs: Only valid in Starter Mode
       path: "/lending_details"
       method: POST
       request:
