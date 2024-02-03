@@ -49,6 +49,8 @@ This is a convenience that sets the token automatically each request and is simp
 
 ## OpenAPI Client Generation
 
+### Generation
+
 Please see our [OpenAPI Spec Repo](https://github.com/pierdeveloper/pierapi-openapi) to access our `openapi.yml` spec file and generate a client in your language of choice. The following is an example on how to generate the `typescript-axios` SDK using `openapi-generator` on Mac:
 
 ```shell
@@ -58,6 +60,51 @@ openapi-generator generate \
   -g typescript-axios \
   -o ./pier-typescript \
   --additional-properties=supportsES6=true
+```
+
+### Utilization
+
+Here is an example of how to use the generated `typescript-axios` SDK:
+```typescript
+import {
+        Configuration,
+        AuthApi,
+        BorrowersApi
+        // Import each api needed
+} from "./pier-typescript";
+
+const PIER_API_BASE_PATH = "https://sandbox.pier-finance.com/api";
+
+const configuration = new Configuration({
+    basePath: PIER_API_BASE_PATH
+});
+
+const authApi = new AuthApi(configuration);
+
+(async () => {
+    // Get bearer token
+    const {data: {token}} = await authApi.authGetToken({
+            client_id: "<CLIENT_ID>",
+            secret: "<SECRET>"
+        });
+
+    // Instantiate each api needed
+    const borrowersApi = new BorrowersApi(new Configuration({
+        basePath: PIER_API_BASE_PATH,
+        // Can set token here but need to instantiate a new client when auth runs out in 24h
+        // accessToken: token
+    }));
+
+    // Call endpoints
+    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({
+        headers: {
+            // Can set the token each request and update it regularly to not have to worry about expiration
+            Authorization: `Bearer ${token}`
+        }
+    });
+
+    console.log("List of borrowers: ", borrowers);
+})();
 ```
 
 ## Authentication
