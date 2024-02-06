@@ -106,8 +106,8 @@ api.interceptors.response.use(
 const getAccessToken = async () => {
     try {
         const {data: {token}} = await authApi.authGetToken({
-            client_id: "d2ed4914d47f4788bd4c79a59676a270",
-            secret: "test_4ed91c415d72434ca7d402d88a07c1de"
+            client_id: "<CLIENT_ID>",
+            secret: "<SECRET>"
         });
         accessToken = `Bearer ${token}`;
     } catch (error) {
