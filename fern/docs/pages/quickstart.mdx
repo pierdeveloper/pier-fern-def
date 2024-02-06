@@ -66,12 +66,8 @@ openapi-generator generate \
 
 Here is an example of how to use the generated `typescript-axios` SDK:
 ```typescript
-import {
-        Configuration,
-        AuthApi,
-        BorrowersApi
-        // Import each api needed
-} from "./pier-typescript";
+import axios from 'axios';
+import {Configuration, AuthApi, BorrowersApi} from "./pier-typescript";
 
 const PIER_API_BASE_PATH = "https://sandbox.pier-finance.com/api";
 
@@ -79,28 +75,51 @@ const configuration = new Configuration({
     basePath: PIER_API_BASE_PATH
 });
 
+const api = axios.create({baseURL: PIER_API_BASE_PATH});
+
 const authApi = new AuthApi(configuration);
 
-(async () => {
-    // Get bearer token
-    const {data: {token}} = await authApi.authGetToken({
-            client_id: "<CLIENT_ID>",
-            secret: "<SECRET>"
-        });
-
-    // Instantiate each api needed
-    const borrowersApi = new BorrowersApi(new Configuration({
-        basePath: PIER_API_BASE_PATH,
-        // Can set token here but need to instantiate a new client when auth runs out in 24h
-        // accessToken: token
-    }));
-
-    // Call endpoints
-    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({
-        headers: {
-            // Can set the token each request and update it regularly to not have to worry about expiration
-            Authorization: `Bearer ${token}`
+/* This section is useful to handle refreshing the token */
+let accessToken: string;
+api.interceptors.request.use(
+    async (config) => {
+        if (!accessToken) {
+            await getAccessToken();
         }
+        config.headers.Authorization = accessToken;
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            await getAccessToken();
+            return axios(originalRequest);
+        }
+        return Promise.reject(error);
+    }
+);
+const getAccessToken = async () => {
+    try {
+        const {data: {token}} = await authApi.authGetToken({
+            client_id: "d2ed4914d47f4788bd4c79a59676a270",
+            secret: "test_4ed91c415d72434ca7d402d88a07c1de"
+        });
+        accessToken = `Bearer ${token}`;
+    } catch (error) {
+        console.error("Error getting access token: ", error );
+    }
+}
+
+(async () => {
+    const borrowersApi = new BorrowersApi(new Configuration({
+    }), PIER_API_BASE_PATH, api);
+
+    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({
     });
 
     console.log("List of borrowers: ", borrowers);
