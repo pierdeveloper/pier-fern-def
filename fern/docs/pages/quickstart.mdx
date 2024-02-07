@@ -124,6 +124,8 @@ const getAccessToken = async () => {
     const borrowersApi = new BorrowersApi(
         new Configuration({}),
         PIER_API_BASE_PATH,
+        // Pass the custom axios instance to all apis 
+        // except AuthApi to handle bearer token refresh
         api
     );
 
