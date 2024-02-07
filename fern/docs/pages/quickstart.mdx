@@ -49,6 +49,8 @@ This is a convenience that sets the token automatically each request and is simp
 
 ## OpenAPI Client Generation
 
+### Generation
+
 Please see our [OpenAPI Spec Repo](https://github.com/pierdeveloper/pierapi-openapi) to access our `openapi.yml` spec file and generate a client in your language of choice. The following is an example on how to generate the `typescript-axios` SDK using `openapi-generator` on Mac:
 
 ```shell
@@ -58,6 +60,79 @@ openapi-generator generate \
   -g typescript-axios \
   -o ./pier-typescript \
   --additional-properties=supportsES6=true
+```
+
+### Utilization
+
+Here is an example of how to use the generated `typescript-axios` SDK:
+```typescript
+import axios from "axios";
+import {
+    Configuration,
+    AuthApi,
+    BorrowersApi
+    // Any other apis you will use
+} from "./pier-typescript";
+
+const PIER_API_BASE_PATH = "https://sandbox.pier-finance.com/api";
+
+const configuration = new Configuration({
+    basePath: PIER_API_BASE_PATH
+});
+
+const api = axios.create({baseURL: PIER_API_BASE_PATH});
+
+const authApi = new AuthApi(configuration);
+
+/* This section is useful to handle refreshing the token */
+let accessToken: string;
+api.interceptors.request.use(
+    async (config) => {
+        if (!accessToken) {
+            await getAccessToken();
+        }
+        config.headers.Authorization = accessToken;
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            await getAccessToken();
+            return axios(originalRequest);
+        }
+        return Promise.reject(error);
+    }
+);
+const getAccessToken = async () => {
+    try {
+        const {data: {token}} = await authApi.authGetToken({
+            client_id: "<CLIENT_ID>",
+            secret: "<SECRET>"
+        });
+        accessToken = `Bearer ${token}`;
+    } catch (error) {
+        console.error("Error getting access token: ", error );
+    }
+}
+
+(async () => {
+    const borrowersApi = new BorrowersApi(
+        new Configuration({}),
+        PIER_API_BASE_PATH,
+        // Pass the custom axios instance to all apis
+        // except AuthApi to handle bearer token refresh
+        api
+    );
+
+    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({});
+
+    console.log("List of borrowers: ", borrowers);
+})();
 ```
 
 ## Authentication
