@@ -67,7 +67,12 @@ openapi-generator generate \
 Here is an example of how to use the generated `typescript-axios` SDK:
 ```typescript
 import axios from "axios";
-import {Configuration, AuthApi, BorrowersApi} from "./pier-typescript";
+import {
+    Configuration,
+    AuthApi,
+    BorrowersApi
+    // Any other apis you will use
+} from "./pier-typescript";
 
 const PIER_API_BASE_PATH = "https://sandbox.pier-finance.com/api";
 
@@ -116,11 +121,13 @@ const getAccessToken = async () => {
 }
 
 (async () => {
-    const borrowersApi = new BorrowersApi(new Configuration({
-    }), PIER_API_BASE_PATH, api);
+    const borrowersApi = new BorrowersApi(
+        new Configuration({}),
+        PIER_API_BASE_PATH,
+        api
+    );
 
-    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({
-    });
+    const {data: borrowers} = await borrowersApi.borrowersListAllBorrowers({});
 
     console.log("List of borrowers: ", borrowers);
 })();
