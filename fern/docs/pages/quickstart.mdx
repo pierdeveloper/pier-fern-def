@@ -45,7 +45,7 @@ pm.sendRequest({
 });
 ```
 
-This is a convenience that sets the token automatically each request and is simply calling the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint like you would in your application.
+This is a convenience that sets the token automatically each request and is simply calling the [`/token`](/api-reference/auth/get-token) endpoint like you would in your application.
 
 ## OpenAPI Client Generation
 
@@ -137,7 +137,7 @@ const getAccessToken = async () => {
 
 ## Authentication
 
-Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-a-jwt-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
+Pier uses bearer auth to authenticate API requests. Call the [`/token`](/api-reference/auth/get-token) endpoint using `client_id` and `secret` in the post body to get a JWT token. The token should be included in the `Authorization` header of all subsequent requests in the format of `Bearer ${token}`.
 
 ## Rate limits and retrying API requests
 
