@@ -93,4 +93,4 @@ The Pier Line of Credit Facility resource is the source of truth for the line of
 
 ## Drawdowns
 
-The borrower submits a drawdown request, calling the [`/disbursements`](/api-reference/facilities/create-a-disbursement-for-a-facility) endpoint will process the Disbursement ACH to the receiver's account (either the borrower or 3rd party) and update the Facility balance. If a Disbursement request will fail if the amount in the request exceeds the available balance.
+The borrower submits a drawdown request, calling the [`/disbursements`](/api-reference/facilities/disburse) endpoint will process the Disbursement ACH to the receiver's account (either the borrower or 3rd party) and update the Facility balance. If a Disbursement request will fail if the amount in the request exceeds the available balance.
