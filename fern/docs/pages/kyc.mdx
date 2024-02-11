@@ -16,12 +16,12 @@ If a borrower does not pass Pier's KYC check, the `KYC_NOT_APPROVED` error will 
 }
 ```
 
-You can bypass Pier's KYC by having your KYC process be approved by Pier's compliance team. In this case, you'll just need to pass the `kyc_completion_date` representing the date you completed KYC in the [`/borrowers/consumer`](/api-reference/borrowers/create-a-consumer-borrower) API call.
+You can bypass Pier's KYC by having your KYC process be approved by Pier's compliance team. In this case, you'll just need to pass the `kyc_completion_date` representing the date you completed KYC in the [`/borrowers/consumer`](/api-reference/borrowers/create-consumer-borrower) API call.
 
 ### Sandbox
 
 In sandbox mode, Pier will process a synthetic OFAC and AML screening for the borrower after you create an Application, but the result will always be approval.
-You can override a borrower's status at borrower creation time or any time for testing purposes. Please the [`/borrowers/consumer`](/api-reference/borrowers/createconsumerborrower#create_consumer_borrower-request-kyc_status) creation and [`/borrowers/consumer`](/api-reference/borrowers/update-a-consumer-borrower#update_consumer_borrower-request-kyc_status) update endpoints for more information.
+You can override a borrower's status at borrower creation time or any time for testing purposes. Please see the [`/borrowers/consumer`](/api-reference/borrowers/create-consumer-borrower#request.body.kyc_status) creation and [`/borrowers/consumer`](/api-reference/borrowers/update-a-consumer-borrower#update_consumer_borrower-request-kyc_status) update endpoints for more information.
 If you have set a status for testing, Pier will short-circuit the synthetic screening. In all cases, Pier will send a webhook for the status change if you have an [endpoint configured](/api-reference/configuration/set-webhook-url).
 
 The best practice is to configure a webhook and wait for the KYC result before attempting to approve an application. In Sandbox mode, if you wish to test application creation and approval back-to-back without processing a webhook, simply set the borrower's KYC status and there is no need to wait.

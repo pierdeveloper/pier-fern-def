@@ -13,7 +13,7 @@ service:
   base-path: /token
   auth: false
   endpoints:
-    get_token:
+    getToken:
       display-name: Get a JWT token
       docs: >
         Get a JWT token for use with the Pier API by passing in a valid `client_id`/`secret` in the body
