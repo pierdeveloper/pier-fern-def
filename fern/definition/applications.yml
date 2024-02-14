@@ -122,6 +122,41 @@ service:
               - $Application.ApprovedApplication
               - $Application.PendingApplication
 
+    checkOffers:
+      display-name: Check offers
+      docs: |
+        Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not.
+      path: "/check_offers"
+      method: POST
+      request:
+        name: CheckOffersRequest
+        body:
+          properties:
+            state:
+              type: string
+              docs: The state to check the offer(s) for.
+            offers:
+              type: list<Offer>
+              docs: A list of Offer objects, each with a unique number of id.
+      response:
+        type: list<CheckResponse>
+      errors:
+        - commons.InvalidInputError
+        - commons.UnauthorizedError
+      examples:
+        - request:
+            state: "CA"
+            offers:
+              - $Offer.Loan
+          response:
+            body:
+              - offer_id: "offer_1"
+                is_compliant: true
+                apr: null
+              - offer_id: "offer_2"
+                is_compliant: false
+                apr: null
+
 types:
   ApplicationId:
     type: string
@@ -514,3 +549,15 @@ types:
       has_bankruptcy_history:
         type: optional<boolean>
         docs: Whether or not there is bankruptcy history
+
+  CheckResponse:
+    properties:
+      offer_id:
+        type: string
+        docs: The unique id of the offer.
+      is_compliant:
+        type: boolean
+        docs: Boolean indicating whether the offer passes our limits.
+      apr:
+        type: optional<integer>
+        docs: The annual percentage rate for the offer. Null if not compliant or not applicable.
