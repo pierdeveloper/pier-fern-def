@@ -134,28 +134,40 @@ service:
           properties:
             state:
               type: string
-              docs: The state to check the offer(s) for.
+              docs: The state the borrower is in (2 chars)
             offers:
-              type: list<Offer>
-              docs: A list of Offer objects, each with a unique number of id.
-      response:
-        type: list<CheckResponse>
+              type: list<CheckOffer>
+              docs: A list of CheckOffer objects, each uniquely identified by an id.
+      response: CheckOffersResponse
       errors:
         - commons.InvalidInputError
         - commons.UnauthorizedError
       examples:
         - request:
-            state: "CA"
+            state: AK
             offers:
-              - $Offer.Loan
+              - id: "25"
+                amount: 300000
+                interest_rate: 750
+                term: 24
+                origination_fee: 150
+                first_payment_date: "2023-10-15"
+                repayment_frequency: monthly
+              - id: "abc"
+                amount: 300000
+                interest_rate: 750
+                term: 24
+                origination_fee: 150
+                first_payment_date: "2024-10-15"
+                repayment_frequency: monthly
           response:
             body:
-              - offer_id: "offer_1"
-                is_compliant: true
-                apr: null
-              - offer_id: "offer_2"
+              "25":
                 is_compliant: false
                 apr: null
+              "abc":
+                is_compliant: true
+                apr: 817
 
 types:
   ApplicationId:
@@ -550,14 +562,38 @@ types:
         type: optional<boolean>
         docs: Whether or not there is bankruptcy history
 
+  CheckOffer:
+    properties:
+      id:
+        type: string
+        docs: Unique identifier for the offer used in the check_offers endpoint.
+      amount:
+        type: integer
+        docs: The amount (in cents) of the offer (e.g., 300000 for $3,000.00).
+      interest_rate:
+        type: integer
+        docs: The interest rate (in basis points) charged on the offer (e.g., 750 for 7.50%).
+      term:
+        type: integer
+        docs: The term of the offer in months (e.g., 24 for a 24-month term).
+      origination_fee:
+        type: integer
+        docs: The origination fee charged to originate the offer in basis points (e.g., 150 for 1.50%).
+      first_payment_date:
+        type: string
+        docs: The date of the first payment, in ISO 8601 format (e.g., "2023-10-15"). This date must be in the future, and is used to calculate the APR.
+      repayment_frequency:
+        type: RepaymentFrequency
+        docs: The repayment frequency for the offer. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly.
+
   CheckResponse:
     properties:
-      offer_id:
-        type: string
-        docs: The unique id of the offer.
       is_compliant:
         type: boolean
         docs: Boolean indicating whether the offer passes our limits.
       apr:
         type: optional<integer>
         docs: The annual percentage rate for the offer. Null if not compliant or not applicable.
+
+  CheckOffersResponse:
+    type: map<string, CheckResponse>
