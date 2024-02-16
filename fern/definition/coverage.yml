@@ -205,21 +205,6 @@ types:
           credit_score_too_low: >
             Your credit score does not meet our requirement
 
-  RepaymentFrequency:
-    enum:
-      - value: weekly
-        docs: Weekly payment period
-      - value: biweekly
-        docs: Biweekly payment period
-      - value: monthly
-        docs: Monthly payment period
-      - value: semi_monthly_first_15th
-        docs: Semi-monthly payment period, with payments due on the 1st and 15th of each month
-      - value: semi_monthly_last_15th
-        docs: Semi-monthly payment period, with payments due on the 15th and last day of each month
-      - value: semi_monthly
-        docs: Semi-monthly payment period
-        
   CheckOffer:
     properties:
       id:
@@ -241,7 +226,7 @@ types:
         type: string
         docs: The date of the first payment, in ISO 8601 format (e.g., "2023-10-15"). This date must be in the future, and is used to calculate the APR.
       repayment_frequency:
-        type: RepaymentFrequency
+        type: applications.RepaymentFrequency
         docs: The repayment frequency for the offer. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly.
 
   CheckResponse:
