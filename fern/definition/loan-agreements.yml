@@ -27,6 +27,9 @@ service:
             application_id:
               type: applications.ApplicationId
               docs: The `application_id` of the application to create the loan agreement for
+            accepted_offer_id:
+              type: applications.OfferId
+              docs: The `accepted_offer_id` of the application's offer to create the loan agreement for
       response: LoanAgreement
       errors:
         - commons.ApplicationNotFoundError
@@ -34,6 +37,7 @@ service:
       examples:
         - request:
             application_id: $applications.ApplicationId.Example0
+            accepted_offer_id: $applications.OfferId.Example0
           response:
             body: $LoanAgreement.Pending
 

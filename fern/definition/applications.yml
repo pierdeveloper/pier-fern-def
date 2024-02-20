@@ -35,7 +35,7 @@ service:
                 loan or credit line amount (in cents).
             third_party_disbursement_destination:
               type: optional<string>
-              docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) receiving the funds is
+              docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) is the person receiving the funds
       response: Application
       errors:
         - commons.InvalidInputError
@@ -54,7 +54,11 @@ service:
       path-parameters:
         application_id: ApplicationId
       method: POST
-      request: list<Offer>
+      request:
+        name: ApproveApplicationRequest
+        body:
+          properties:
+            offers: list<Offer>
       response: Application
       errors:
         - commons.InvalidInputError
@@ -63,7 +67,8 @@ service:
         - path-parameters:
             application_id: $ApplicationId.Example0
           request:
-            - $Offer.Loan
+            offers:
+              - $Offer.Loan
           response:
             body: $Application.ApprovedApplication
 
@@ -129,6 +134,12 @@ types:
       - name: Example0
         value: app_f0467657bba948e6a87292e182132848
 
+  OfferId:
+    type: string
+    examples:
+      - name: Example0
+        value: off_86c05092a4384d89b03ef514ea4fee31
+
   ApplicationStatus:
     enum:
       - value: pending
@@ -153,6 +164,7 @@ types:
       - name: LineOfCredit
         value:
           type: revolving_line_of_credit_offer
+          id: $OfferId.Example0
           amount: 1000000
           apr: 0
           annual_fee: 0
@@ -170,6 +182,7 @@ types:
       - name: Loan
         value:
           type: loan_offer
+          id: $OfferId.Example0
           amount: 1000000
           grace_period:
             term: 0
@@ -185,6 +198,7 @@ types:
       - name: SecuredLoan
         value:
           type: loan_offer
+          id: $OfferId.Example0
           amount: 1000000
           grace_period:
             term: 0
@@ -201,6 +215,7 @@ types:
       - name: MerchantAdvanceOfferSchema
         value:
           type: merchant_advance_offer
+          id: $OfferId.Example0
           amount: 1000000
           factor_rate: 150
           payment_period: monthly
@@ -287,6 +302,7 @@ types:
 
   LineOfCreditOffer:
     properties:
+      id: OfferId
       amount:
         type: integer
         docs: The amount (in cents) of the credit line offer (e.g. '200000' for
@@ -329,6 +345,7 @@ types:
 
   LoanOffer:
     properties:
+      id: OfferId
       amount:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
@@ -357,6 +374,7 @@ types:
 
   MerchantAdvanceOfferSchema:
     properties:
+      id: OfferId
       amount:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)

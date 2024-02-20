@@ -502,7 +502,7 @@ types:
         docs: The borrower's last name
       kyc_completion_date:
         type: optional<string>
-        docs: Date kyc completed on the borrower (YYYY-MM-DD)
+        docs: Date kyc completed on the borrower, only required if Pier is not performing KYC (YYYY-MM-DD)
       kyc_status:
         type: optional<KycStatus>
         docs: Kyc status of a consumer (*sandbox only*)
