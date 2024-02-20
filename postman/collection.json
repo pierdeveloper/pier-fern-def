@@ -1,0 +1,3227 @@
+{
+  "info": {
+    "name": "Pier API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": null
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://production.pier-finance.com/api",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "_type": "container",
+      "description": "Applications represent the credit application for a borrower. \nApplications must be created for a given borrower, and one borrower can have many applications. \nOnce an application is created, it must either be approved or rejected.\nCreating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.\n",
+      "name": "Applications",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Create an application",
+          "request": {
+            "description": null,
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"requested_amount\": 200000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": null,
+                "url": {
+                  "raw": "{{baseUrl}}/applications",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "applications"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"requested_amount\": 200000\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"rejection_reasons\": [],\n    \"status\": \"pending\",\n    \"lender_of_record\": \"lender\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Approve an application",
+          "request": {
+            "description": null,
+            "url": {
+              "raw": "{{baseUrl}}/applications/:application_id/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                ":application_id",
+                "approve"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "description": null,
+                  "value": "app_f0467657bba948e6a87292e182132848"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"offers\": [\n        {\n            \"type\": \"loan_offer\",\n            \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n            \"amount\": 1000000,\n            \"grace_period\": {\n                \"term\": 0,\n                \"interest_rate\": 0\n            },\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"payment_period\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"first_payment_date\": \"2022-12-31\",\n            \"loan_term\": {\n                \"term_type\": \"months\",\n                \"term\": 36\n            }\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": null,
+                "url": {
+                  "raw": "{{baseUrl}}/applications/:application_id/approve",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "approve"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "application_id",
+                      "description": null,
+                      "value": "app_f0467657bba948e6a87292e182132848"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"offers\": [\n        {\n            \"type\": \"loan_offer\",\n            \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n            \"amount\": 1000000,\n            \"grace_period\": {\n                \"term\": 0,\n                \"interest_rate\": 0\n            },\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"payment_period\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"first_payment_date\": \"2022-12-31\",\n            \"loan_term\": {\n                \"term_type\": \"months\",\n                \"term\": 36\n            }\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"offers\": [\n        {\n            \"type\": \"revolving_line_of_credit_offer\",\n            \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n            \"amount\": 1000000,\n            \"apr\": 0,\n            \"annual_fee\": 0,\n            \"billing_cycle\": 30,\n            \"finance_charge\": 0,\n            \"grace_period\": {\n                \"term\": 21,\n                \"interest_rate\": 0\n            },\n            \"interest_rate\": 0,\n            \"late_payment_fee\": 0,\n            \"origination_fee\": 0,\n            \"minimum_payment\": {\n                \"type\": \"interest_plus_percentage_of_principal\",\n                \"value\": 500\n            }\n        }\n    ],\n    \"lender_of_record\": \"lender\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Reject an application",
+          "request": {
+            "description": "Updates the status of a credit application to `rejected` and returns a user readable rejection reason, to be used in the adverse action notice",
+            "url": {
+              "raw": "{{baseUrl}}/applications/:application_id/reject",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                ":application_id",
+                "reject"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "description": null,
+                  "value": "app_f0467657bba948e6a87292e182132848"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Updates the status of a credit application to `rejected` and returns a user readable rejection reason, to be used in the adverse action notice",
+                "url": {
+                  "raw": "{{baseUrl}}/applications/:application_id/reject",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "applications",
+                    ":application_id",
+                    "reject"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "application_id",
+                      "description": null,
+                      "value": "app_f0467657bba948e6a87292e182132848"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"rejection_reasons\": [\n        \"bank_balance_too_low\"\n    ],\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_1677bbbaf21a4954bb114bd9c4348d8a\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"rejected\",\n    \"lender_of_record\": \"lender\",\n    \"created_on\": \"2022-12-31T02:20:35.934Z\",\n    \"decisioned_on\": \"2022-12-31T02:21:01.842Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Get an application by ID",
+          "request": {
+            "description": "Get an application by its id",
+            "url": {
+              "raw": "{{baseUrl}}/applications/:application_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications",
+                ":application_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "application_id",
+                  "description": null,
+                  "value": "app_f0467657bba948e6a87292e182132848"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Get an application by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/applications/:application_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "applications",
+                    ":application_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "application_id",
+                      "description": null,
+                      "value": "app_f0467657bba948e6a87292e182132848"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"credit_type\": \"consumer_revolving_line_of_credit\",\n    \"rejection_reasons\": [],\n    \"status\": \"approved\",\n    \"offers\": [\n        {\n            \"type\": \"revolving_line_of_credit_offer\",\n            \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n            \"amount\": 1000000,\n            \"apr\": 0,\n            \"annual_fee\": 0,\n            \"billing_cycle\": 30,\n            \"finance_charge\": 0,\n            \"grace_period\": {\n                \"term\": 21,\n                \"interest_rate\": 0\n            },\n            \"interest_rate\": 0,\n            \"late_payment_fee\": 0,\n            \"origination_fee\": 0,\n            \"minimum_payment\": {\n                \"type\": \"interest_plus_percentage_of_principal\",\n                \"value\": 500\n            }\n        }\n    ],\n    \"lender_of_record\": \"lender\",\n    \"created_on\": \"2022-12-31T01:36:52.606Z\",\n    \"decisioned_on\": \"2023-01-17T05:31:52.955Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all applications",
+          "request": {
+            "description": "List all applications associated with your account",
+            "url": {
+              "raw": "{{baseUrl}}/applications",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "applications"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List all applications associated with your account",
+                "url": {
+                  "raw": "{{baseUrl}}/applications",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "applications"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"credit_type\": \"consumer_revolving_line_of_credit\",\n        \"rejection_reasons\": [],\n        \"status\": \"approved\",\n        \"offers\": [\n            {\n                \"type\": \"revolving_line_of_credit_offer\",\n                \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n                \"amount\": 1000000,\n                \"apr\": 0,\n                \"annual_fee\": 0,\n                \"billing_cycle\": 30,\n                \"finance_charge\": 0,\n                \"grace_period\": {\n                    \"term\": 21,\n                    \"interest_rate\": 0\n                },\n                \"interest_rate\": 0,\n                \"late_payment_fee\": 0,\n                \"origination_fee\": 0,\n                \"minimum_payment\": {\n                    \"type\": \"interest_plus_percentage_of_principal\",\n                    \"value\": 500\n                }\n            }\n        ],\n        \"lender_of_record\": \"lender\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\",\n        \"decisioned_on\": \"2023-01-17T05:31:52.955Z\"\n    },\n    {\n        \"id\": \"app_f0467657bba948e6a87292e182132848\",\n        \"borrower_id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"rejection_reasons\": [],\n        \"status\": \"pending\",\n        \"lender_of_record\": \"lender\",\n        \"created_on\": \"2022-12-31T01:36:52.606Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "The auth endpoint(s) support `Bearer` JWT authentication as a strong alternative to `basic` auth. \nTo use this, you must first generate a JWT token by calling the `/token` endpoint with your API \nclient ID and API client secret. This token will expire after 24 hours, at which point you will \nneed to generate a new one.\n",
+      "name": "Auth",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Get a JWT token",
+          "request": {
+            "description": "Get a JWT token for use with the Pier API by passing in a valid `client_id`/`secret` in the body",
+            "url": {
+              "raw": "{{baseUrl}}/token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "token"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"client_id\": \"1234567890\",\n    \"secret\": \"1234567890\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Get a JWT token for use with the Pier API by passing in a valid `client_id`/`secret` in the body",
+                "url": {
+                  "raw": "{{baseUrl}}/token",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "token"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"client_id\": \"1234567890\",\n    \"secret\": \"1234567890\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Borrowers represent a legal borrower, and can either be a consumer (e.g. for personal loans and lines of credit) or a [business](notion://www.notion.so/72a5b7a8b07d4bb983ae86a6b32d6696#5261b2cf754e453c8ad40b059ac0d584) (e.g. for commercial charge cards and loans). \nCreating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.\n",
+      "name": "Borrowers",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Create a business borrower",
+          "request": {
+            "description": "Creates a business borrower. Business borrowers must have a unique EIN.",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers/business",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers",
+                "business"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"ein\": \"130256721\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Creates a business borrower. Business borrowers must have a unique EIN.",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers/business",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers",
+                    "business"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"ein\": \"130256721\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"id\": \"bor_18e5a3726b3943cda2635f40e1041ba4\",\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"ein\": \"130256721\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\",\n    \"created_on\": \"2022-12-30T07:23:36.665Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Update a business borrower",
+          "request": {
+            "description": "Updates an existing borrower. The full borrower object less a few unchangeable fields needs to be\nsupplied in the update request.",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers/business/:borrower_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers",
+                "business",
+                ":borrower_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "borrower_id",
+                  "description": null,
+                  "value": "bor_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Updates an existing borrower. The full borrower object less a few unchangeable fields needs to be\nsupplied in the update request.",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers/business/:borrower_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers",
+                    "business",
+                    ":borrower_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "borrower_id",
+                      "description": null,
+                      "value": "bor_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Market St\",\n        \"line_2\": null,\n        \"city\": \"San Francisco\",\n        \"state\": \"NJ\",\n        \"zip\": \"94133\"\n    },\n    \"business_contact\": {\n        \"first_name\": \"alex\",\n        \"last_name\": \"montana\",\n        \"phone\": \"4155555555\",\n        \"email\": \"alex@acme.co\",\n        \"title\": \"COO\"\n    },\n    \"beneficial_owners\": [\n        {\n            \"address\": {\n                \"line_1\": \"15 Market St\",\n                \"line_2\": null,\n                \"city\": \"San Francisco\",\n                \"state\": \"CA\",\n                \"zip\": \"91133\"\n            },\n            \"date_of_birth\": \"1991-12-18\",\n            \"email\": \"jdoe@acme.com\",\n            \"first_name\": \"Jane\",\n            \"last_name\": \"Dough\",\n            \"percent_ownership\": 2500,\n            \"phone\": \"4155555555\",\n            \"ssn\": \"123456789\",\n            \"id\": \"63ae91f8eae458cb0d79f77e\"\n        }\n    ],\n    \"id\": \"bor_18e5a3726b3943cda2635f40e1041ba4\",\n    \"business_name\": \"Apple Landscaping\",\n    \"business_type\": \"corporation\",\n    \"dba_name\": \"Apple Landscaping\",\n    \"ein\": \"130256721\",\n    \"incorporation_date\": \"2000-12-12\",\n    \"kyb_completion_date\": \"2022-11-15\",\n    \"phone\": \"4152556465\",\n    \"state_of_incorporation\": \"DE\",\n    \"created_on\": \"2022-12-30T07:23:36.665Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Create a consumer borrower",
+          "request": {
+            "description": "Create a consumer borrower. The created consumer resource is returned\nin the response.",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers/consumer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers",
+                "consumer"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": \"Unit 204\",\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"ssn\": \"999888777\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"kyc_status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Create a consumer borrower. The created consumer resource is returned\nin the response.",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers/consumer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers",
+                    "consumer"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": \"Unit 204\",\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"ssn\": \"999888777\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"kyc_status\": \"approved\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Update a consumer borrower",
+          "request": {
+            "description": "Updates an existing borrower. The full borrower object less a few unchangeable fields needs to be\nsupplied in the update request.",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers/consumer/:borrower_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers",
+                "consumer",
+                ":borrower_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "borrower_id",
+                  "description": null,
+                  "value": "bor_a1d0c30d77104f35b4c842b99132624e"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PATCH",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": \"Unit 204\",\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"kyc_status\": \"approved\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Updates an existing borrower. The full borrower object less a few unchangeable fields needs to be\nsupplied in the update request.",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers/consumer/:borrower_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers",
+                    "consumer",
+                    ":borrower_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "borrower_id",
+                      "description": null,
+                      "value": "bor_a1d0c30d77104f35b4c842b99132624e"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PATCH",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": \"Unit 204\",\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"kyc_status\": \"approved\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve a borrower by id",
+          "request": {
+            "description": "Retrieve one borrower by id",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers/:borrower_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers",
+                ":borrower_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "borrower_id",
+                  "description": null,
+                  "value": "bor_a1d0c30d77104f35b4c842b99132624e"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve one borrower by id",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers/:borrower_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers",
+                    ":borrower_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "borrower_id",
+                      "description": null,
+                      "value": "bor_a1d0c30d77104f35b4c842b99132624e"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"15 Main Street\",\n        \"line_2\": null,\n        \"city\": \"Austin\",\n        \"state\": \"TX\",\n        \"zip\": \"73301\"\n    },\n    \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n    \"date_of_birth\": \"1991-12-18\",\n    \"email\": \"jdough@acme.co\",\n    \"first_name\": \"Jane\",\n    \"last_name\": \"Dough\",\n    \"kyc_completion_date\": \"2022-11-15\",\n    \"created_on\": \"2022-12-31T00:58:47.828Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all borrowers",
+          "request": {
+            "description": "Retrieve all borrowers associated with your account",
+            "url": {
+              "raw": "{{baseUrl}}/borrowers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "borrowers"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve all borrowers associated with your account",
+                "url": {
+                  "raw": "{{baseUrl}}/borrowers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "borrowers"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"type\": \"business\",\n        \"address\": {\n            \"line_1\": \"15 Market St\",\n            \"line_2\": null,\n            \"city\": \"San Francisco\",\n            \"state\": \"NJ\",\n            \"zip\": \"94133\"\n        },\n        \"business_contact\": {\n            \"first_name\": \"alex\",\n            \"last_name\": \"montana\",\n            \"phone\": \"4155555555\",\n            \"email\": \"alex@acme.co\",\n            \"title\": \"COO\"\n        },\n        \"beneficial_owners\": [\n            {\n                \"address\": {\n                    \"line_1\": \"15 Market St\",\n                    \"line_2\": null,\n                    \"city\": \"San Francisco\",\n                    \"state\": \"CA\",\n                    \"zip\": \"91133\"\n                },\n                \"date_of_birth\": \"1991-12-18\",\n                \"email\": \"jdoe@acme.com\",\n                \"first_name\": \"Jane\",\n                \"last_name\": \"Dough\",\n                \"percent_ownership\": 2500,\n                \"phone\": \"4155555555\",\n                \"ssn\": \"123456789\",\n                \"id\": \"63ae91f8eae458cb0d79f77e\"\n            }\n        ],\n        \"id\": \"bor_18e5a3726b3943cda2635f40e1041ba4\",\n        \"business_name\": \"Apple Landscaping\",\n        \"business_type\": \"corporation\",\n        \"dba_name\": \"Apple Landscaping\",\n        \"ein\": \"130256721\",\n        \"incorporation_date\": \"2000-12-12\",\n        \"kyb_completion_date\": \"2022-11-15\",\n        \"phone\": \"4152556465\",\n        \"state_of_incorporation\": \"DE\",\n        \"created_on\": \"2022-12-30T07:23:36.665Z\"\n    },\n    {\n        \"type\": \"consumer\",\n        \"address\": {\n            \"line_1\": \"15 Main Street\",\n            \"line_2\": \"Unit 204\",\n            \"city\": \"Austin\",\n            \"state\": \"TX\",\n            \"zip\": \"73301\"\n        },\n        \"date_of_birth\": \"1991-12-18\",\n        \"email\": \"jdough@acme.co\",\n        \"first_name\": \"Jane\",\n        \"last_name\": \"Dough\",\n        \"ssn\": \"999888777\",\n        \"kyc_completion_date\": \"2022-11-15\",\n        \"id\": \"bor_a1d0c30d77104f35b4c842b99132624e\",\n        \"created_on\": \"2022-12-30T07:23:36.665Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Webhooks\n",
+      "name": "Configuration",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Set webhook URL",
+          "request": {
+            "description": "Set a url to receive webhook events from Pier.",
+            "url": {
+              "raw": "{{baseUrl}}/configuration/webhook",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "webhook"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"url\": \"https://example.com/webhook\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Set a url to receive webhook events from Pier.",
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/webhook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "webhook"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"url\": \"https://example.com/webhook\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "\"Ok.\"",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Remove a webhook",
+          "request": {
+            "description": "Delete the url that was set to receive webhook events from Pier.",
+            "url": {
+              "raw": "{{baseUrl}}/configuration/webhook",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "webhook"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Delete the url that was set to receive webhook events from Pier.",
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/webhook",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "webhook"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "\"Ok.\"",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Verify a webhook with Pier public key",
+          "request": {
+            "description": "The Pier public key to use to verify webhook signatures.",
+            "url": {
+              "raw": "{{baseUrl}}/configuration/webhook-verification",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "webhook-verification"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "The Pier public key to use to verify webhook signatures.",
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/webhook-verification",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "webhook-verification"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"public_key\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ\\njkdfhdfjskfhsd==\\n-----END PUBLIC KEY-----\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Set lending details",
+          "request": {
+            "description": "Only valid in Starter Mode",
+            "url": {
+              "raw": "{{baseUrl}}/configuration/lending_details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "lending_details"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"address\": {\n        \"line_1\": \"123 Main St\",\n        \"line_2\": \"Suite 100\",\n        \"city\": \"San Francisco\",\n        \"state\": \"CA\",\n        \"zip\": \"94105\"\n    },\n    \"cs_phone\": \"415-555-5555\",\n    \"cs_email\": \"support@example.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Only valid in Starter Mode",
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/lending_details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "lending_details"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"address\": {\n        \"line_1\": \"123 Main St\",\n        \"line_2\": \"Suite 100\",\n        \"city\": \"San Francisco\",\n        \"state\": \"CA\",\n        \"zip\": \"94105\"\n    },\n    \"cs_phone\": \"415-555-5555\",\n    \"cs_email\": \"support@example.com\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"address\": {\n        \"line_1\": \"123 Main St\",\n        \"line_2\": \"Suite 100\",\n        \"city\": \"San Francisco\",\n        \"state\": \"CA\",\n        \"zip\": \"94105\"\n    },\n    \"cs_phone\": \"415-555-5555\",\n    \"cs_email\": \"support@example.com\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Remove lending details",
+          "request": {
+            "description": "Only valid when lending through Pier.",
+            "url": {
+              "raw": "{{baseUrl}}/configuration/lending_details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "configuration",
+                "lending_details"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Only valid when lending through Pier.",
+                "url": {
+                  "raw": "{{baseUrl}}/configuration/lending_details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "configuration",
+                    "lending_details"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "\"Ok.\"",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. \n`min` and `max` amounts are in cents, and `max_apr` is in basis points. \nStates not yet supported are represented as an empty object\n",
+      "name": "Coverage",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Retrieve commercial lending coverage",
+          "request": {
+            "description": "Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your state coverage and compliant loan thresholds based on your use case. We configure this based on your licensing and compliance setup, upon our review to ensure you're compliant with state and federal requirements.",
+            "url": {
+              "raw": "{{baseUrl}}/coverage/commercial",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "coverage",
+                "commercial"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your state coverage and compliant loan thresholds based on your use case. We configure this based on your licensing and compliance setup, upon our review to ensure you're compliant with state and federal requirements.",
+                "url": {
+                  "raw": "{{baseUrl}}/coverage/commercial",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "coverage",
+                    "commercial"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"AL\": {\n        \"limit_1\": {\n            \"amount\": {\n                \"min\": 500000,\n                \"max\": 25000000\n            }\n        },\n        \"max_apr\": 9999,\n        \"business_types\": [\n            \"corporation\",\n            \"partnership\",\n            \"llc\",\n            \"sole_proprietorship\"\n        ]\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve consumer lending coverage",
+          "request": {
+            "description": "Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your state coverage and compliant loan thresholds based on your use case. We configure this based on your licensing and compliance setup, upon our review to ensure you're compliant with state and federal requirements.",
+            "url": {
+              "raw": "{{baseUrl}}/coverage/consumer",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "coverage",
+                "consumer"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve state-by-state consumer coverage list. The state-by-state consumer coverage list reflects your state coverage and compliant loan thresholds based on your use case. We configure this based on your licensing and compliance setup, upon our review to ensure you're compliant with state and federal requirements.",
+                "url": {
+                  "raw": "{{baseUrl}}/coverage/consumer",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "coverage",
+                    "consumer"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"AL\": {\n        \"amount_threshold\": {\n            \"min\": 5000,\n            \"max\": 5000000\n        },\n        \"apr_threshold\": {\n            \"type\": \"tiered\",\n            \"max\": []\n        },\n        \"origination_fee_threshold\": {\n            \"max\": 500\n        }\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve rejection reasons",
+          "request": {
+            "description": "Retrieve a list of valid reasons to reject an applicant, along with descriptions for each reason",
+            "url": {
+              "raw": "{{baseUrl}}/rejection_reasons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rejection_reasons"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a list of valid reasons to reject an applicant, along with descriptions for each reason",
+                "url": {
+                  "raw": "{{baseUrl}}/rejection_reasons",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "rejection_reasons"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"income_too_low\": \"Income does not meet requirement\\n\",\n    \"bank_balance_too_low\": \"Bank account balance is too low\\n\",\n    \"income_unpredictable\": \"Unable to predict regular pattern of income deposits\\n\",\n    \"user_account_duplicate\": \"Duplicate account (previously applied for a loan with a different email address)\\n\",\n    \"sdb_check_failed\": \"State database lending restriction\\n\",\n    \"bank_account_linking_error\": \"Unable to link to a supported banking institution\\n\",\n    \"mla_failed\": \"Under the Military Lending Act, loans to military personnel or their spouses and dependents cannot be made if the interest and expenses associated with the loan exceed an annual percentage rate (APR) of 36%. Due to these limits on military-related lending, we can't lend to members of the military or their spouses and dependents. Please feel free to contact us with any questions you may have about this notice!\\n\",\n    \"iddoc_failed\": \"Unable to verify identification documents\\n\",\n    \"no_checking_or_savings_data\": \"No data from supported financial institution. Unsupported financial institution is linked\\n\",\n    \"insufficient_bank_history\": \"Unable to pull enough bank history\\n\",\n    \"loan_location_no_license\": \"Unable to verify that your permanent residence is in a state\\n\",\n    \"address_invalid\": \"Unable to verify mailing address\\n\",\n    \"income_verification_failed\": \"Unable to verify qualified income over a sustained period\\n\",\n    \"stacking_behavior\": \"Recent deposits and withdrawals detected from other lenders\\n\",\n    \"ssn_verification_failed\": \"Unable to verify SSN number\\n\",\n    \"too_many_nsfs\": \"Multiple Returned checks or Insufficient Fund Fees detected\\n\",\n    \"fraud_risk_too_high\": \"Bank account has been flagged as potential fraud risk\\n\",\n    \"has_bankruptcy_history\": \"History of bankruptcy\\n\",\n    \"unable_to_verify_credit_information\": \"Unable to verify credit information\\n\",\n    \"credit_file_frozen\": \"Credit file is currently frozen\\n\",\n    \"processor_suspended\": \"Payment processor is unable to authenticate user\\n\",\n    \"cash_flow_verification_failed\": \"Cash flow analysis - income funds are quickly depleted from bank account after income deposit\\n\",\n    \"credit_score_too_low\": \"Your credit score does not meet our requirement\\n\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Check offers",
+          "request": {
+            "description": "Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not.",
+            "url": {
+              "raw": "{{baseUrl}}/check_offers",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "check_offers"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"state\": \"AK\",\n    \"offers\": [\n        {\n            \"id\": \"25\",\n            \"amount\": 300000,\n            \"interest_rate\": 750,\n            \"term\": 24,\n            \"origination_fee\": 150,\n            \"first_payment_date\": \"2023-10-15\",\n            \"repayment_frequency\": \"monthly\"\n        },\n        {\n            \"id\": \"abc\",\n            \"amount\": 300000,\n            \"interest_rate\": 750,\n            \"term\": 24,\n            \"origination_fee\": 150,\n            \"first_payment_date\": \"2024-10-15\",\n            \"repayment_frequency\": \"monthly\"\n        }\n    ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not.",
+                "url": {
+                  "raw": "{{baseUrl}}/check_offers",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "check_offers"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"state\": \"AK\",\n    \"offers\": [\n        {\n            \"id\": \"25\",\n            \"amount\": 300000,\n            \"interest_rate\": 750,\n            \"term\": 24,\n            \"origination_fee\": 150,\n            \"first_payment_date\": \"2023-10-15\",\n            \"repayment_frequency\": \"monthly\"\n        },\n        {\n            \"id\": \"abc\",\n            \"amount\": 300000,\n            \"interest_rate\": 750,\n            \"term\": 24,\n            \"origination_fee\": 150,\n            \"first_payment_date\": \"2024-10-15\",\n            \"repayment_frequency\": \"monthly\"\n        }\n    ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"25\": {\n        \"is_compliant\": false,\n        \"apr\": null\n    },\n    \"abc\": {\n        \"is_compliant\": true,\n        \"apr\": 817\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "A facility represents an active loan or line of credit. \nIt contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. \nFacilities are used by Pier's system for servicing, credit reporting and other down stream functionality.\n",
+      "name": "Facilities",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Create a facility",
+          "request": {
+            "description": "A facility can be created for a given loan agreement with a status of `signed`",
+            "url": {
+              "raw": "{{baseUrl}}/facilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"loan_agreement_id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "A facility can be created for a given loan agreement with a status of `signed`",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"loan_agreement_id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [\n        {\n            \"payment_date\": \"2023-11-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 91667,\n            \"item_index\": 1\n        },\n        {\n            \"payment_date\": \"2023-12-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 83334,\n            \"item_index\": 2\n        }\n    ],\n    \"repayment_bank_details\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": false\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Create a disbursement for a facility",
+          "request": {
+            "description": "Create a disbursement for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"amount\": 100000,\n    \"disbursement_bank_account\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transfer_type\": \"standard\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Create a disbursement for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"amount\": 100000,\n    \"disbursement_bank_account\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transfer_type\": \"standard\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"status\": \"pending\",\n    \"failure_reason\": null,\n    \"date\": \"2023-02-27\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"transfer_type\": \"standard\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Close a facility",
+          "request": {
+            "description": "Closes an active facility by setting its status to `closed`",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/close",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "close"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Closes an active facility by setting its status to `closed`",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/close",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "close"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"created_on\": \"2023-01-17T04:59:21.773Z\",\n    \"status\": \"closed\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [],\n    \"repayment_bank_details\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": false\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Enable autopay for a facility",
+          "request": {
+            "description": "Enables autopay for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/enable_autopay",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "enable_autopay"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_account\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"additional_amount\": 0,\n    \"amount_type\": \"statement_balance\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Enables autopay for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/enable_autopay",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "enable_autopay"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_account\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"additional_amount\": 0,\n    \"amount_type\": \"statement_balance\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [\n        {\n            \"payment_date\": \"2023-11-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 91667,\n            \"item_index\": 1\n        },\n        {\n            \"payment_date\": \"2023-12-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 83334,\n            \"item_index\": 2\n        }\n    ],\n    \"repayment_bank_details\": null,\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": true,\n        \"authorization_timestamp\": \"2021-01-01T00:00:00Z\",\n        \"bank_account\": {\n            \"bank_account_number\": \"98989898\",\n            \"bank_routing_number\": \"021000021\",\n            \"type\": \"checking\"\n        },\n        \"amount_type\": \"minimum_payment\",\n        \"additional_amount\": 1000\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Disable autopay for a facility",
+          "request": {
+            "description": "Disable autopay for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disable_autopay",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disable_autopay"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Disable autopay for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disable_autopay",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disable_autopay"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [\n        {\n            \"payment_date\": \"2023-11-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 91667,\n            \"item_index\": 1\n        },\n        {\n            \"payment_date\": \"2023-12-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 83334,\n            \"item_index\": 2\n        }\n    ],\n    \"repayment_bank_details\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": false\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Add repayment bank details for a facility",
+          "request": {
+            "description": "Add repayment bank details for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/repayment_bank_details",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "repayment_bank_details"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": null,
+                  "value": "fac_234259b117854d0194bc5864a6c45b42"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"bank_account_number\": \"98989898\",\n    \"bank_routing_number\": \"021000021\",\n    \"type\": \"checking\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Add repayment bank details for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/repayment_bank_details",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "repayment_bank_details"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": null,
+                      "value": "fac_234259b117854d0194bc5864a6c45b42"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"bank_account_number\": \"98989898\",\n    \"bank_routing_number\": \"021000021\",\n    \"type\": \"checking\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [\n        {\n            \"payment_date\": \"2023-11-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 91667,\n            \"item_index\": 1\n        },\n        {\n            \"payment_date\": \"2023-12-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 83334,\n            \"item_index\": 2\n        }\n    ],\n    \"repayment_bank_details\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": false\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve a facility",
+          "request": {
+            "description": "Retrieve a facility by its id",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve",
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a facility by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve",
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"terms\": {\n        \"type\": \"loan_offer\",\n        \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n        \"amount\": 1000000,\n        \"grace_period\": {\n            \"term\": 0,\n            \"interest_rate\": 0\n        },\n        \"interest_rate\": 0,\n        \"origination_fee\": 0,\n        \"payment_period\": \"monthly\",\n        \"late_payment_fee\": 0,\n        \"first_payment_date\": \"2022-12-31\",\n        \"loan_term\": {\n            \"term_type\": \"months\",\n            \"term\": 36\n        }\n    },\n    \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n    \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n    \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n    \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n    \"credit_type\": \"consumer_installment_loan\",\n    \"status\": \"active\",\n    \"created_on\": \"2023-05-12T19:46:09.293Z\",\n    \"account_number\": \"401542198\",\n    \"balance\": 5000000,\n    \"payoff_balance\": 5000000,\n    \"origination_date\": \"2023-05-12\",\n    \"disbursement_date\": \"2023-05-12\",\n    \"remaining_term\": 48,\n    \"payments_due\": [],\n    \"amortization_schedule\": [\n        {\n            \"payment_date\": \"2023-11-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 91667,\n            \"item_index\": 1\n        },\n        {\n            \"payment_date\": \"2023-12-02\",\n            \"interest_payment_amount\": 0,\n            \"principal_payment_amount\": 8333,\n            \"other_payment_amount\": 0,\n            \"total_payment_amount\": 8333,\n            \"balance_amount\": 83334,\n            \"item_index\": 2\n        }\n    ],\n    \"repayment_bank_details\": {\n        \"bank_account_number\": \"98989898\",\n        \"bank_routing_number\": \"021000021\",\n        \"type\": \"checking\"\n    },\n    \"transactions\": [],\n    \"statements\": [],\n    \"next_payment_amount\": 124425,\n    \"next_payment_due_date\": \"2023-06-12\",\n    \"current_payment_due_date\": \"2023-06-12\",\n    \"last_payment_date\": null,\n    \"principal_paid_thru\": \"2023-05-11\",\n    \"next_billing_date\": \"2023-05-28\",\n    \"interest_accrued_thru\": \"2023-05-11\",\n    \"next_accrual_cutoff_date\": \"2023-06-11\",\n    \"scheduled_payoff_date\": \"2027-05-12\",\n    \"autopay\": {\n        \"authorized\": false\n    }\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all disbursements for your account",
+          "request": {
+            "description": "List disbursements for your account",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List disbursements for your account",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"failure_reason\": null,\n        \"date\": \"2023-02-27\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List statements for a facility",
+          "request": {
+            "description": "List statements for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/statements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "statements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to list statements for",
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List statements for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/statements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "statements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to list statements for",
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"stmt_deb6aba913d84feb987934f50c32bf03\",\n        \"statement_date\": \"2023-03-17\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"url\": \"https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve a disbursement by its id",
+          "request": {
+            "description": "Retrieve a disbursement by its id",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements/:disbursement_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements",
+                ":disbursement_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve",
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                },
+                {
+                  "key": "disbursement_id",
+                  "description": "The disbursement_id of the disbursement you want to retrieve",
+                  "value": "dsb_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a disbursement by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements/:disbursement_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements",
+                    ":disbursement_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve",
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    },
+                    {
+                      "key": "disbursement_id",
+                      "description": "The disbursement_id of the disbursement you want to retrieve",
+                      "value": "dsb_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n    \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n    \"amount\": 100000,\n    \"status\": \"pending\",\n    \"failure_reason\": null,\n    \"date\": \"2023-02-27\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"transfer_type\": \"standard\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List disbursements for a facility",
+          "request": {
+            "description": "List disbursements for a facility",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "disbursements"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to list disbursements for",
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List disbursements for a facility",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/disbursements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "disbursements"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to list disbursements for",
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"dsb_234259b117854d0194bc5864a6c45b42\",\n        \"facility_id\": \"fac_234259b117854d0194bc5864a6c45b42\",\n        \"amount\": 100000,\n        \"status\": \"pending\",\n        \"failure_reason\": null,\n        \"date\": \"2023-02-27\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"transfer_type\": \"standard\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all facilities",
+          "request": {
+            "description": "List all facilities on your account",
+            "url": {
+              "raw": "{{baseUrl}}/facilities",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List all facilities on your account",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"terms\": {\n            \"type\": \"loan_offer\",\n            \"id\": \"off_86c05092a4384d89b03ef514ea4fee31\",\n            \"amount\": 1000000,\n            \"grace_period\": {\n                \"term\": 0,\n                \"interest_rate\": 0\n            },\n            \"interest_rate\": 0,\n            \"origination_fee\": 0,\n            \"payment_period\": \"monthly\",\n            \"late_payment_fee\": 0,\n            \"first_payment_date\": \"2022-12-31\",\n            \"loan_term\": {\n                \"term_type\": \"months\",\n                \"term\": 36\n            }\n        },\n        \"id\": \"fac_7264c6575a894548a386939434b0adf3\",\n        \"application_id\": \"app_ad1564ffb1d745f9ad482bb5182708e2\",\n        \"borrower_id\": \"bor_d965bea9f47a4b108562642dbb1dae9f\",\n        \"loan_agreement_id\": \"doc_234259b117854d0194bc5864a6c45b42\",\n        \"credit_type\": \"consumer_installment_loan\",\n        \"status\": \"active\",\n        \"created_on\": \"2023-05-12T19:46:09.293Z\",\n        \"account_number\": \"401542198\",\n        \"balance\": 5000000,\n        \"payoff_balance\": 5000000,\n        \"origination_date\": \"2023-05-12\",\n        \"disbursement_date\": \"2023-05-12\",\n        \"remaining_term\": 48,\n        \"payments_due\": [],\n        \"amortization_schedule\": [\n            {\n                \"payment_date\": \"2023-11-02\",\n                \"interest_payment_amount\": 0,\n                \"principal_payment_amount\": 8333,\n                \"other_payment_amount\": 0,\n                \"total_payment_amount\": 8333,\n                \"balance_amount\": 91667,\n                \"item_index\": 1\n            },\n            {\n                \"payment_date\": \"2023-12-02\",\n                \"interest_payment_amount\": 0,\n                \"principal_payment_amount\": 8333,\n                \"other_payment_amount\": 0,\n                \"total_payment_amount\": 8333,\n                \"balance_amount\": 83334,\n                \"item_index\": 2\n            }\n        ],\n        \"repayment_bank_details\": {\n            \"bank_account_number\": \"98989898\",\n            \"bank_routing_number\": \"021000021\",\n            \"type\": \"checking\"\n        },\n        \"transactions\": [],\n        \"statements\": [],\n        \"next_payment_amount\": 124425,\n        \"next_payment_due_date\": \"2023-06-12\",\n        \"current_payment_due_date\": \"2023-06-12\",\n        \"last_payment_date\": null,\n        \"principal_paid_thru\": \"2023-05-11\",\n        \"next_billing_date\": \"2023-05-28\",\n        \"interest_accrued_thru\": \"2023-05-11\",\n        \"next_accrual_cutoff_date\": \"2023-06-11\",\n        \"scheduled_payoff_date\": \"2027-05-12\",\n        \"autopay\": {\n            \"authorized\": false\n        }\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Retrieve payoff amounts for a facility",
+          "request": {
+            "description": "Retrieve a list of payoff amount/date pairs for a facility for the next 10 days",
+            "url": {
+              "raw": "{{baseUrl}}/facilities/:facility_id/payoff_amounts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "facilities",
+                ":facility_id",
+                "payoff_amounts"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "facility_id",
+                  "description": "The facility_id of the facility you want to retrieve payoff amounts for",
+                  "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a list of payoff amount/date pairs for a facility for the next 10 days",
+                "url": {
+                  "raw": "{{baseUrl}}/facilities/:facility_id/payoff_amounts",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "facilities",
+                    ":facility_id",
+                    "payoff_amounts"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "facility_id",
+                      "description": "The facility_id of the facility you want to retrieve payoff amounts for",
+                      "value": "fac_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"amount\": 504889,\n        \"date\": \"2023-12-08\"\n    },\n    {\n        \"amount\": 505112,\n        \"date\": \"2023-12-09\"\n    },\n    {\n        \"amount\": 505334,\n        \"date\": \"2023-12-10\"\n    },\n    {\n        \"amount\": 505556,\n        \"date\": \"2023-12-11\"\n    },\n    {\n        \"amount\": 505778,\n        \"date\": \"2023-12-12\"\n    },\n    {\n        \"amount\": 506001,\n        \"date\": \"2023-12-13\"\n    },\n    {\n        \"amount\": 506223,\n        \"date\": \"2023-12-14\"\n    },\n    {\n        \"amount\": 506445,\n        \"date\": \"2023-12-15\"\n    },\n    {\n        \"amount\": 506667,\n        \"date\": \"2023-12-16\"\n    },\n    {\n        \"amount\": 506866,\n        \"date\": \"2023-12-17\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Once an application is accepted, the final step to complete the application process is for the applicant to execute the loan agreement. \nThe loan agreement object contains a `document_url` where the agreement is hosted and can have a status of `pending_signature`, `signed`, or `expired`. \nLoan agreements that are not signed within 24 hours expire and need to be re-created\n",
+      "name": "Loan Agreements",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Create a loan agreement",
+          "request": {
+            "description": "A loan agreement can be created for an application with a status of approved. Expect 4-8 seconds of latency",
+            "url": {
+              "raw": "{{baseUrl}}/loan_agreements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "loan_agreements"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"application_id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"accepted_offer_id\": \"off_86c05092a4384d89b03ef514ea4fee31\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "A loan agreement can be created for an application with a status of approved. Expect 4-8 seconds of latency",
+                "url": {
+                  "raw": "{{baseUrl}}/loan_agreements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "loan_agreements"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"application_id\": \"app_f0467657bba948e6a87292e182132848\",\n    \"accepted_offer_id\": \"off_86c05092a4384d89b03ef514ea4fee31\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://example.com/document-endpoint-unique-hash\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\",\n    \"signature_timestamp\": null\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Sign a loan agreement",
+          "request": {
+            "description": "Electronically signs a loan document and updates the application's status to `accepted`",
+            "url": {
+              "raw": "{{baseUrl}}/loan_agreements/:loan_agreement_id/sign",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "loan_agreements",
+                ":loan_agreement_id",
+                "sign"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "loan_agreement_id",
+                  "description": null,
+                  "value": "doc_43da3b3f95c745e1985a71e9a00d6c27"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Electronically signs a loan document and updates the application's status to `accepted`",
+                "url": {
+                  "raw": "{{baseUrl}}/loan_agreements/:loan_agreement_id/sign",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "loan_agreements",
+                    ":loan_agreement_id",
+                    "sign"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "loan_agreement_id",
+                      "description": null,
+                      "value": "doc_43da3b3f95c745e1985a71e9a00d6c27"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"status\": \"signed\",\n    \"id\": \"doc_96d13bec673c4eba8d44c9cda3bbb811\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"signature_timestamp\": \"2022-12-31T21:10:47.610Z\",\n    \"document_url\": \"https://example.com/document-endpoint-unique-hash\",\n    \"created_on\": \"2022-12-31T21:07:16.642Z\"\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Get a loan agreement by id",
+          "request": {
+            "description": "Retrieve a loan agreement by its id",
+            "url": {
+              "raw": "{{baseUrl}}/loan_agreements/:loan_agreement_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "loan_agreements",
+                ":loan_agreement_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "loan_agreement_id",
+                  "description": null,
+                  "value": "doc_43da3b3f95c745e1985a71e9a00d6c27"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Retrieve a loan agreement by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/loan_agreements/:loan_agreement_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "loan_agreements",
+                    ":loan_agreement_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "loan_agreement_id",
+                      "description": null,
+                      "value": "doc_43da3b3f95c745e1985a71e9a00d6c27"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"status\": \"pending_signature\",\n    \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n    \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n    \"document_url\": \"https://example.com/document-endpoint-unique-hash\",\n    \"created_on\": \"2022-12-31T20:47:38.152Z\",\n    \"signature_timestamp\": null\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all loan agreements",
+          "request": {
+            "description": "List all loan agreements on your account",
+            "url": {
+              "raw": "{{baseUrl}}/loan_agreements",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "loan_agreements"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List all loan agreements on your account",
+                "url": {
+                  "raw": "{{baseUrl}}/loan_agreements",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "loan_agreements"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"status\": \"pending_signature\",\n        \"id\": \"doc_43da3b3f95c745e1985a71e9a00d6c27\",\n        \"application_id\": \"app_a9d2f388030d4f4296f80fc327e08d0d\",\n        \"document_url\": \"https://example.com/document-endpoint-unique-hash\",\n        \"created_on\": \"2022-12-31T20:47:38.152Z\",\n        \"signature_timestamp\": null\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "_type": "container",
+      "description": "Loan payments can be made using Pier via ACH\n",
+      "name": "Payments",
+      "item": [
+        {
+          "_type": "endpoint",
+          "name": "Submit a loan payment",
+          "request": {
+            "description": "Instructs Pier to initiate an ACH payment for a loan",
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n    \"amount\": 100000,\n    \"transfer_type\": \"standard\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Instructs Pier to initiate an ACH payment for a loan",
+                "url": {
+                  "raw": "{{baseUrl}}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "auth": null,
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n    \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n    \"amount\": 100000,\n    \"transfer_type\": \"standard\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"pmt_18e5a3726b3943cda2635f40e1041ba4\",\n    \"amount\": 100000,\n    \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n    \"status\": \"pending\",\n    \"transfer_type\": \"standard\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"is_autopay\": false\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "Get a payment by ID",
+          "request": {
+            "description": "Get a payment by its id",
+            "url": {
+              "raw": "{{baseUrl}}/payments/:payment_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments",
+                ":payment_id"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "key": "payment_id",
+                  "description": null,
+                  "value": "pmt_18e5a3726b3943cda2635f40e1041ba4"
+                }
+              ]
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "Get a payment by its id",
+                "url": {
+                  "raw": "{{baseUrl}}/payments/:payment_id",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments",
+                    ":payment_id"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "key": "payment_id",
+                      "description": null,
+                      "value": "pmt_18e5a3726b3943cda2635f40e1041ba4"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "{\n    \"id\": \"pmt_18e5a3726b3943cda2635f40e1041ba4\",\n    \"amount\": 100000,\n    \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n    \"status\": \"pending\",\n    \"transfer_type\": \"standard\",\n    \"created_on\": \"2023-02-27T00:00:00Z\",\n    \"is_autopay\": false\n}",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        },
+        {
+          "_type": "endpoint",
+          "name": "List all payments",
+          "request": {
+            "description": "List all payments associated with your account",
+            "url": {
+              "raw": "{{baseUrl}}/payments",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "payments"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "type": "text",
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null,
+            "body": null
+          },
+          "response": [
+            {
+              "name": "Success",
+              "status": "OK",
+              "code": 200,
+              "originalRequest": {
+                "description": "List all payments associated with your account",
+                "url": {
+                  "raw": "{{baseUrl}}/payments",
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "path": [
+                    "payments"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "type": "text",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "auth": null,
+                "body": null
+              },
+              "description": null,
+              "body": "[\n    {\n        \"id\": \"pmt_18e5a3726b3943cda2635f40e1041ba4\",\n        \"amount\": 100000,\n        \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n        \"status\": \"pending\",\n        \"transfer_type\": \"standard\",\n        \"created_on\": \"2023-02-27T00:00:00Z\",\n        \"is_autopay\": false\n    },\n    {\n        \"id\": \"pmt_18e5a3726b3943cda2635f40e1041ba4\",\n        \"amount\": 100000,\n        \"facility_id\": \"fac_18e5a3726b3943cda2635f40e1041ba4\",\n        \"status\": \"processing\",\n        \"transfer_type\": \"standard\",\n        \"created_on\": \"2023-02-27T00:00:00Z\"\n    }\n]",
+              "_postman_previewlanguage": "json"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

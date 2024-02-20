@@ -151,7 +151,34 @@ types:
   AprThreshold: 
     properties:
       type: AprThresholdType
-      max: list<AprMax>
+      max: AprCaps
+
+  AprCaps:
+    type: list<AprCap>
+    examples:
+      - name: Default
+        value:
+          - $AprCap.Default0
+          - $AprCap.Default1
+
+  AprCap:
+    properties:
+      range: 
+        type: AprRange
+      rate: integer 
+    examples:
+      - name: Default0
+        value:
+          range: 
+            min: 0
+            max: 200000
+          rate: 1000
+      - name:  Default1
+        value:
+          range: 
+            min: 200001
+            max: 5000000
+          rate: 3600
   
   OriginationFeeThreshold:
     properties:
