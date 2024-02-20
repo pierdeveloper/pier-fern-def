@@ -482,6 +482,7 @@ types:
           interest_accrued_thru: "2023-05-11"
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
+          autopay: $commons.Autopay.Disabled
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -512,15 +513,7 @@ types:
           interest_accrued_thru: "2023-05-11"
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
-          autopay:
-            authorized: true
-            bank_account:
-              bank_account_number: "98989898"
-              bank_routing_number: "021000021"
-              type: checking
-            authorization_timestamp: "2023-05-12T19:46:09.293Z"
-            additional_amount: 0
-            amount_type: "statement_balance"
+          autopay: $commons.Autopay.Default
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -551,6 +544,7 @@ types:
           interest_accrued_thru: "2023-05-11"
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
+          autopay: $commons.Autopay.Disabled
 
   CreditStatus:
     enum:

@@ -25,16 +25,30 @@ types:
         type: boolean
         docs: a bollean indicating whether autopay is authorized
       authorization_timestamp:
-        type: datetime
+        type: optional<datetime>
         docs: the timestamp when autopay was authorized
       bank_account:
         type: optional<BankAccount>
       amount_type:
-        type: AutopayAmountType
+        type: optional<AutopayAmountType>
         docs: the type of autopay amount, either minimum_payment or statement_balance
       additional_amount:
         type: optional<integer>
         docs: the additional amount to be paid on top of the minimum payment, in cents
+    examples:
+      - name: Default
+        value:
+          authorized: true
+          authorization_timestamp: "2021-01-01T00:00:00Z"
+          bank_account:
+            bank_account_number: "98989898"
+            bank_routing_number: "021000021"
+            type: checking
+          amount_type: minimum_payment
+          additional_amount: 1000
+      - name: Disabled
+        value:
+          authorized: false
 
   BankAccount:
     properties:
