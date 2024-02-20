@@ -128,8 +128,6 @@ types:
 
   ConsumerCoverage:
     properties:
-      max_apr: optional<integer>
-      limit_1: CoverageLimit
       amount_threshold: AmountThreshold 
       apr_threshold: AprThreshold 
       origination_fee_threshold: OriginationFeeThreshold
