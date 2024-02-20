@@ -50,11 +50,14 @@ service:
         - response:
             body:
               AL:
-                limit_1:
-                  amount:
-                    min: 150000
-                    max: 5000000
-                max_apr: 0
+                amount_threshold:
+                  min: 5000
+                  max: 5000000
+                apr_threshold:
+                  type: "tiered"
+                  max: []
+                origination_fee_threshold:
+                  max: 500
 
     retrieveRejectionReasons:
       display-name: Retrieve rejection reasons
@@ -127,6 +130,9 @@ types:
     properties:
       max_apr: optional<integer>
       limit_1: CoverageLimit
+      amount_threshold: AmountThreshold 
+      apr_threshold: AprThreshold 
+      origination_fee_threshold: OriginationFeeThreshold
 
   BussinessType:
     enum:
@@ -139,10 +145,40 @@ types:
     properties:
       amount: CoverageAmount
 
+  AmountThreshold: 
+    properties:
+      min: integer 
+      max: integer
+    
+  AprThreshold: 
+    properties:
+      type: AprThresholdType
+      max: list<AprMax>
+  
+  OriginationFeeThreshold:
+    properties:
+      max: integer
+
   CoverageAmount:
     properties:
       min: integer
       max: integer
+
+  AprMax:
+    properties:
+      range: AprRange
+      rate: integer 
+
+  AprRange:
+    properties:
+      min: integer
+      max: integer
+
+  AprThresholdType: 
+    enum:
+        - simple
+        - tiered
+        - cumulative
 
   RetrieveRejectionReasonsResponse:
     type: map<applications.RejectionReason, string>
