@@ -37,7 +37,7 @@ service:
         - commons.ProductNotSupportedError
       examples:
         - request:
-            loan_agreement_id: $DisbursementId.Example0
+            loan_agreement_id: $loan-agreements.LoanAgreementId.Example0
           response:
             body: $Facility.Active
 
