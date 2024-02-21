@@ -68,6 +68,60 @@ service:
           response:
             body: $Disbursement.Pending
 
+    disbursementTestInitiate:
+      display-name: Move disbursement to initiated state
+      docs: Move disbursement to initiated state (*sandbox only*)
+      path: "/{facility_id}/disbursements/{disbursement_id}/test/initiate"
+      path-parameters:
+        facility_id: FacilityId
+        disbursement_id: DisbursementId
+      method: PATCH
+      request: {}
+      response: string
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+          request: {}
+          response:
+            body: "Ok."
+
+    disbursementTestSuccess:
+      display-name: Move disbursement to successful state
+      docs: Move disbursement to successful state (*sandbox only*)
+      path: "/{facility_id}/disbursements/{disbursement_id}/test/success"
+      path-parameters:
+        facility_id: FacilityId
+        disbursement_id: DisbursementId
+      method: PATCH
+      request: {}
+      response: string
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+          request: {}
+          response:
+            body: "Ok."
+
+    disbursementTestFailed:
+      display-name: Move disbursement to failed state
+      docs: Move disbursement to failed state (*sandbox only*)
+      path: "/{facility_id}/disbursements/{disbursement_id}/test/failed"
+      path-parameters:
+        facility_id: FacilityId
+        disbursement_id: DisbursementId
+      method: PATCH
+      request: { }
+      response: string
+      examples:
+        - path-parameters:
+            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+          request: { }
+          response:
+            body: "Ok."
+
     close:
       display-name: Close a facility
       docs: Closes an active facility by setting its status to `closed`
