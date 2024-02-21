@@ -67,12 +67,10 @@ service:
       path-parameters:
         payment_id: PaymentId
       method: PATCH
-      request: { }
       response: string
       examples:
         - path-parameters:
             payment_id: pmt_234259b117854d0194bc5864a6c45b42
-          request: { }
           response:
             body: "Ok."
 
@@ -83,12 +81,10 @@ service:
       path-parameters:
         payment_id: PaymentId
       method: PATCH
-      request: { }
       response: string
       examples:
         - path-parameters:
             payment_id: pmt_234259b117854d0194bc5864a6c45b42
-          request: { }
           response:
             body: "Ok."
 
@@ -99,12 +95,10 @@ service:
       path-parameters:
         payment_id: PaymentId
       method: PATCH
-      request: { }
       response: string
       examples:
         - path-parameters:
             payment_id: pmt_234259b117854d0194bc5864a6c45b42
-          request: { }
           response:
             body: "Ok."
 

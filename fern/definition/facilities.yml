@@ -76,13 +76,11 @@ service:
         facility_id: FacilityId
         disbursement_id: DisbursementId
       method: PATCH
-      request: {}
       response: string
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
             disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
-          request: {}
           response:
             body: "Ok."
 
@@ -94,13 +92,11 @@ service:
         facility_id: FacilityId
         disbursement_id: DisbursementId
       method: PATCH
-      request: {}
       response: string
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
             disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
-          request: {}
           response:
             body: "Ok."
 
@@ -112,13 +108,11 @@ service:
         facility_id: FacilityId
         disbursement_id: DisbursementId
       method: PATCH
-      request: { }
       response: string
       examples:
         - path-parameters:
             facility_id: fac_234259b117854d0194bc5864a6c45b42
             disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
-          request: { }
           response:
             body: "Ok."
 
