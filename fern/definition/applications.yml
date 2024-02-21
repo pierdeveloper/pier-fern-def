@@ -35,7 +35,7 @@ service:
                 loan or credit line amount (in cents).
             third_party_disbursement_destination:
               type: optional<string>
-              docs: For credit applications of type `consumer_bnpl`, the third party (i.e. merchant) is the person receiving the funds
+              docs: For credit applications of type `consumer/commercial_bnpl`, the third party (i.e. merchant - "Acme Co.") is the person receiving the funds
       response: Application
       errors:
         - commons.InvalidInputError
