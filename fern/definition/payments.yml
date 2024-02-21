@@ -60,6 +60,48 @@ service:
               - $Payment.Pending
               - $Payment.Processing
 
+    paymentTestInitiate:
+      display-name: Move payment to initiated state
+      docs: Move payment to initiated state (*sandbox only*)
+      path: "/{payment_id}/test/initiate"
+      path-parameters:
+        payment_id: PaymentId
+      method: PATCH
+      response: string
+      examples:
+        - path-parameters:
+            payment_id: pmt_234259b117854d0194bc5864a6c45b42
+          response:
+            body: "Ok."
+
+    paymentTestSuccess:
+      display-name: Move payment to successful state
+      docs: Move payment to successful state (*sandbox only*)
+      path: "/{payment_id}/test/success"
+      path-parameters:
+        payment_id: PaymentId
+      method: PATCH
+      response: string
+      examples:
+        - path-parameters:
+            payment_id: pmt_234259b117854d0194bc5864a6c45b42
+          response:
+            body: "Ok."
+
+    paymentTestFailed:
+      display-name: Move payment to failed state
+      docs: Move payment to failed state (*sandbox only*)
+      path: "/{payment_id}/test/failed"
+      path-parameters:
+        payment_id: PaymentId
+      method: PATCH
+      response: string
+      examples:
+        - path-parameters:
+            payment_id: pmt_234259b117854d0194bc5864a6c45b42
+          response:
+            body: "Ok."
+
 types:
   PaymentId:
     type: string
