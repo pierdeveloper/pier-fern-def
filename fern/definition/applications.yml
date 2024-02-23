@@ -336,7 +336,7 @@ types:
           '2500' for $25.00; default to 0)
       minimum_payment:
         type: optional<MinimumPayment>
-        docs: The minimum payment due each billing cycle
+        docs: The minimum payment due each billing cycle. There is also a flat minimum payment of $15, which is used if the calculated minimum payment is less than $15.
       origination_fee:
         type: optional<integer>
         docs: >
