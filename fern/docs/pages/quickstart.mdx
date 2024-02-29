@@ -103,6 +103,7 @@ api.interceptors.response.use(
         if (error.response.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
             await getAccessToken();
+            originalRequest.headers.Authorization = accessToken;
             return axios(originalRequest);
         }
         return Promise.reject(error);
