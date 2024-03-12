@@ -400,7 +400,7 @@ types:
         docs: The minimum payment due each billing cycle
       maximum_payment:
         type: optional<integer>
-        docs: The minimum payment due each billing cycle
+        docs: The maximum payment due each billing cycle
 
   GracePeriod:
     properties:
