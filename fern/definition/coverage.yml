@@ -76,7 +76,7 @@ service:
       display-name: Check offers
       docs: |
         Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not.
-      path: "/check_offers"
+      path: /coverage/check_offers
       method: POST
       request:
         name: CheckOffersRequest
@@ -128,8 +128,8 @@ types:
 
   ConsumerCoverage:
     properties:
-      amount_threshold: AmountThreshold 
-      apr_threshold: AprThreshold 
+      amount_threshold: AmountThreshold
+      apr_threshold: AprThreshold
       origination_fee_threshold: OriginationFeeThreshold
 
   BussinessType:
@@ -143,12 +143,12 @@ types:
     properties:
       amount: CoverageAmount
 
-  AmountThreshold: 
+  AmountThreshold:
     properties:
-      min: integer 
+      min: integer
       max: integer
-    
-  AprThreshold: 
+
+  AprThreshold:
     properties:
       type: AprThresholdType
       max: AprCaps
@@ -163,23 +163,23 @@ types:
 
   AprCap:
     properties:
-      range: 
+      range:
         type: AprRange
-      rate: integer 
+      rate: integer
     examples:
       - name: Default0
         value:
-          range: 
+          range:
             min: 0
             max: 200000
           rate: 1000
       - name:  Default1
         value:
-          range: 
+          range:
             min: 200001
             max: 5000000
           rate: 3600
-  
+
   OriginationFeeThreshold:
     properties:
       max: integer
@@ -192,14 +192,14 @@ types:
   AprMax:
     properties:
       range: AprRange
-      rate: integer 
+      rate: integer
 
   AprRange:
     properties:
       min: integer
       max: integer
 
-  AprThresholdType: 
+  AprThresholdType:
     enum:
         - simple
         - tiered
