@@ -217,13 +217,12 @@ types:
           type: merchant_advance_offer
           id: $OfferId.Example0
           amount: 1000000
-          factor_rate: 150
-          payment_period: monthly
+          interest_rate: 0
           origination_fee: 0
           late_payment_fee: 0
-          receivables_portion: 1500
-          minimum_payment: 500
-          maximum_payment: 5000
+          loan_term:
+            term_type: "days"
+            term: 60
 
   Application:
     properties:
@@ -378,12 +377,12 @@ types:
       amount:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
-      factor_rate:
+      interest_rate:
         type: integer
-        docs: The cost of the merchant advance (in basis points) and will be multiplied by the loan amount (e.g. 150 for 1.50%)
-      payment_period:
-        type: optional<RepaymentFrequency>
-        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
+        docs: The interest rate charged on the advance
+      loan_term:
+        type: Term
+        docs: The term of the advance
       origination_fee:
         type: optional<integer>
         docs: >
@@ -392,15 +391,6 @@ types:
       late_payment_fee:
         type: optional<integer>
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
-      receivables_portion:
-        type: optional<integer>
-        docs: The portion collected from each sale until the advance is repayed
-      minimum_payment:
-        type: optional<integer>
-        docs: The minimum payment due each billing cycle
-      maximum_payment:
-        type: optional<integer>
-        docs: The maximum payment due each billing cycle
 
   GracePeriod:
     properties:
