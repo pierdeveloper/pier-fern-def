@@ -356,7 +356,7 @@ types:
         type: optional<integer>
         docs: The origination fee charged to originate the loan in basis points (e.g. 150 for 1.50%)
       payment_period:
-        type: optional<RepaymentFrequency>
+        type: optional<PaymentPeriod>
         docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
       first_payment_date:
         type: optional<string>
@@ -391,7 +391,7 @@ types:
       late_payment_fee:
         type: optional<integer>
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
-  
+
 
   GracePeriod:
     properties:
@@ -409,7 +409,7 @@ types:
         type: integer
         docs: The term of the loan according to the term type. A minimum of 3 is required for monthly payment_period, 6 for semi-monthly, 7 for biweekly and 13 for weekly.
 
-  RepaymentFrequency:
+  PaymentPeriod:
     enum:
       - value: weekly
         docs: Weekly payment period

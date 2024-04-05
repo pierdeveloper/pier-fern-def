@@ -97,27 +97,37 @@ service:
             state: AK
             offers:
               - id: "25"
+                type: "loan_offer"
                 amount: 300000
                 interest_rate: 750
                 term: 24
                 origination_fee: 150
                 first_payment_date: "2023-10-15"
-                repayment_frequency: monthly
-              - id: "abc"
+                payment_period: monthly
+              - id: "26"
+                type: "loan_offer"
                 amount: 300000
                 interest_rate: 750
                 term: 24
                 origination_fee: 150
-                first_payment_date: "2024-10-15"
-                repayment_frequency: monthly
+                first_payment_date: "2024-04-15"
+                payment_period: monthly
+              - id: "27"
+                type: "revolving_line_of_credit_offer"
+                amount: 100000
+                interest_rate: 200
+                origination_fee: 0
           response:
             body:
               "25":
                 is_compliant: false
                 apr: null
-              "abc":
+              "26":
                 is_compliant: true
-                apr: 817
+                apr: 955
+              "27":
+                is_compliant: true
+                apr: 200
 
 types:
   CommercialCoverage:
@@ -271,6 +281,7 @@ types:
       id:
         type: string
         docs: Unique identifier for the offer used in the check_offers endpoint.
+      type: CheckOfferType
       amount:
         type: integer
         docs: The amount (in cents) of the offer (e.g., 300000 for $3,000.00).
@@ -278,17 +289,24 @@ types:
         type: integer
         docs: The interest rate (in basis points) charged on the offer (e.g., 750 for 7.50%).
       term:
-        type: integer
+        type: optional<integer>
         docs: The term of the offer in months (e.g., 24 for a 24-month term).
       origination_fee:
         type: integer
         docs: The origination fee charged to originate the offer in basis points (e.g., 150 for 1.50%).
       first_payment_date:
-        type: string
+        type: optional<string>
         docs: The date of the first payment, in ISO 8601 format (e.g., "2023-10-15"). This date must be in the future, and is used to calculate the APR.
-      repayment_frequency:
-        type: applications.RepaymentFrequency
+      payment_period:
+        type: optional<applications.PaymentPeriod>
         docs: The repayment frequency for the offer. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly.
+
+  CheckOfferType:
+    enum:
+      - value: loan_offer
+        docs: The type used to check a loan offer
+      - value: revolving_line_of_credit_offer
+        docs: The type used to check a revolving line of credit offer
 
   CheckResponse:
     properties:
