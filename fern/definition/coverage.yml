@@ -8,6 +8,7 @@ docs: |
 imports:
   commons: commons.yml
   applications: applications.yml
+  borrowers: borrowers.yml
 
 service:
   base-path: ""
@@ -96,14 +97,6 @@ service:
         - request:
             state: AK
             offers:
-              - id: "25"
-                type: "loan_offer"
-                amount: 300000
-                interest_rate: 750
-                term: 24
-                origination_fee: 150
-                first_payment_date: "2023-10-15"
-                payment_period: monthly
               - id: "26"
                 type: "loan_offer"
                 amount: 300000
@@ -119,9 +112,6 @@ service:
                 origination_fee: 0
           response:
             body:
-              "25":
-                is_compliant: false
-                apr: null
               "26":
                 is_compliant: true
                 apr: 955
@@ -133,7 +123,7 @@ types:
   CommercialCoverage:
     properties:
       max_apr: optional<integer>
-      business_types: optional<list<BussinessType>>
+      business_types: optional<list<borrowers.BusinessType>>
       limit_1: CoverageLimit
 
   ConsumerCoverage:
@@ -141,13 +131,6 @@ types:
       amount_threshold: AmountThreshold
       apr_threshold: AprThreshold
       origination_fee_threshold: OriginationFeeThreshold
-
-  BussinessType:
-    enum:
-      - corporation
-      - partnership
-      - llc
-      - sole_proprietorship
 
   CoverageLimit:
     properties:
