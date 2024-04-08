@@ -14,7 +14,7 @@ service:
     submitPayment:
       display-name: Submit a loan payment
       docs: |
-        Instructs Pier to initiate an ACH payment for a loan
+        Instructs Pier to initiate an ACH payment for a loan. If repayment_ach_enabled is false, use none for transfer_type.
       path: ""
       method: POST
       request: PaymentRequest
@@ -30,6 +30,9 @@ service:
         - request: $PaymentRequest.Default
           response:
             body: $Payment.Pending
+        - request: $PaymentRequest.DefaultNoneType
+          response:
+            body: $Payment.PendingNoneType
 
     get:
       display-name: Get a payment by ID
@@ -126,6 +129,11 @@ types:
           facility_id: $facilities.FacilityId.Example0
           amount: 100000
           transfer_type: standard
+      - name: DefaultNoneType
+        value:
+          facility_id: $facilities.FacilityId.Example0
+          amount: 100000
+          transfer_type: none
 
   Payment:
     properties:
@@ -159,6 +167,15 @@ types:
           facility_id: $facilities.FacilityId.Example0
           status: pending
           transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+          is_autopay: false
+      - name: PendingNoneType
+        value:
+          id: $PaymentId.Example0
+          amount: 100000
+          facility_id: $facilities.FacilityId.Example0
+          status: pending
+          transfer_type: none
           created_on: 2023-02-27T00:00:00Z
           is_autopay: false
       - name: Processing

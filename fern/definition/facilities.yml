@@ -43,7 +43,7 @@ service:
 
     disburse:
       display-name: Create a disbursement for a facility
-      docs: Create a disbursement for a facility
+      docs: Create a disbursement for a facility. If disbursements_ach_enabled is false, use none for transfer_type.
       path: "/{facility_id}/disbursements"
       path-parameters:
         facility_id: FacilityId
@@ -60,13 +60,15 @@ service:
         - commons.MissingDisbursementBankDetails
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
-          request:
-            amount: 100000
-            disbursement_bank_account: $commons.BankAccount.Default
-            transfer_type: "standard"
+            facility_id: $FacilityId.Example0
+          request: $DisbursementRequest.Default
           response:
             body: $Disbursement.Pending
+        - path-parameters:
+            facility_id: $FacilityId.Example0
+          request: $DisbursementRequest.DefaultNoneType
+          response:
+            body: $Disbursement.PendingNoneType
 
     disbursementTestInitiate:
       display-name: Move disbursement to initiated state
@@ -79,8 +81,8 @@ service:
       response: string
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
-            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
           response:
             body: "Ok."
 
@@ -95,8 +97,8 @@ service:
       response: string
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
-            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
           response:
             body: "Ok."
 
@@ -111,8 +113,8 @@ service:
       response: string
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
-            disbursement_id: dsb_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
           response:
             body: "Ok."
 
@@ -160,7 +162,7 @@ service:
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           request:
             bank_account: $commons.BankAccount.Default
             additional_amount: 0
@@ -199,7 +201,7 @@ service:
         - commons.FacilityNotFoundError
       examples:
         - path-parameters:
-            facility_id: fac_234259b117854d0194bc5864a6c45b42
+            facility_id: $FacilityId.Example0
           request: $commons.BankAccount.Default
           response:
             body: $Facility.Active
@@ -356,7 +358,7 @@ types:
         value:
           id: stmt_deb6aba913d84feb987934f50c32bf03
           statement_date: 2023-03-17
-          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          facility_id: $FacilityId.Example0
           url: https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
           created_on: 2023-02-27T00:00:00Z
 
@@ -387,14 +389,24 @@ types:
     examples:
       - name: Pending
         value:
-          id: dsb_234259b117854d0194bc5864a6c45b42
-          facility_id: fac_234259b117854d0194bc5864a6c45b42
+          id: $DisbursementId.Example0
+          facility_id: $FacilityId.Example0
           amount: 100000
           status: pending
           failure_reason: null
           date: 2023-02-27
           created_on: 2023-02-27T00:00:00Z
           transfer_type: standard
+      - name: PendingNoneType
+        value:
+          id: $DisbursementId.Example0
+          facility_id: $FacilityId.Example0
+          amount: 100000
+          status: pending
+          failure_reason: null
+          date: 2023-02-27
+          created_on: 2023-02-27T00:00:00Z
+          transfer_type: none
 
   DisbursementRequest:
     properties:
@@ -402,11 +414,21 @@ types:
         type: integer
         docs: The amount of the disbursement, in cents (e.g. 1000 = $10.00)
       disbursement_bank_account:
-        type: commons.BankAccount
+        type: optional<commons.BankAccount>
         docs: The bank account to disburse to
       transfer_type:
         type: commons.TransferType
         docs: The type of transfer to use for the disbursement
+    examples:
+      - name: Default
+        value:
+          amount: 100000
+          disbursement_bank_account: $commons.BankAccount.Default
+          transfer_type: standard
+      - name: DefaultNoneType
+        value:
+          amount: 100000
+          transfer_type: none
 
   Facility:
     properties:
@@ -503,10 +525,10 @@ types:
       - name: Active
         value:
           terms: $applications.Offer.Loan
-          id: fac_7264c6575a894548a386939434b0adf3
-          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
-          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
-          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          id: $FacilityId.Example0
+          application_id: $applications.ApplicationId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Default
+          loan_agreement_id: $loan-agreements.LoanAgreementId.Example0
           credit_type: consumer_installment_loan
           status: active
           created_on: "2023-05-12T19:46:09.293Z"
@@ -534,10 +556,10 @@ types:
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
-          id: fac_7264c6575a894548a386939434b0adf3
-          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
-          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
-          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          id: $FacilityId.Example0
+          application_id: $applications.ApplicationId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Default
+          loan_agreement_id: $loan-agreements.LoanAgreementId.Example0
           credit_type: consumer_installment_loan
           status: active
           created_on: "2023-05-12T19:46:09.293Z"
@@ -565,10 +587,10 @@ types:
       - name: Closed
         value:
           terms: $applications.Offer.Loan
-          id: fac_7264c6575a894548a386939434b0adf3
-          application_id: app_ad1564ffb1d745f9ad482bb5182708e2
-          borrower_id: bor_d965bea9f47a4b108562642dbb1dae9f
-          loan_agreement_id: doc_234259b117854d0194bc5864a6c45b42
+          id: $FacilityId.Example0
+          application_id: $applications.ApplicationId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Default
+          loan_agreement_id: $loan-agreements.LoanAgreementId.Example0
           credit_type: consumer_installment_loan
           created_on: "2023-01-17T04:59:21.773Z"
           status: closed
