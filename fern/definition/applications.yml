@@ -179,6 +179,7 @@ types:
           minimum_payment:
             type: interest_plus_percentage_of_principal
             value: 500
+            floor: 3000
       - name: Loan
         value:
           type: loan_offer
