@@ -179,6 +179,7 @@ types:
           minimum_payment:
             type: interest_plus_percentage_of_principal
             value: 500
+            floor: 3000
       - name: Loan
         value:
           type: loan_offer
@@ -432,6 +433,9 @@ types:
       value:
         type: integer
         docs: The minimum payment percentage due each billing cycle (e.g. 500 for 5.00%)
+      floor:
+        type: optional<integer>
+        docs: The minimum payment floor in cents (e.g. 1500 for $15.00). Defaults to 1500 if omitted. If the percentage of the principal balance is less than the floor, the floor is used.
 
   MinimumPaymentType:
     enum:
