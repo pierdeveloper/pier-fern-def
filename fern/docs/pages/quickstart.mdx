@@ -145,6 +145,10 @@ Only 5xx (Server Errors) and 429 (Rate Limits) errors should be retried.
 
 > Pier's rate limit is set to 1,000 requests per minute. The limit applies to both the sandbox and production environments. If a rate limit is triggered, we will respond with a 429 status code.
 
+## Timezones
+
+All loan-related items are in Pacific Time (PT). This includes things like `first_payment_date`, `next_payment_date`, all of the loan amortization schedules, etc. These times are usually date format (e.g. `YYYY-MM-DD`) and simply determine the payment/accrual dates. All other (not payment related) timestamps are UTC and will follow the `ISO8601` format.
+
 ## Contributing
 
 Feel free to contribute a pull request to our [docs repo](https://github.com/pierdeveloper/pier-fern-def) if you find anything that can be approved. We appreciate your help making our docs better!
