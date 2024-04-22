@@ -204,3 +204,10 @@ types:
           transfer_type: standard
           created_on: 2023-02-27T00:00:00Z
           is_autopay: false
+
+  ReversedPayment:
+    extends: Payment
+    properties:
+      reversal_metadata:
+       type: facilities.ReversalMetadata
+       docs: Metadata about the reversal of the transaction

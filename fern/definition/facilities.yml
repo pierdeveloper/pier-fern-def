@@ -10,6 +10,7 @@ imports:
   applications: applications.yml
   borrowers: borrowers.yml
   loan-agreements: loan-agreements.yml
+  payments: payments.yml
 
 service:
   base-path: /facilities
@@ -118,6 +119,28 @@ service:
           response:
             body: "Ok."
 
+    reverseTransaction:
+      display-name: Reverse a transaction
+      docs: |
+        Reverses a specified disbursement or payment. This endpoint is intended for correcting erroneous transactions. Only customers with ACH disabled can reverse transactions.
+      path: "/{facility_id}/reverse_transaction"
+      path-parameters:
+        facility_id: FacilityId
+      method: POST
+      request:
+        name: TransactionReversalRequest
+        body:
+          properties:
+            transaction_id:
+                type: TransactionId
+                docs: The id of the transaction to reverse
+      response: TransactionReversalResponse
+      errors:
+        - commons.FacilityNotFoundError
+        - commons.TransactionNotFoundError
+        - commons.TransactionAlreadyReversedError
+        - commons.InvalidInputError
+
     close:
       display-name: Close a facility
       docs: Closes an active facility by setting its status to `closed`
@@ -135,6 +158,8 @@ service:
           request:
           response:
             body: $Facility.Closed
+
+
 
     enable_autopay:
       display-name: Enable autopay for a facility
@@ -326,6 +351,15 @@ service:
             body: $PayoffAmounts.Default
 
 types:
+  TransactionReversalResponse:
+    properties:
+      original:
+        type: Transaction
+        docs: The unique identifier of the transaction that was reversed
+      reversed:
+        type: ReversedTransaction
+        docs: The unique identifier of the transaction that was reversed
+
   FacilityId:
     type: string
     examples:
@@ -668,6 +702,37 @@ types:
         value:
           - $AmortizationSchedule.Default0
           - $AmortizationSchedule.Default1
+
+  TransactionId:
+    union:
+      disbursementId: DisbursementId
+      paymentId: payments.PaymentId
+
+  ReversalMetadata:
+    properties:
+      reversed_transaction_id:
+        type: TransactionId
+        docs: The id of the transaction that was reversed
+      reversed_transaction_creation_time:
+        type: datetime
+        docs: The time the transaction that was reversed was created
+
+  Transaction:
+    union:
+      disbursement: Disbursement
+      payment: payments.Payment
+
+  ReversedDisbursement:
+    extends: Disbursement
+    properties:
+      reversal_metadata:
+        type: ReversalMetadata
+        docs: Metadata about the reversal of the transaction
+
+  ReversedTransaction:
+    union:
+      disbursement: ReversedDisbursement
+      payment: payments.ReversedPayment
 
   AmortizationSchedule:
     properties:
