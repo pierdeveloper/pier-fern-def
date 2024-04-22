@@ -259,3 +259,11 @@ errors:
   InvalidLendingDetailsError:
     status-code: 400
     type: ErrorBody
+
+  TransactionNotFoundError:
+    status-code: 404
+    type: ErrorBody
+
+  TransactionAlreadyReversedError:
+    status-code: 400
+    type: ErrorBody
