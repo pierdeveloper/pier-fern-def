@@ -159,6 +159,54 @@ service:
           response:
             body: $Facility.Closed
 
+    createAutopayAuthorization:
+      display-name: Create Autopay ACH Authorization
+      docs: |
+        Creates an unsigned Autopay ACH authorization document for a specified facility. This is a required step before enabling autopay. The user must agree to automatic ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /enable_autopay.
+      path: "/api/facilities/:facility_id/create_autopay_authorization"
+      method: POST
+      response: Facility
+      errors:
+        - commons.InvalidInputError
+        - commons.FacilityNotFoundError
+      examples:
+        - response:
+            body:
+              terms:
+                grace_period:
+                  term: 0
+                  interest_rate: 0
+                amount: 100000
+                apr: 200
+                annual_fee: 0
+                type: "revolving_line_of_credit_offer"
+                interest_rate: 200
+                late_payment_fee: 0
+                origination_fee: 0
+                id: "off_2e60b8c4fb7e4a10835e5a7e0641a5d8"
+                minimum_payment:
+                  type: "interest_plus_percentage_of_principal"
+                  value: 250
+                  floor: 1500
+              id: FacilityId.Example0
+              application_id: "app_25fbcb8b8bd2417fab99b184678d2437"
+              borrower_id: "bor_39addd1e5d7241cfa758e12388cd2fd4"
+              loan_agreement_id: "doc_aac8a211dd9f49229dae022c5ecddccd"
+              account_number: "652633487"
+              credit_type: "consumer_revolving_line_of_credit"
+              status: "active"
+              autopay:
+                authorized: false
+              balance: 0
+              origination_date: "2024-04-19"
+              documents:
+                unsigned_autopay_ach_authorization:
+                  document_url: "https://storage.googleapis.com/download/storage/v1/b/pier_loan_docs/o/test%2Fdoc_db4efb43d1c0435ba5d730927d156fa6_unsigned.pdf?generation=1714045339730396&alt=media"
+                  document_id: "doc_db4efb43d1c0435ba5d730927d156fa6"
+              created_on: "2024-04-25T11:38:54.520Z"
+              transactions: [ ]
+              statements: [ ]
+              payments_due: [ ]
 
 
     enable_autopay:
@@ -464,6 +512,62 @@ types:
           amount: 100000
           transfer_type: none
 
+  Document:
+    properties:
+      document_url:
+        type: string
+        docs: The URL where the document can be accessed.
+      document_id:
+        type: string
+        docs: The unique identifier for the document.
+    examples:
+      - name: ExampleDocument
+        value:
+          document_url: "https://example.com/document.pdf"
+          document_id: "doc_1234567890abcdef"
+
+  Documents:
+    properties:
+      unsigned_credit_agreement:
+        type: optional<Document>
+        docs: The URL and ID for the unsigned credit agreement document.
+      signed_credit_agreement:
+        type: optional<Document>
+        docs: The URL and ID for the signed credit agreement document.
+      unsigned_ach_authorization:
+        type: optional<Document>
+        docs: The URL and ID for the unsigned ACH authorization document.
+      unsigned_autopay_ach_authorization:
+        type: optional<Document>
+        docs: The URL and ID for the unsigned autopay ACH authorization document.
+      signed_ach_authorization:
+        type: optional<Document>
+        docs: The URL and ID for the signed ACH authorization document.
+      signed_autopay_ach_authorization:
+        type: optional<Document>
+        docs: The URL and ID for the signed autopay ACH authorization document.
+    examples:
+      - name: ExampleDocuments
+        value:
+          unsigned_credit_agreement:
+            document_url: "https://storage.googleapis.com/example/unsigned_credit_agreement.pdf"
+            document_id: "doc_1234567890abcdef"
+          signed_credit_agreement:
+            document_url: "https://storage.googleapis.com/example/signed_credit_agreement.pdf"
+            document_id: "doc_abcdef1234567890"
+          unsigned_ach_authorization:
+            document_url: "https://storage.googleapis.com/example/unsigned_ach_authorization.pdf"
+            document_id: "doc_fedcba9876543210"
+          unsigned_autopay_ach_authorization:
+            document_url: "https://storage.googleapis.com/example/unsigned_autopay_ach_authorization.pdf"
+            document_id: "doc_0123456789abcdef"
+          signed_ach_authorization:
+            document_url: "https://storage.googleapis.com/example/signed_ach_authorization.pdf"
+            document_id: "doc_fedcba0987654321"
+          signed_autopay_ach_authorization:
+            document_url: "https://storage.googleapis.com/example/signed_autopay_ach_authorization.pdf"
+            document_id: "doc_0123456789abcdef"
+
   Facility:
     properties:
       id: FacilityId
@@ -555,6 +659,9 @@ types:
       autopay:
         type: optional<commons.Autopay>
         docs: Whether or not autopay is enabled for the facility.
+      documents:
+        type: optional<Documents>
+        docs: The documents associated with the facility
     examples:
       - name: Active
         value:
@@ -587,6 +694,7 @@ types:
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Disabled
+          documents: $Documents.ExampleDocuments
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
