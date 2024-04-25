@@ -1,0 +1,4 @@
+{
+    "ext": "yml",
+    "exec": "fern check"
+}
