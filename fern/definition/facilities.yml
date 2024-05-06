@@ -119,27 +119,36 @@ service:
           response:
             body: "Ok."
 
-    reverseTransaction:
-      display-name: Reverse a transaction
-      docs: |
-        Reverses a specified disbursement or payment. This endpoint is intended for correcting erroneous transactions. Only customers with ACH disabled can reverse transactions.
-      path: "/{facility_id}/reverse_transaction"
+    credit:
+      display-name: Credit a facility
+      docs: Credit a facility
+      path: "/{facility_id}/credit"
       path-parameters:
-        facility_id: FacilityId
+          facility_id: FacilityId
       method: POST
       request:
-        name: TransactionReversalRequest
-        body:
-          properties:
-            transaction_id:
-                type: TransactionId
-                docs: The id of the transaction to reverse
-      response: TransactionReversalResponse
+          name: CreditFacilityRequest
+          body:
+            properties:
+                amount:
+                  type: integer
+                  docs: The amount to credit the facility, in cents (e.g. 1000 = $10.00)
+                memo:
+                  type: optional<string>
+                  docs: A memo to attach to the credit
+                original_disbursement_id:
+                  type: optional<DisbursementId>
+                  docs: Disbursement ID associated with the credit action (if applicable)
+                original_payment_id:
+                  type: optional<payments.PaymentId>
+                  docs: Payment ID associated with the credit action (if applicable)
+      response: ReversedPayment
       errors:
-        - commons.FacilityNotFoundError
-        - commons.TransactionNotFoundError
-        - commons.TransactionAlreadyReversedError
-        - commons.InvalidInputError
+          - commons.InvalidInputError
+          - commons.FacilityNotFoundError
+          - commons.DisbursementNotFoundError
+          - commons.PaymentNotFoundError
+
 
     close:
       display-name: Close a facility
@@ -399,15 +408,6 @@ service:
             body: $PayoffAmounts.Default
 
 types:
-  TransactionReversalResponse:
-    properties:
-      original:
-        type: Transaction
-        docs: The unique identifier of the transaction that was reversed
-      reversed:
-        type: ReversedTransaction
-        docs: The unique identifier of the transaction that was reversed
-
   FacilityId:
     type: string
     examples:
@@ -818,12 +818,16 @@ types:
 
   ReversalMetadata:
     properties:
-      reversed_transaction_id:
-        type: TransactionId
-        docs: The id of the transaction that was reversed
-      reversed_transaction_creation_time:
-        type: datetime
-        docs: The time the transaction that was reversed was created
+      original_payment_id:
+        type: optional<payments.PaymentId>
+        docs: The id of the original payment that was reversed
+      original_disbursement_id:
+        type: optional<DisbursementId>
+        docs: The id of the original disbursement that was reversed
+      memo:
+        type: optional<string>
+        docs: A memo about the reversal
+
 
   Transaction:
     union:
@@ -837,10 +841,12 @@ types:
         type: ReversalMetadata
         docs: Metadata about the reversal of the transaction
 
-  ReversedTransaction:
-    union:
-      disbursement: ReversedDisbursement
-      payment: payments.ReversedPayment
+  ReversedPayment:
+    extends: payments.Payment
+    properties:
+      reversal_metadata:
+        type: ReversalMetadata
+        docs: Metadata about the reversal of the transaction
 
   AmortizationSchedule:
     properties:
