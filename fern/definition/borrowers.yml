@@ -123,6 +123,15 @@ types:
 
   BeneficialOwnerId: string
 
+  GovernmentIdentifiers:
+    properties:
+      ssn:
+        type: optional<string>
+        docs: The borrower's 9-digit social security number (e.g. 345543221)
+      ssn_last_4:
+        type: optional<string>
+        docs: The last 4 digits of the borrower's social security number
+
   ConsumerBorrowerId:
     type: string
     examples:
@@ -162,7 +171,8 @@ types:
               last_name: Dough
               percent_ownership: 2500
               phone: "4155555555"
-              ssn: "123456789"
+              government_identifiers:
+                ssn: "123456789"
               id: 63ae91f8eae458cb0d79f77e
           id: bor_18e5a3726b3943cda2635f40e1041ba4
           business_name: Apple Landscaping
@@ -187,7 +197,8 @@ types:
           email: jdough@acme.co
           first_name: Jane
           last_name: Dough
-          ssn: "999888777"
+          government_identifiers:
+            ssn: "999888777"
           kyc_completion_date: "2022-11-15"
           id: bor_a1d0c30d77104f35b4c842b99132624e
           created_on: "2022-12-30T07:23:36.665Z"
@@ -259,7 +270,8 @@ types:
               last_name: Dough
               percent_ownership: 2500
               phone: "4155555555"
-              ssn: "123456789"
+              government_identifiers:
+                ssn: "123456789"
               id: 63ae91f8eae458cb0d79f77e
           business_name: Apple Landscaping
           business_type: corporation
@@ -333,7 +345,8 @@ types:
               last_name: Dough
               percent_ownership: 2500
               phone: "4155555555"
-              ssn: "123456789"
+              government_identifiers:
+                ssn: "123456789"
               id: 63ae91f8eae458cb0d79f77e
           business_name: Apple Landscaping
           business_type: corporation
@@ -412,7 +425,8 @@ types:
               last_name: Dough
               percent_ownership: 2500
               phone: "4155555555"
-              ssn: "123456789"
+              government_identifiers:
+                ssn: "123456789"
               id: 63ae91f8eae458cb0d79f77e
           id: bor_18e5a3726b3943cda2635f40e1041ba4
           business_name: Apple Landscaping
@@ -454,9 +468,9 @@ types:
         docs:
           The percent ownership the person has in the business in basis points (e.g.
           2500 for 25%)
-      ssn:
-        type: string
-        docs: The person's 9-digit US social security number (e.g. 123456789)
+      government_identifiers:
+        type: GovernmentIdentifiers
+        docs: The person's government identifiers, required fields dependent on customer configuration
 
   BusinessContact:
     properties:
@@ -506,9 +520,10 @@ types:
       kyc_status:
         type: optional<KycStatus>
         docs: Kyc status of a consumer (*sandbox only*)
-      ssn:
-        type: string
-        docs: 9-digit social security number of the borrower (e.g. 345543221)
+      government_identifiers:
+        type: optional<GovernmentIdentifiers>
+        docs: The borrower's government identifiers, required fields dependent on customer configuration
+
     examples:
       - name: Default
         value:
@@ -522,7 +537,8 @@ types:
           email: jdough@acme.co
           first_name: Jane
           last_name: Dough
-          ssn: "999888777"
+          government_identifiers:
+            ssn: "999888777"
           kyc_completion_date: "2022-11-15"
           kyc_status: "approved"
 
@@ -623,9 +639,9 @@ types:
       kyc_completion_date:
         type: string
         docs: Date kyc completed on the borrower (YYYY-MM-DD)
-      ssn:
-        type: string
-        docs: 9-digit social security number of the borrower (e.g. 345543221)
+      government_identifiers:
+        type: GovernmentIdentifiers
+        docs: The borrower's government identifiers, required fields dependent on customer configuration
       created_on:
         type: datetime
         docs: The date the borrower was created
@@ -643,7 +659,8 @@ types:
           email: jdough@acme.co
           first_name: Jane
           last_name: Dough
-          ssn: "999888777"
+          government_identifiers:
+            ssn: "999888777"
           kyc_completion_date: "2022-11-15"
           created_on: "2022-12-31T00:58:47.828Z"
 
