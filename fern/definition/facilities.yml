@@ -149,6 +149,21 @@ service:
           - commons.DisbursementNotFoundError
           - commons.PaymentNotFoundError
 
+    refundDisbursement:
+      display-name: Refund a disbursement
+      docs: |
+        Refunds a specified disbursement in full. This endpoint is intended for correcting erroneous transactions.
+      path: "/{facility_id}/disbursements/{disbursement_id}/refund"
+      path-parameters:
+        facility_id: FacilityId
+        disbursement_id: DisbursementId
+      method: POST
+      response: RefundedDisbursement
+      errors:
+        - commons.FacilityNotFoundError
+        - commons.TransactionNotFoundError
+        - commons.TransactionAlreadyReversedError
+        - commons.InvalidInputError
 
     close:
       display-name: Close a facility
@@ -169,9 +184,9 @@ service:
             body: $Facility.Closed
 
     createAutopayAuthorization:
-      display-name: Create Autopay ACH Authorization
+      display-name: Create autopay ACH authorization
       docs: |
-        Creates an unsigned Autopay ACH authorization document for a specified facility. This is a required step before enabling autopay. The user must agree to automatic ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /enable_autopay.
+        Creates an unsigned autopay ACH authorization document for a specified facility. This is a required step before enabling autopay. The user must agree to automatic ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /enable_autopay.
       path: "/api/facilities/:facility_id/create_autopay_authorization"
       method: POST
       response: Facility
@@ -408,6 +423,15 @@ service:
             body: $PayoffAmounts.Default
 
 types:
+  TransactionReversalResponse:
+    properties:
+      original:
+        type: Transaction
+        docs: The unique identifier of the transaction that was refunded
+      refunded:
+        type: ReversedTransaction
+        docs: The unique identifier of the transaction that was refunded
+
   FacilityId:
     type: string
     examples:
@@ -839,14 +863,19 @@ types:
     properties:
       reversal_metadata:
         type: ReversalMetadata
-        docs: Metadata about the reversal of the transaction
+        docs: Metadata about the original transaction being refunded
 
   RefundedPayment:
     extends: payments.Payment
     properties:
       reversal_metadata:
         type: ReversalMetadata
-        docs: Metadata about the reversal of the transaction
+        docs: Metadata about the original transaction being refunded
+
+  ReversedTransaction:
+    union:
+      disbursement: RefundedDisbursement
+      payment: RefundedPayment
 
   AmortizationSchedule:
     properties:
