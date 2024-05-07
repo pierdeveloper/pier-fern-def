@@ -142,7 +142,7 @@ service:
                 original_payment_id:
                   type: optional<payments.PaymentId>
                   docs: Payment ID associated with the credit action (if applicable)
-      response: ReversedPayment
+      response: RefundedPayment
       errors:
           - commons.InvalidInputError
           - commons.FacilityNotFoundError
@@ -820,10 +820,10 @@ types:
     properties:
       original_payment_id:
         type: optional<payments.PaymentId>
-        docs: The id of the original payment that was reversed
+        docs: The id of the original payment that was refunded
       original_disbursement_id:
         type: optional<DisbursementId>
-        docs: The id of the original disbursement that was reversed
+        docs: The id of the original disbursement that was refunded
       memo:
         type: optional<string>
         docs: A memo about the reversal
@@ -834,14 +834,14 @@ types:
       disbursement: Disbursement
       payment: payments.Payment
 
-  ReversedDisbursement:
+  RefundedDisbursement:
     extends: Disbursement
     properties:
       reversal_metadata:
         type: ReversalMetadata
         docs: Metadata about the reversal of the transaction
 
-  ReversedPayment:
+  RefundedPayment:
     extends: payments.Payment
     properties:
       reversal_metadata:
