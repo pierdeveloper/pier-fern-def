@@ -264,6 +264,6 @@ errors:
     status-code: 404
     type: ErrorBody
 
-  TransactionAlreadyReversedError:
+  TransactionAlreadyRefundedError:
     status-code: 400
     type: ErrorBody

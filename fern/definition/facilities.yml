@@ -162,7 +162,7 @@ service:
       errors:
         - commons.FacilityNotFoundError
         - commons.TransactionNotFoundError
-        - commons.TransactionAlreadyReversedError
+        - commons.TransactionAlreadyRefundedError
         - commons.InvalidInputError
 
     close:
@@ -423,13 +423,13 @@ service:
             body: $PayoffAmounts.Default
 
 types:
-  TransactionReversalResponse:
+  TransactionRefundResponse:
     properties:
       original:
         type: Transaction
         docs: The unique identifier of the transaction that was refunded
       refunded:
-        type: ReversedTransaction
+        type: RefundedTransaction
         docs: The unique identifier of the transaction that was refunded
 
   FacilityId:
@@ -840,7 +840,7 @@ types:
       disbursementId: DisbursementId
       paymentId: payments.PaymentId
 
-  ReversalMetadata:
+  RefundMetadata:
     properties:
       original_payment_id:
         type: optional<payments.PaymentId>
@@ -850,7 +850,7 @@ types:
         docs: The id of the original disbursement that was refunded
       memo:
         type: optional<string>
-        docs: A memo about the reversal
+        docs: A memo about the refund
 
 
   Transaction:
@@ -861,18 +861,18 @@ types:
   RefundedDisbursement:
     extends: Disbursement
     properties:
-      reversal_metadata:
-        type: ReversalMetadata
+      refund_metadata:
+        type: RefundMetadata
         docs: Metadata about the original transaction being refunded
 
   RefundedPayment:
     extends: payments.Payment
     properties:
-      reversal_metadata:
-        type: ReversalMetadata
+      refund_metadata:
+        type: RefundMetadata
         docs: Metadata about the original transaction being refunded
 
-  ReversedTransaction:
+  RefundedTransaction:
     union:
       disbursement: RefundedDisbursement
       payment: RefundedPayment
