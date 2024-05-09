@@ -102,7 +102,7 @@ service:
 
     refundPayment:
         display-name: Refund a payment
-        docs: Refunds a specified disbursement in full. This endpoint is intended for correcting erroneous transactions. Only customers with ACH disabled can refund payments.
+        docs: Refunds a specified payment in full. This endpoint is intended for correcting erroneous transactions. Only customers with ACH disabled can refund payments.
         path: "/{payment_id}/refund"
         path-parameters:
             payment_id: PaymentId
