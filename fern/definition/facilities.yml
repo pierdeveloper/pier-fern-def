@@ -119,6 +119,22 @@ service:
           response:
             body: "Ok."
 
+    listPayments:
+      display-name: List all payments for a facility
+      docs: List payments for a facility
+      path: "/{facility_id}/payments"
+      path-parameters:
+        facility_id: FacilityId
+      method: GET
+      response: list<payments.Payment>
+      examples:
+        - path-parameters: 
+            facility_id: "facility_id"
+          response:
+            body:
+              - $payments.Payment.Pending
+              - $payments.Payment.Processing
+
     credit:
       display-name: Credit a facility
       docs: Credit a facility
