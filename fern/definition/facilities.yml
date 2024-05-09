@@ -128,7 +128,9 @@ service:
       method: GET
       response: list<payments.Payment>
       examples:
-        - response:
+        - path-parameters: 
+            facility_id: "facility_id"
+          response:
             body:
               - $payments.Payment.Pending
               - $payments.Payment.Processing
