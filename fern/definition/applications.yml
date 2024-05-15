@@ -58,7 +58,7 @@ service:
         name: ApproveApplicationRequest
         body:
           properties:
-            offers: list<Offer>
+            offers: list<OfferRequest>
       response: Application
       errors:
         - commons.InvalidInputError
@@ -68,7 +68,7 @@ service:
             application_id: $ApplicationId.Example0
           request:
             offers:
-              - $Offer.Loan
+              - $OfferRequest.LineOfCredit
           response:
             body: $Application.ApprovedApplication
 
@@ -159,7 +159,7 @@ types:
     union:
       revolving_line_of_credit_offer: LineOfCreditOffer
       loan_offer: LoanOffer
-      merchant_advance_offer: MerchantAdvanceOfferSchema
+      merchant_advance_offer: MerchantAdvanceOffer
     examples:
       - name: LineOfCredit
         value:
@@ -213,10 +213,76 @@ types:
             term_type: "months"
             term: 36
           security_amount: 10000
-      - name: MerchantAdvanceOfferSchema
+      - name: MerchantAdvanceOffer
         value:
           type: merchant_advance_offer
           id: $OfferId.Example0
+          amount: 1000000
+          interest_rate: 0
+          origination_fee: 0
+          late_payment_fee: 0
+          loan_term:
+            term_type: "days"
+            term: 60
+
+  OfferRequest:
+    union:
+      revolving_line_of_credit_offer: LineOfCreditOfferRequest
+      loan_offer: LoanOfferRequest
+      merchant_advance_offer: MerchantAdvanceOfferRequest
+    examples:
+      - name: LineOfCredit
+        value:
+          type: revolving_line_of_credit_offer
+          amount: 1000000
+          apr: 0
+          annual_fee: 0
+          billing_cycle: 30
+          finance_charge: 0
+          grace_period:
+            term: 21
+            interest_rate: 0
+          interest_rate: 0
+          late_payment_fee: 0
+          origination_fee: 0
+          minimum_payment:
+            type: interest_plus_percentage_of_principal
+            value: 500
+            floor: 3000
+      - name: Loan
+        value:
+          type: loan_offer
+          amount: 1000000
+          grace_period:
+            term: 0
+            interest_rate: 0
+          interest_rate: 0
+          origination_fee: 0
+          payment_period: monthly
+          late_payment_fee: 0
+          first_payment_date: "2022-12-31"
+          loan_term:
+            term_type: "months"
+            term: 36
+      - name: SecuredLoan
+        value:
+          type: loan_offer
+          amount: 1000000
+          grace_period:
+            term: 0
+            interest_rate: 0
+          interest_rate: 0
+          origination_fee: 0
+          payment_period: monthly
+          late_payment_fee: 0
+          first_payment_date: "2022-12-31"
+          loan_term:
+            term_type: "months"
+            term: 36
+          security_amount: 10000
+      - name: MerchantAdvanceOffer
+        value:
+          type: merchant_advance_offer
           amount: 1000000
           interest_rate: 0
           origination_fee: 0
@@ -300,9 +366,8 @@ types:
           created_on: "2022-12-31T02:20:35.934Z"
           decisioned_on: "2022-12-31T02:21:01.842Z"
 
-  LineOfCreditOffer:
+  LineOfCreditOfferRequest:
     properties:
-      id: OfferId
       amount:
         type: integer
         docs: The amount (in cents) of the credit line offer (e.g. '200000' for
@@ -342,10 +407,15 @@ types:
         docs: >
           The origination fee charged to originate the line in basis points (e.g. '150'
           for 1.50%)
+          
 
-  LoanOffer:
+  LineOfCreditOffer:
+    extends: LineOfCreditOfferRequest
     properties:
       id: OfferId
+
+  LoanOfferRequest:
+    properties:
       amount:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
@@ -372,9 +442,13 @@ types:
         type: optional<integer>
         docs: The amount (in cents) of the value of the loan collateral (e.g. 200000 for $2,000.00). Required for secured loan application types.
 
-  MerchantAdvanceOfferSchema:
+  LoanOffer:
+    extends: LoanOfferRequest
     properties:
       id: OfferId
+
+  MerchantAdvanceOfferRequest:
+    properties:
       amount:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
@@ -393,6 +467,13 @@ types:
         type: optional<integer>
         docs: The fee charged if a borrower misses the payment due date, in cents (e.g. 2500 for $25.00)
 
+  MerchantAdvanceOffer:
+    extends: MerchantAdvanceOfferRequest
+    properties:
+      id: OfferId
+      apr:
+        type: optional<integer>
+        docs: The annual percentage rate (in basis points) of the credit line
 
   GracePeriod:
     properties:

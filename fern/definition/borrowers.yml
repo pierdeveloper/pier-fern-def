@@ -206,16 +206,16 @@ types:
   BusinessBorrowerRequest:
     properties:
       address:
-        type: commons.Address
+        type: optional<commons.Address>
         docs: The address of the business.
       beneficial_owners:
-        type: list<BeneficialOwners>
+        type: optional<list<BeneficialOwners>>
         docs: |
           An array of objects representing owners of the business and those who control the funds of the business. 
           If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
           A maximum of 5 objects can be added.
       business_contact:
-        type: BusinessContact
+        type: optional<BusinessContact>
         docs: The person executing the loan agreement.
       business_name:
         type: string
@@ -224,23 +224,23 @@ types:
         type: BusinessType
         docs: The type of business entity.
       dba_name:
-        type: string
+        type: optional<string>
         docs: Doing-business-as name of the business
       ein:
-        type: string
+        type: optional<string>
         docs: 9-digit IRS employee identification number of the business (e.g.
           345543221)
       incorporation_date:
-        type: string
+        type: optional<string>
         docs: Incorporation date of the business (YYYY-MM-DD)
       kyb_completion_date:
-        type: string
+        type: optional<string>
         docs: Date kyb completed on the business (YYYY-MM-DD)
       state_of_incorporation:
         type: string
         docs: Required 2-digit US state code (e.g. CA, IL, FL, …)
       phone:
-        type: string
+        type: optional<string>
         docs: The phone number of the business
     examples:
       - name: Default
@@ -435,15 +435,15 @@ types:
   BusinessBorrower:
     properties:
       id: BusinessBorrowerId
-      address: commons.Address
+      address: optional<commons.Address>
       beneficial_owners:
-        type: list<BeneficialOwners>
+        type: optional<list<BeneficialOwners>>
         docs: |
           An array of objects representing owners of the business and those who control the funds of the business. 
           If no one owns more than 25% of the business, just the individual who has ultimate control of the funds must be included. 
           A maximum of 5 objects can be added.
       business_contact:
-        type: BusinessContact
+        type: optional<BusinessContact>
         docs: The person executing the loan agreement.
       business_name:
         type: string
@@ -452,23 +452,23 @@ types:
         type: BusinessType
         docs: The type of business entity.
       created_on:
-        type: string
+        type: optional<string>
         docs: Time stamp of borrower's creation date
       dba_name:
-        type: string
+        type: optional<string>
         docs: Doing-business-as name of the business
       ein:
-        type: string
+        type: optional<string>
         docs: 9-digit IRS employee identification number of the business (e.g.
           345543221)
       incorporation_date:
-        type: string
+        type: optional<string>
         docs: Incorporation date of the business (YYYY-MM-DD)
       kyb_completion_date:
-        type: string
+        type: optional<string>
         docs: Date kyb completed on the business (YYYY-MM-DD)
       phone:
-        type: string
+        type: optional<string>
         docs: The phone number of the business
       state_of_incorporation:
         type: string
