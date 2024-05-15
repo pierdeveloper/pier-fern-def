@@ -471,6 +471,9 @@ types:
     extends: MerchantAdvanceOfferRequest
     properties:
       id: OfferId
+      apr:
+        type: optional<integer>
+        docs: The annual percentage rate (in basis points) of the credit line
 
   GracePeriod:
     properties:
