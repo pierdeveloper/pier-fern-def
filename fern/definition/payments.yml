@@ -155,11 +155,13 @@ types:
           facility_id: $facilities.FacilityId.Example0
           amount: 100000
           transfer_type: standard
+          ach_authorization_id: doc_43da3b3f95c745e1985a71e9a00d6c27
       - name: DefaultNoneType
         value:
           facility_id: $facilities.FacilityId.Example0
           amount: 100000
           transfer_type: none
+          ach_authorization_id: doc_43da3b3f95c745e1985a71e9a00d6c27
 
   Payment:
     properties:
