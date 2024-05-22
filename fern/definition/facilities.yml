@@ -128,7 +128,7 @@ service:
       method: GET
       response: list<payments.Payment>
       examples:
-        - path-parameters: 
+        - path-parameters:
             facility_id: "facility_id"
           response:
             body:
@@ -557,6 +557,20 @@ types:
       document_url:
         type: string
         docs: The URL where the document can be accessed.
+      id:
+        type: string
+        docs: The unique identifier for the document.
+    examples:
+      - name: ExampleDocument
+        value:
+          document_url: "https://example.com/document.pdf"
+          id: "doc_1234567890abcdef"
+
+  FacilityDocument:
+    properties:
+      document_url:
+        type: string
+        docs: The URL where the document can be accessed.
       document_id:
         type: string
         docs: The unique identifier for the document.
@@ -569,22 +583,22 @@ types:
   Documents:
     properties:
       unsigned_credit_agreement:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the unsigned credit agreement document.
       signed_credit_agreement:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the signed credit agreement document.
       unsigned_ach_authorization:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the unsigned ACH authorization document.
       unsigned_autopay_ach_authorization:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the unsigned autopay ACH authorization document.
       signed_ach_authorization:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the signed ACH authorization document.
       signed_autopay_ach_authorization:
-        type: optional<Document>
+        type: optional<FacilityDocument>
         docs: The URL and ID for the signed autopay ACH authorization document.
     examples:
       - name: ExampleDocuments
