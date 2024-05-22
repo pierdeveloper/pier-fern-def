@@ -571,7 +571,7 @@ types:
       document_url:
         type: string
         docs: The URL where the document can be accessed.
-      id:
+      document_id:
         type: string
         docs: The unique identifier for the document.
     examples:
@@ -714,7 +714,7 @@ types:
         type: optional<commons.Autopay>
         docs: Whether or not autopay is enabled for the facility.
       documents:
-        type: optional<FacilityDocument>
+        type: optional<Documents>
         docs: The documents associated with the facility
     examples:
       - name: Active
