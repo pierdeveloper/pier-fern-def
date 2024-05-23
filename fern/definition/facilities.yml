@@ -261,6 +261,7 @@ service:
                 authorized: false
               balance: 0
               origination_date: "2024-04-19"
+              remaining_statement_balance: 7500
               documents:
                 unsigned_autopay_ach_authorization:
                   document_url: "https://storage.googleapis.com/download/storage/v1/b/pier_loan_docs/o/test%2Fdoc_db4efb43d1c0435ba5d730927d156fa6_unsigned.pdf?generation=1714045339730396&alt=media"
@@ -461,6 +462,11 @@ service:
             body: $PayoffAmounts.Default
 
 types:
+  Transaction:
+    union:
+      disbursement: Disbursement
+      payment: payments.Payment
+
   TransactionRefundResponse:
     properties:
       original:
@@ -489,7 +495,28 @@ types:
         docs: The id of the statement
       statement_date:
         type: string
-        docs: The date of the statement (YYYY-MM-DD)
+        docs: The end date of the statement (YYYY-MM-DD)
+      statement_start_date:
+        type: string
+        docs: The start date of the statement (YYYY-MM-DD)
+      balance:
+        type: integer
+        docs: The balance of the statement, in cents
+      principal_balance:
+        type: integer
+        docs: The principal balance of the statement, in cents
+      interest_balance:
+        type: integer
+        docs: The interest balance of the statement, in cents
+      minimum_payment:
+        type: integer
+        docs: The minimum payment due, in cents
+      due_date:
+        type: string
+        docs: The due date of the statement (YYYY-MM-DD)
+      transactions:
+        type: list<Transaction>
+        docs: An array of transactions made (empty if no payments are due)
       facility_id: FacilityId
       url:
         type: string
@@ -505,6 +532,14 @@ types:
           facility_id: $FacilityId.Example0
           url: https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
           created_on: 2023-02-27T00:00:00Z
+          statement_start_date: 2023-02-17
+          balance: 500000
+          principal_balance: 500000
+          interest_balance: 0
+          minimum_payment: 12445
+          due_date: 2023-03-17
+          transactions: []
+
 
   Disbursement:
     properties:
@@ -738,6 +773,9 @@ types:
       documents:
         type: optional<Documents>
         docs: The documents associated with the facility
+      remaining_statement_balance:
+        type: integer
+        docs: The amount, in cents, of the last statement balance, less any payments made after the statement was created. Will be set to null until first statement is created.
     examples:
       - name: Active
         value:
@@ -771,6 +809,7 @@ types:
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Disabled
           documents: $Documents.ExampleDocuments
+          remaining_statement_balance: 7500
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -802,6 +841,7 @@ types:
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Default
+          remaining_statement_balance: 7500
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -833,6 +873,7 @@ types:
           next_accrual_cutoff_date: "2023-06-11"
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Disabled
+          remaining_statement_balance: 7500
 
   CreditStatus:
     enum:
@@ -903,12 +944,6 @@ types:
       memo:
         type: optional<string>
         docs: A memo about the refund
-
-
-  Transaction:
-    union:
-      disbursement: Disbursement
-      payment: payments.Payment
 
   RefundedDisbursement:
     extends: Disbursement
