@@ -199,18 +199,35 @@ service:
           response:
             body: $Facility.Closed
 
+    createACHAuthorization:
+      display-name: Create ACH Authorization
+      docs: |
+        Creates an unsigned ACH authorization document for a specified facility. This is a required step before submitting a payment if repayment ACH is enabled. The user must agree to ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /payments. You must create a new ACH authorization document for each payment.
+      path: /{facility_id}/create_ach_authorization
+      path-parameters:
+        facility_id: FacilityId
+      method: POST
+      response: Document
+      errors:
+        - commons.InvalidInputError
+        - commons.FacilityNotFoundError
+
     createAutopayAuthorization:
       display-name: Create autopay ACH authorization
       docs: |
         Creates an unsigned autopay ACH authorization document for a specified facility. This is a required step before enabling autopay. The user must agree to automatic ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /enable_autopay.
-      path: "/api/facilities/:facility_id/create_autopay_authorization"
+      path: /{facility_id}/create_autopay_authorization
+      path-parameters:
+        facility_id: FacilityId
       method: POST
       response: Facility
       errors:
         - commons.InvalidInputError
         - commons.FacilityNotFoundError
       examples:
-        - response:
+        - path-parameters:
+              facility_id: $FacilityId.Example0
+          response:
             body:
               terms:
                 grace_period:
