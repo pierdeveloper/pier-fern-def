@@ -11,17 +11,6 @@ service:
   base-path: /payments
   auth: true
   endpoints:
-    createACHAuthorization:
-      display-name: Create ACH Authorization
-      docs: |
-        Creates an unsigned ACH authorization document for a specified facility. This is a required step before submitting a payment if repayment ACH is enabled. The user must agree to ACH withdrawals before Pier can initiate payments. This document is automatically signed by the user when you call POST /payments. You must create a new ACH authorization document for each payment.
-      path: "/api/facilities/:facility_id/create_ach_authorization"
-      method: POST
-      response: facilities.Document
-      errors:
-        - commons.InvalidInputError
-        - commons.FacilityNotFoundError
-
     submitPayment:
       display-name: Submit a loan payment
       docs: |
