@@ -788,8 +788,8 @@ types:
           status: active
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
-          balance: 5000000
-          payoff_balance: 5000000
+          balance: 500000
+          payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
@@ -821,8 +821,8 @@ types:
           status: active
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
-          balance: 5000000
-          payoff_balance: 5000000
+          balance: 500000
+          payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
@@ -853,8 +853,8 @@ types:
           created_on: "2023-01-17T04:59:21.773Z"
           status: closed
           account_number: "401542198"
-          balance: 5000000
-          payoff_balance: 5000000
+          balance: 500000
+          payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
