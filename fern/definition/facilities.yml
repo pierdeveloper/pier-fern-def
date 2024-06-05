@@ -267,9 +267,11 @@ service:
                   document_url: "https://storage.googleapis.com/download/storage/v1/b/pier_loan_docs/o/test%2Fdoc_db4efb43d1c0435ba5d730927d156fa6_unsigned.pdf?generation=1714045339730396&alt=media"
                   document_id: "doc_db4efb43d1c0435ba5d730927d156fa6"
               created_on: "2024-04-25T11:38:54.520Z"
-              transactions: [ ]
-              statements: [ ]
-              payments_due: [ ]
+              transactions: $FacilityTransactionItems.Default
+              statements:
+                - $Statement.Default
+              payments_due: $PaymentsDue.Default
+              remaining_minimum_balance: 7500
 
 
     enable_autopay:
@@ -497,15 +499,18 @@ types:
         type: string
         docs: The end date of the statement (YYYY-MM-DD)
       statement_start_date:
-        type: string
+        type: datetime
         docs: The start date of the statement (YYYY-MM-DD)
-      balance:
+      balance_due:
         type: integer
-        docs: The balance of the statement, in cents
-      principal_balance:
+        docs: The balance due at the time of statement creation, in cents
+      current_principal_balance:
         type: integer
         docs: The principal balance of the statement, in cents
-      interest_balance:
+      current_interest_balance:
+        type: integer
+        docs: The interest balance of the statement, in cents
+      interest_charged:
         type: integer
         docs: The interest balance of the statement, in cents
       minimum_payment:
@@ -515,8 +520,14 @@ types:
         type: string
         docs: The due date of the statement (YYYY-MM-DD)
       transactions:
-        type: list<Transaction>
-        docs: An array of transactions made (empty if no payments are due)
+        type: FacilityTransactionItems
+        docs: An array of transactions made (scoped to the period of the statement)
+      payments:
+        type: list<payments.Payment>
+        docs: An array of payments made (scoped to the period of the statement)
+      disbursements:
+        type: list<Disbursement>
+        docs: An array of disbursements made (scoped to the period of the statement)
       facility_id: FacilityId
       url:
         type: string
@@ -532,14 +543,18 @@ types:
           facility_id: $FacilityId.Example0
           url: https://app.docspring.com/submissions/sub_gjX2LS7c6FjqZt12hQ/download
           created_on: 2023-02-27T00:00:00Z
-          statement_start_date: 2023-02-17
-          balance: 500000
-          principal_balance: 500000
-          interest_balance: 0
+          statement_start_date: 2024-06-17T00:00:00.000Z
+          balance_due: 500000
+          current_principal_balance: 500000
+          current_interest_balance: 10000
+          interest_charged: 0
           minimum_payment: 12445
           due_date: 2023-03-17
-          transactions: []
-
+          transactions: $FacilityTransactionItems.Default
+          payments:
+            - $payments.Payment.Settled
+          disbursements:
+            - $Disbursement.Pending
 
   Disbursement:
     properties:
@@ -714,7 +729,7 @@ types:
         type: optional<commons.BankAccount>
         docs: The bank account information used to repay the loan
       transactions:
-        type: list<string>
+        type: FacilityTransactionItems
         docs: An array of transactions made (empty if no payments are due)
       statements:
         type: list<Statement>
@@ -735,7 +750,7 @@ types:
         type: optional<integer>
         docs: The remaining term of the loan, in months
       payments_due:
-        type: list<string>
+        type: PaymentsDue
         docs: An array of payments due (empty if no payments are due)
       next_payment_amount:
         type: optional<integer>
@@ -776,6 +791,12 @@ types:
       remaining_statement_balance:
         type: integer
         docs: The amount, in cents, of the last statement balance, less any payments made after the statement was created. Will be set to null until first statement is created.
+      remaining_minimum_balance:
+        type: integer
+        docs: The minimum due, in cents, of the last statement minimum, less any payments made since the statement was created. Will be set to null until first statement is created.
+      last_statement_info:
+        type: optional<LastStatementInfo>
+        docs: The last statement information including date/amount.
     examples:
       - name: Active
         value:
@@ -793,11 +814,12 @@ types:
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
-          payments_due: []
+          payments_due: $PaymentsDue.Default
           amortization_schedule: $AmmortizationSchedules.Default
           repayment_bank_details: $commons.BankAccount.Default
-          transactions: []
-          statements: []
+          transactions: $FacilityTransactionItems.Default
+          statements:
+            - $Statement.Default
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
           current_payment_due_date: "2023-06-12"
@@ -810,6 +832,8 @@ types:
           autopay: $commons.Autopay.Disabled
           documents: $Documents.ExampleDocuments
           remaining_statement_balance: 7500
+          remaining_minimum_balance: 7500
+          last_statement_info: $LastStatementInfo.Default
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -826,11 +850,12 @@ types:
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
           remaining_term: 48
-          payments_due: []
+          payments_due: $PaymentsDue.Default
           amortization_schedule: $AmmortizationSchedules.Default
           repayment_bank_details: null
-          transactions: []
-          statements: []
+          transactions: $FacilityTransactionItems.Default
+          statements:
+            - $Statement.Default
           next_payment_amount: 124425
           next_payment_due_date: "2023-06-12"
           current_payment_due_date: "2023-06-12"
@@ -842,6 +867,8 @@ types:
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Default
           remaining_statement_balance: 7500
+          remaining_minimum_balance: 7500
+          last_statement_info: $LastStatementInfo.Default
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -874,11 +901,77 @@ types:
           scheduled_payoff_date: "2027-05-12"
           autopay: $commons.Autopay.Disabled
           remaining_statement_balance: 7500
+          remaining_minimum_balance: 7500
+          last_statement_info: $LastStatementInfo.Default
+
+  LastStatementInfo:
+    properties:
+      last_statement_date:
+        type: string
+        docs: The date of the last statement (2024-06-01T00:00:00.000Z)
+      last_statement_amount:
+        type: integer
+        docs: The amount of the last statement, in cents
+    examples:
+      - name: Default
+        value:
+          last_statement_date: "2024-06-01T00:00:00.000Z"
+          last_statement_amount: 47000
 
   CreditStatus:
     enum:
       - active
       - closed
+
+  FacilityTransactionItem:
+    properties:
+      amount:
+        type: integer
+        docs: The amount of the transaction, in cents (e.g. 1000 = $10.00)
+      transaction_date:
+        type: string
+        docs: The date of the transaction (YYYY-MM-DD)
+      effective_date:
+        type: string
+        docs: The effective date of the transaction (YYYY-MM-DD)
+      description:
+        type: string
+        docs: A description of the transaction
+
+  FacilityTransactionItems:
+    type: list<FacilityTransactionItem>
+    examples:
+      - name: Default
+        value:
+          - amount: 100000
+            transaction_date: "2023-05-12"
+            effective_date: "2023-05-12"
+            description: "Disbursement"
+          - amount: 500000
+            transaction_date: "2024-06-02"
+            effective_date: "2024-06-02"
+            description: "Principal Reduction"
+
+  PaymentDue:
+    properties:
+      payment_amount:
+        type: integer
+        docs: The amount of the payment, in cents (e.g. 1000 = $10.00)
+      payment_amount_remaining:
+        type: integer
+        docs: The amount of the payment remaining, in cents (e.g. 1000 = $10.00)
+      payment_due_date:
+        type: string
+        docs: The date the payment is due (YYYY-MM-DD)
+
+  PaymentsDue:
+    type: list<PaymentDue>
+    examples:
+      - name: Default
+        value:
+          - payment_amount: 123456
+            payment_amount_remaining: 123456
+            payment_due_date: "2023-06-12"
 
   PayoffAmount:
     properties:
