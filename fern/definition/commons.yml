@@ -78,6 +78,9 @@ types:
       - checking
       - savings
 
+  # Also, we need to distinguish between internal transfer types on the objects and the ones that are passed in through the api
+  # We also need to add settlement priorities
+  # These need to be set to different ones for payment/disbursement
   TransferType:
     enum:
       - standard
