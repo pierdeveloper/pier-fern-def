@@ -737,6 +737,9 @@ types:
       balance:
         type: optional<integer>
         docs: The remaining balance of the loan, in cents
+      interest_balance:
+        type: optional<integer>
+        docs: The current interest balance of the loan, in cents
       payoff_balance:
         type: optional<integer>
         docs: The current payoff balance of the loan, in cents
@@ -810,6 +813,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
@@ -846,6 +850,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
@@ -881,6 +886,7 @@ types:
           status: closed
           account_number: "401542198"
           balance: 500000
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
