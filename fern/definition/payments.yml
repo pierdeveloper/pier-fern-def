@@ -136,8 +136,8 @@ types:
         type: commons.TransferType
         docs: The type of ACH transfer
       ach_authorization_id:
-        type: string
-        docs: The Document ID of an unused ACH authorization document
+        type: optional<string>
+        docs: The Document ID of an unused ACH authorization document (only required when `transfer_type` is not `none`)
     examples:
       - name: Default
         value:
