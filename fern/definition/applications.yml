@@ -539,7 +539,7 @@ types:
       - value: daily
         docs: The term of the promotional period is in days
       - value: period
-        docs: [NOT YET IMPLEMENTED] The term of the promotional period is in the term of the offer
+        docs: "[NOT YET IMPLEMENTED] The term of the promotional period is in the term of the offer"
 
   Term:
     properties:
