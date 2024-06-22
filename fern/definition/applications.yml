@@ -173,6 +173,11 @@ types:
           grace_period:
             term: 21
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           late_payment_fee: 0
           origination_fee: 0
@@ -188,6 +193,11 @@ types:
           grace_period:
             term: 0
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           origination_fee: 0
           payment_period: monthly
@@ -204,6 +214,11 @@ types:
           grace_period:
             term: 0
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           origination_fee: 0
           payment_period: monthly
@@ -242,6 +257,11 @@ types:
           grace_period:
             term: 21
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           late_payment_fee: 0
           origination_fee: 0
@@ -256,6 +276,11 @@ types:
           grace_period:
             term: 0
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           origination_fee: 0
           payment_period: monthly
@@ -271,6 +296,11 @@ types:
           grace_period:
             term: 0
             interest_rate: 0
+          introductory_promo_period:
+            interest_rate: 0
+            promo_term:
+              term: 90
+              term_type: daily
           interest_rate: 0
           origination_fee: 0
           payment_period: monthly
@@ -389,6 +419,7 @@ types:
           If your platform charges a monthly finance charge for access to the line,
           the amount in cents
       grace_period: optional<GracePeriod>
+      introductory_promo_period: optional<IntroductoryPromoPeriod>
       interest_rate:
         type: optional<integer>
         docs: >
@@ -420,6 +451,7 @@ types:
         type: integer
         docs: The amount (in cents) of the loan offer (e.g. 200000 for $2,000.00)
       grace_period: optional<GracePeriod>
+      introductory_promo_period: optional<IntroductoryPromoPeriod>
       interest_rate:
         type: optional<integer>
         docs: The interest rate (in basis points) charged on the loan principal (e.g. 750 for 7.50%)
@@ -483,6 +515,31 @@ types:
       interest_rate:
         type: optional<integer>
         docs: The interest rate (in basis points) charged during the grace period. Must be '0' for consumer lines of credit. Defaults to 0 if omitted
+
+  IntroductoryPromoPeriod:
+    properties:
+      interest_rate:
+        type: integer
+        docs: The interest rate (in basis points) charged during the introductory period
+      promo_term:
+        type: PromoTerm
+        docs: The terms of the promotional period
+
+  PromoTerm:
+    properties:
+      term:
+        type: integer
+        docs: The term of the promotional period relative to the `term_type` (e.g. if `daily` in days, `period` in period of loan, etc.)
+      term_type:
+        type: PromoTermType
+        docs: The term of the promotional period
+
+  PromoTermType:
+    enum:
+      - value: daily
+        docs: The term of the promotional period is in days
+      - value: period
+        docs: [NOT YET IMPLEMENTED] The term of the promotional period is in the term of the offer
 
   Term:
     properties:

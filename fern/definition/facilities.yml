@@ -238,6 +238,11 @@ service:
                 grace_period:
                   term: 0
                   interest_rate: 0
+                introductory_promo_period:
+                  interest_rate: 0
+                  promo_term:
+                    term: 90
+                    term_type: daily
                 amount: 100000
                 apr: 200
                 annual_fee: 0
@@ -272,6 +277,8 @@ service:
                 - $Statement.Default
               payments_due: $PaymentsDue.Default
               remaining_minimum_balance: 7500
+              in_grace_period: true
+              in_introductory_promo_period: true
 
 
     enable_autopay:
@@ -800,6 +807,12 @@ types:
       last_statement_info:
         type: optional<LastStatementInfo>
         docs: The last statement information including date/amount.
+      in_grace_period:
+        type: optional<boolean>
+        docs: Whether the facility is in a grace period
+      in_introductory_promo_period:
+        type: optional<boolean>
+        docs: Whether the facility is in an introductory promotional period
     examples:
       - name: Active
         value:
@@ -838,6 +851,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -874,6 +889,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -909,6 +926,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
 
   LastStatementInfo:
     properties:
