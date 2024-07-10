@@ -533,7 +533,6 @@ types:
           balance: 500000
           principal_balance: 500000
           interest_balance: 0
-          minimum_payment: 12445
           due_date: 2023-03-17
           transactions: []
 
