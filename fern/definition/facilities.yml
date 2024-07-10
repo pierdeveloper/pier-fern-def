@@ -508,9 +508,6 @@ types:
       interest_balance:
         type: integer
         docs: The interest balance of the statement, in cents
-      minimum_payment:
-        type: integer
-        docs: The minimum payment due, in cents
       due_date:
         type: string
         docs: The due date of the statement (YYYY-MM-DD)
