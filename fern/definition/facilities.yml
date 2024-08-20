@@ -520,9 +520,6 @@ types:
       interest_charged:
         type: integer
         docs: The interest balance of the statement, in cents
-      minimum_payment:
-        type: integer
-        docs: The minimum payment due, in cents
       due_date:
         type: string
         docs: The due date of the statement (YYYY-MM-DD)
@@ -555,7 +552,6 @@ types:
           current_principal_balance: 500000
           current_interest_balance: 10000
           interest_charged: 0
-          minimum_payment: 12445
           due_date: 2023-03-17
           transactions: $FacilityTransactionItems.Default
           payments:
