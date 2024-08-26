@@ -144,7 +144,7 @@ service:
             - path-parameters:
                 facility_id: $FacilityId.Example0
               request:
-                  amount: 100000
+                  new_limit_amount: 100000
                   reasons: ["fraud_prevention"]
               response:
                   body: $Document.ExampleDocument
@@ -170,6 +170,8 @@ service:
       examples:
         - path-parameters:
             facility_id: $FacilityId.Example0
+          request:
+            new_limit_amount: 100000
           response:
             body: $Facility.Active
 
