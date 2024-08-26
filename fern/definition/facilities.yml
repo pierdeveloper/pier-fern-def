@@ -119,6 +119,60 @@ service:
           response:
             body: "Ok."
 
+    createLimitReductionNotice:
+        display-name: Create a limit reduction notice
+        docs: Create a limit reduction notice, which should be presented to the user when their credit limit is reduced. This endpoint must be called before reducing the credit limit. The document_id returned should be stored and used in the PATCH /facilities/{facility_id}/update_limit endpoint.
+        path: "/{facility_id}/create_limit_reduction_notice"
+        path-parameters:
+          facility_id: FacilityId
+        method: POST
+        request:
+          name: CreateLimitReductionNoticeRequest
+          body:
+              properties:
+                new_limit_amount:
+                    type: integer
+                    docs: Amount of the new credit limit, in cents
+                reasons:
+                    type: list<LimitReductionReasons>
+                    docs: The reasons for the limit reduction
+        response: Document
+        errors:
+          - commons.FacilityNotFoundError
+          - commons.InvalidInputError
+        examples:
+            - path-parameters:
+                facility_id: $FacilityId.Example0
+              request:
+                  amount: 100000
+                  reasons: ["fraud_prevention"]
+              response:
+                  body: $Document.ExampleDocument
+
+    updateCreditLimit:
+      display-name: Update credit limit for a line of credit
+      docs: Update credit limit for a line of credit. For reductions, pass in the document_id from the create_limit_reduction_notice endpoint. For increases, pass in the new credit limit amount.
+      path: "/{facility_id}/update_limit"
+      path-parameters:
+        facility_id: FacilityId
+      method: PATCH
+      request:
+          name: UpdateCreditLimitRequest
+          body:
+            properties:
+                new_limit_amount:
+                  type: optional<integer>
+                  docs: The new credit limit amount, in cents
+                document_id:
+                  type: optional<string>
+                  docs: The document_id from the create_limit_reduction_notice endpoint
+      response: Facility
+      examples:
+        - path-parameters:
+            facility_id: $FacilityId.Example0
+          response:
+            body: $Facility.Active
+
     listPayments:
       display-name: List all payments for a facility
       docs: List payments for a facility
@@ -938,6 +992,19 @@ types:
         value:
           last_statement_date: "2024-06-01T00:00:00.000Z"
           last_statement_amount: 47000
+
+  LimitReductionReasons:
+    enum:
+        - change_in_credit_score
+        - high_credit_utilization
+        - late_payments
+        - inactivity
+        - economic_downturn
+        - negative_changes_in_financial_situation
+        - increased_debt_levels
+        - credit_report_changes
+        - regulatory_or_internal_policy_changes
+        - fraud_prevention
 
   CreditStatus:
     enum:
