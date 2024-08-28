@@ -602,7 +602,7 @@ types:
         docs: Kyc status of a consumer (*sandbox only*)
       government_identifiers:
         type: optional<GovernmentIdentifiers>
-        docs: The borrower's government identifiers, required fields dependent on customer configuration
+        docs: The borrower's government identifiers, required fields dependent on customer configuration. Can be non-unique on sandbox environment.
 
     examples:
       - name: Default
