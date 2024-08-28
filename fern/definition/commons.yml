@@ -89,6 +89,7 @@ types:
     enum:
       - pending
       - processing
+      - processed
       - settled
       - failed
       - cancelled
