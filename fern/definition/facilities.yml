@@ -1018,6 +1018,9 @@ types:
       amount:
         type: integer
         docs: The amount of the transaction, in cents (e.g. 1000 = $10.00)
+      net_amount:
+        type: integer
+        docs: The net amount of the transaction, meaning positive or negative depending on the effect on the ledger, in cents (e.g. 1000 = $10.00)
       transaction_date:
         type: string
         docs: The date of the transaction (YYYY-MM-DD)
@@ -1027,6 +1030,18 @@ types:
       description:
         type: string
         docs: A description of the transaction
+      transaction_type:
+        type: FacilityTransactionType
+        docs: The type of transaction relative to the effect on the balance (CREDIT = balance decrease; DEBIT = balance increase; NONE = no balance change)
+      transaction_iso_timestamp:
+        type: datetime
+        docs: The ISO timestamp of the transaction
+
+  FacilityTransactionType:
+    enum:
+      - NONE
+      - CREDIT
+      - DEBIT
 
   FacilityTransactionItems:
     type: list<FacilityTransactionItem>
@@ -1034,13 +1049,19 @@ types:
       - name: Default
         value:
           - amount: 100000
+            net_amount: 100000
             transaction_date: "2023-05-12"
             effective_date: "2023-05-12"
             description: "Disbursement"
+            transaction_type: "DEBIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
           - amount: 500000
+            net_amount: -500000
             transaction_date: "2024-06-02"
             effective_date: "2024-06-02"
             description: "Principal Reduction"
+            transaction_type: "CREDIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
 
   PaymentDue:
     properties:
