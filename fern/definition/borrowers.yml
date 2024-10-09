@@ -551,7 +551,6 @@ types:
         type: GovernmentIdentifiers
         docs: The person's government identifiers, required fields dependent on customer configuration
 
-
   BusinessContact:
     properties:
       first_name:

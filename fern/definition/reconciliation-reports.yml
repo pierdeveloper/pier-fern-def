@@ -1,0 +1,251 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
+
+docs: |
+  Reconciliation reports are used to reconcile the ledger and balance of facilities with partners' records.
+  These reports come in (2) flavors served as JSON via the API: transactions and balances.
+  Each report is generated for a specific facility each day and contains the balance EOD in Pacific Time and all transactions for that day.
+  For any given day the reports will be ready by midday the following day.
+  Transactions are broken up into (3) categories: payments, disbursements, and the ledger of the facility (which includes fees, interest, payments, disbursements, etc.).
+  If the balances, transactions, payments, and disbursements in Pier's system match the partner's records, the partner can be confident that our systems are in sync.
+
+imports:
+  borrowers: borrowers.yml
+  commons: commons.yml
+  facilities: facilities.yml
+  payments: payments.yml
+
+service:
+  base-path: /reconciliation
+  auth: true
+  endpoints:
+    getBalanceReport:
+      display-name: Get balance report
+      docs: >
+        Get the balance report for all facilities for a Pier partner 
+        for a specific day. The report contains the balance EOD in 
+        Pacific Time.
+      method: GET
+      path: /balance-report/{date}
+      path-parameters:
+        date: ISODate
+      response: BalanceReportResponse
+      errors:
+        - commons.InvalidInputError
+        - commons.UnableToAcquireLockError
+      examples:
+        - path-parameters:
+            date: $ISODate.Example0
+          response:
+            body: $BalanceReportResponse.Default
+
+    getTransactionReport:
+      display-name: Get transaction report
+      docs: >
+        Get the transaction report for all facilities for a Pier partner 
+        for a specific day. The report contains all transactions for the 
+        day that make up the ledger of the facility as well as payments
+        and disbursements.
+      method: GET
+      path: /transaction-report/{date}
+      path-parameters:
+          date: ISODate
+      response: TransactionReportResponse
+      errors:
+        - commons.InvalidInputError
+        - commons.UnableToAcquireLockError
+      examples:
+        - path-parameters:
+            date: $ISODate.Example0
+          response:
+            body: $TransactionReportResponse.Default
+
+types:
+  ISODate:
+    type: string
+    docs: An ISO 8601 date string in the format YYYY-MM-DD
+    examples:
+      - name: Example0
+        value: 2024-10-01
+
+  ReconciliationReportCadence:
+    enum:
+        - daily
+
+  ReconciliationReportType:
+    enum:
+        - transaction
+        - balance
+
+  BalanceReport:
+    properties:
+      facility_id:
+        type: facilities.FacilityId
+        docs: The ID of the facility
+      borrower_id:
+        type: borrowers.ConsumerBorrowerId
+        docs: The ID of the borrower
+      report_date:
+        type: ISODate
+        docs: The date of the report - this is the same as the date in the path parameter.
+      balance:
+        type: integer
+        docs:  > 
+          The balance EOD in Pacific Time in cents for the facility. 
+          This field matches the facility balance field and handles 
+          showing balance based on if the facility is in grace period 
+          or not.
+      payoff_balance:
+        type: integer
+        docs: >
+          The payoff balance in cents for the facility. During grace 
+          period this is the principal balance; out of grace this is 
+          the current/total balance.
+      current_balance:
+        type: integer
+        docs: >
+          The current balance in cents for the facility. Regardless of 
+          grace period this always includes the entire balance (principal,
+          interest, fees).
+      interest_balance:
+        type: integer
+        docs: >
+          The interest balance in cents for the facility. This is the 
+          interest accrued on the facility.
+      in_grace_period:
+        type: boolean
+        docs: >
+          A boolean indicating if the facility is in grace period. During grace
+          period the payoff_balance is the facility's balance field and what is
+          due without interest.
+      in_introductory_promo_period:
+        type: boolean
+        docs: >
+          A boolean indicating if the facility is in the introductory promo period.
+          During this period the facility terms can be different than the standard
+          terms once the grace period is over. Typically this would be a 0% interest
+          for a period of X days.
+    examples:
+      - name: Default
+        value:
+          facility_id: $facilities.FacilityId.Example0
+          borrower_id: $borrowers.ConsumerBorrowerId.Default
+          report_date: "2024-10-01"
+          balance: 100000
+          payoff_balance: 100000
+          current_balance: 100000
+          interest_balance: 0
+          in_grace_period: true
+          in_introductory_promo_period: false
+
+  BalanceReportResponse:
+    properties:
+      facility_balances:
+        type: list<BalanceReport>
+        docs: This is a list of balance reports for all the facilities for the given date.
+      cadence:
+        type: ReconciliationReportCadence
+        docs: >
+          The cadence that the report is generated in. For now, "daily" cadence is the only 
+          one that exists.
+      type:
+        type: ReconciliationReportType
+        docs: >
+          The type of report that is being generated. For now, "balance" is the only type 
+          that exists.
+      report_date:
+        type: ISODate
+        docs: The date of the report - this is the same as the date in the path parameter.
+      last_updated:
+        type: datetime
+        docs: The timestamp when the report was last updated.
+    examples:
+      - name: Default
+        value:
+          facility_balances:
+            - facility_id: $facilities.FacilityId.Example0
+              borrower_id: $borrowers.ConsumerBorrowerId.Default
+              report_date: "2024-10-01"
+              balance: 100000
+              payoff_balance: 100000
+              current_balance: 100000
+              interest_balance: 0
+              in_grace_period: true
+              in_introductory_promo_period: false
+          cadence: daily
+          type: balance
+          report_date: "2024-10-01"
+          last_updated: "2024-10-02T00:00:00Z"
+
+  ReconciliationReportTransaction:
+    extends: facilities.FacilityTransactionItem
+    docs: A transaction that make up the ledger of the facility
+    properties:
+      facility_id:
+        type: facilities.FacilityId
+        docs: The ID of the facility
+      borrower_id:
+        type: borrowers.ConsumerBorrowerId
+        docs: The ID of the borrower
+
+  ReconciliationReportTransactions:
+    type: list<ReconciliationReportTransaction>
+    docs: A list of transactions for the day that make up the ledger of the facility
+    examples:
+      - name: Default
+        value:
+          - facility_id: $facilities.FacilityId.Example0
+            borrower_id: $borrowers.ConsumerBorrowerId.Default
+            amount: 100000
+            net_amount: 100000
+            transaction_date: "2023-05-12"
+            effective_date: "2023-05-12"
+            description: "Disbursement"
+            transaction_type: "DEBIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
+          - facility_id: $facilities.FacilityId.Example0
+            borrower_id: $borrowers.ConsumerBorrowerId.Default
+            amount: 500000
+            net_amount: -500000
+            transaction_date: "2024-06-02"
+            effective_date: "2024-06-02"
+            description: "Principal Reduction"
+            transaction_type: "CREDIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
+
+  TransactionReportResponse:
+    properties:
+      facility_transactions:
+        type: list<ReconciliationReportTransactions>
+        docs: A list of transactions for the day that make up the ledger of the facility
+      payments:
+        type: list<payments.Payment>
+        docs: A list of payments for the day
+      disbursements:
+        type: list<facilities.Disbursement>
+        docs: A list of disbursements for the day
+      cadence:
+        type: ReconciliationReportCadence
+        docs: >
+          The cadence that the report is generated in. For now, "daily" cadence is the only 
+          one that exists.
+      type:
+        type: ReconciliationReportType
+        docs: >
+          The type of report that is being generated. For now, "balance" is the only type 
+          that exists.
+      report_date:
+        type: ISODate
+        docs: The date of the report - this is the same as the date in the path parameter.
+      last_updated:
+        type: datetime
+        docs: The timestamp when the report was last updated.
+    examples:
+      - name: Default
+        value:
+          facility_transactions: [$ReconciliationReportTransactions.Default]
+          payments: [$payments.Payment.Pending]
+          disbursements: [$facilities.Disbursement.Pending]
+          cadence: daily
+          type: transaction
+          report_date: "2024-10-01"
+          last_updated: "2024-10-02T00:00:00Z"
