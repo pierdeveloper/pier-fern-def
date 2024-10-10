@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   The auth endpoint(s) support `Bearer` JWT authentication as a strong alternative to `basic` auth. 
   To use this, you must first generate a JWT token by calling the `/token` endpoint with your API 
   client ID and API client secret. This token will expire after 24 hours, at which point you will 

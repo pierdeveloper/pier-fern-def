@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   A facility represents an active loan or line of credit. 
   It contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. 
   Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality.

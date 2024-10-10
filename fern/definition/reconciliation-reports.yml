@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   Reconciliation reports are used to reconcile the ledger and balance of facilities with partners' records.
   These reports come in (2) flavors served as JSON via the API: transactions and balances.
   Each report is generated for a specific facility each day and contains the balance EOD in Pacific Time and all transactions for that day.

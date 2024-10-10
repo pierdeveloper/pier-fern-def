@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   Applications represent the credit application for a borrower. 
   Applications must be created for a given borrower, and one borrower can have many applications. 
   Once an application is created, it must either be approved or rejected.
