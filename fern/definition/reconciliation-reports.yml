@@ -32,6 +32,8 @@ service:
       errors:
         - commons.InvalidInputError
         - commons.UnableToAcquireLockError
+        - commons.ReconciliationReportInvalidDateError
+        - commons.ReconciliationReportNotYetAvailableError
       examples:
         - path-parameters:
             date: $ISODate.Example0
@@ -53,6 +55,8 @@ service:
       errors:
         - commons.InvalidInputError
         - commons.UnableToAcquireLockError
+        - commons.ReconciliationReportInvalidDateError
+        - commons.ReconciliationReportNotYetAvailableError
       examples:
         - path-parameters:
             date: $ISODate.Example0
