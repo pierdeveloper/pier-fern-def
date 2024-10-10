@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. 
   `min` and `max` amounts are in cents, and `max_apr` is in basis points. 
   States not yet supported are represented as an empty object

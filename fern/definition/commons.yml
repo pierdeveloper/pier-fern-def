@@ -268,3 +268,7 @@ errors:
   TransactionAlreadyRefundedError:
     status-code: 400
     type: ErrorBody
+
+  UnableToAcquireLockError:
+    status-code: 409
+    type: ErrorBody

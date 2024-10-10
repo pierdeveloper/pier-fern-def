@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   A facility represents an active loan or line of credit. 
   It contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. 
   Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality.
@@ -321,6 +321,11 @@ service:
               autopay:
                 authorized: false
               balance: 0
+              balances:
+                current_balance: 0
+                principal_balance: 0
+                interest_balance: 0
+                payoff_balance: 0
               origination_date: "2024-04-19"
               remaining_statement_balance: 7500
               documents:
@@ -753,6 +758,28 @@ types:
             document_url: "https://storage.googleapis.com/example/signed_autopay_ach_authorization.pdf"
             document_id: "doc_0123456789abcdef"
 
+  FacilityBalances:
+    properties:
+      current_balance:
+        type: integer
+        docs: The current balance of the loan, in cents (includes everything - principal, interest, fees, etc.)
+      principal_balance:
+        type: integer
+        docs: The principal balance of the loan, in cents
+      interest_balance:
+        type: integer
+        docs: The interest balance of the loan, in cents
+      payoff_balance:
+        type: integer
+        docs: The payoff balance of the loan, in cents (if the facility is in grace then this balance is only principal; otherwise it matches current_balance)
+    examples:
+      - name: Default
+        value:
+          current_balance: 500000
+          principal_balance: 500000
+          interest_balance: 0
+          payoff_balance: 500000
+
   Facility:
     properties:
       id: FacilityId
@@ -796,12 +823,17 @@ types:
       balance:
         type: optional<integer>
         docs: The remaining balance of the loan, in cents
+      balances:
+        type: FacilityBalances
+        docs: A deeper view of what makes up the facility balance, all in cents
       interest_balance:
         type: optional<integer>
-        docs: The current interest balance of the loan, in cents
+        docs: The current interest balance of the loan, in cents (deprecated - see balances field)
+        availability: deprecated
       payoff_balance:
         type: optional<integer>
-        docs: The current payoff balance of the loan, in cents
+        docs: The current payoff balance of the loan, in cents (deprecated - see balances field)
+        availability: deprecated
       origination_date:
         type: optional<string>
         docs: The date the loan was originated (YYYY-MM-DD)
@@ -878,6 +910,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
           interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
@@ -917,6 +950,7 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
           interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
@@ -955,6 +989,7 @@ types:
           status: closed
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
           interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
