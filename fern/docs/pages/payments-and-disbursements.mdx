@@ -27,7 +27,7 @@ When enabling a Facility for Autopay, `amount_type` is required and can be one o
 
 ## Setting Additional Amounts
 
-For loans, give users the option to schedule an additional amount in addition to the periodic payment amount by setting `additional_amount` on your call to `/enable_autopay`.
+For loans, give users the option to schedule an additional amount in addition to the periodic payment amount by setting `additional_amount` on your call to [`/facilities/enable_autopay`](/api-reference/facilities/enable-autopay).
 
 ## One-time Payments
 
@@ -35,15 +35,15 @@ If a user has not set up Autopay, they'll need to manually make one-time payment
 
 ### Add bank account details
 
-In order to make a one-time payment, the first step is to set the user's bank account details on the Facility for one-time payments by calling the `/add_repayment_bank_details` endpoint (note: if Autopay is enabled for a Facility, the bank account info still needs to be added with this endpoint to successfully make the one-time payment).
+In order to make a one-time payment, the first step is to set the user's bank account details on the Facility for one-time payments by calling the [`add_repayment_bank_details`](/api-reference/facilities/add-repayment-bank-details) endpoint (note: if Autopay is enabled for a Facility, the bank account info still needs to be added with this endpoint to successfully make the one-time payment).
 
 ### Submit one-time payment
 
-Once the bank account details are set on the Facility, you can submit a one-time payment by calling the `/payments` endpoint.
+Once the bank account details are set on the Facility, you can submit a one-time payment by calling the [`/payments`](/api-reference/payments/submit-payment) endpoint.
 
 ## Disbursements
 
-A Disbursement is the principal of a Facility advanced to a Borrower. For loans, there is typically one Disbursement created shortly after origination, while lines of credit can have multiple disbursements (also commonly referred to as drawdowns) over the life of the line. To create a Disbursement, call the `/disbursements` endpoint.
+A Disbursement is the principal of a Facility advanced to a Borrower. For loans, there is typically one Disbursement created shortly after origination, while lines of credit can have multiple disbursements (also commonly referred to as drawdowns) over the life of the line. To create a Disbursement, call the [`/disbursements`](/api-reference/facilities/disburse) endpoint.
 
 ## Payment & Disbursement Statuses
 
