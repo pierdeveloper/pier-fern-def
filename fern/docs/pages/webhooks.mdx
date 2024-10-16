@@ -34,43 +34,40 @@ Take care not to process the webhook body prior to computing the signature, othe
 
 More details about `identifiers` and `details` for each event can be found in the detailed documentation for each event type/code below.
 
-## Webhook payload example
+## Generic webhook object example
 
 ```json
 {
-  "type": "payment",
-  "code": "transaction_failed",
+  "type": "example",
+  "code": "example_code",
   "env": "sandbox",
   "url": "https://example.com/webhook",
-  "timestamp": "2023-12-05T01:04:44+0000",
+  "timestamp": "2024-10-15T22:00:28.785Z",
   "identifiers": {
-	"statement_id": "sta_7b1b1f0d97554532a2681e4159ec2a8a",
-    "facility_id": "fac_b71c4524ac57467e982ce5414800c27f"
+    "object_id": "obj_db2f7ce6eba24268a04633e4c560ba44"
   },
-  "details": {
-        "failure": {
-        "reason_code": "R01",
-        "description": "Insufficient Funds"
-    }
-  }
+  "details": "Additional details about the event"
 }
 ```
 
+Note that the type, code, identifiers, and details fields depicted here don't reflect actual values you will see. Concrete examples for each event type are shown below.
+
 ## Webhook event types
 
-At a high level, Pier events fall into three types as shown:
+At a high level, Pier events fall into four types as shown:
 
 | Type        | Description                          |
 |-------------|--------------------------------------|
 | Payment     | A payment event occurred             |
 | Disbursement| A facility disbursement occurred     |
 | Statement   | A new account statement was generated|
+| KYC Inquiry | A KYC inquiry result was returned    |
 
-In addition to an event type, each event has a more detailed code as summarized in the table below. More detailed descriptions of each event code and the data returned are included in the following section.
+In addition to an event type, each event has a more detailed code as summarized in the list below. More detailed descriptions of each event code and the data returned are included in the following section.
 
 ## Webhook codes
 
-The following webhook codes provide more detail about the nature of the event:
+The following webhook codes provide more detail about the nature of the event. Additional info about each code is provided in the detailed webhook examples below:
 
 - `transaction_succeeded`
 - `transaction_failed`
@@ -95,3 +92,74 @@ Certain event types also include identifiers for relevant Pier entities when app
 | Disbursement | `facility_id` and `disbursement_id` |
 | Payment      | `facility_id` and `payment_id`      |
 | Statement    | `facility_id` and `statement_id`    |
+| KYC Inquiry  | `consumer_id`                       |
+
+## Detailed webhook examples
+
+### Disbursements
+
+Disbursements (and payments) have three events in their lifecycle that trigger webhooks:
+
+- `transaction_initiated`
+    - indicates that the disbursement has been sent to the ACH network
+- `transaction_succeeded`
+    - indicates that the disbursement has been successfully processed, but may have a change code
+- `transaction_failed`
+    - indicates that the disbursement has failed, and likely has a return code
+
+- Transaction
+
+### Payments
+
+Like a failed disbursement, a failed payment will also include details about why the error occurred including the ACH return code and description if applicable.
+
+```json
+{
+  "type": "payment",
+  "code": "transaction_failed",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T22:00:28.785Z",
+  "identifiers": {
+    "payment_id": "pmt_db2f7ce6eba24268a04633e4c560ba44",
+    "facility_id": "fac_3aa8a861bfe7475eb23a4316a915475f"
+  },
+  "details": "ACH transfer return code R01: Insufficient Funds"
+}
+```
+
+### Statements
+
+### KYC Inquiries
+
+KYC inquiry webhook examples are shown below. They only vary in the result indicated in the codes `kyc_approved` for a successful KYC check and `kyc_declined` for a KYC check that resulted in a failure. Both always include the `consumer_id` of the borrower for whom the KYC check was performed in the `identifiers` field.
+
+- Approved
+```json
+{
+  "type": "kyc_inquiry_result",
+  "code": "kyc_approved",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "consumer_id": "bor_0ec20e551975485ca49701bb622c6edf"
+  }
+}
+```
+
+- Declined
+```json
+{
+  "type": "kyc_inquiry_result",
+  "code": "kyc_declined",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "consumer_id": "bor_0ec20e551975485ca49701bb622c6edf"
+  }
+}
+```
+
+See the [KYC Guide](/guides/kyc) for more information about this feature.
