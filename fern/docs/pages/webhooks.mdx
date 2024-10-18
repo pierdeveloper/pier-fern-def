@@ -267,8 +267,7 @@ KYC inquiry webhook examples are shown below. They only vary in the result indic
   }
 }
 ```
+See the [KYC Guide](/guides/kyc) for more information about this feature.
 
 ### Webhook retries
-If the webhook endpoint does not respond with a 2xx status code, Pier will retry sending the webhook up to 5 times with an exponential backoff. The first retry will be around 10 seconds later, the second after 1-2 minutes, the third after around 15 minutes, the fourth after 2-3 minutes, and the fifth after approximately 1 day. If the webhook still fails after 5 retries, the webhook will be marked as failed and no further retries will be attempted.
-
-See the [KYC Guide](/guides/kyc) for more information about this feature.
+If the webhook endpoint does not respond with a 2xx status code, Pier will retry sending the webhook up to 5 times with an exponential backoff. The first retry will be around 10 seconds later, the second after around 2 minutes, the third after around 15-20 minutes, the fourth after 2-3 hours, and the fifth after approximately 1 day. If the webhook still fails after 5 retries, the webhook will be marked as failed and no further retries will be attempted.
