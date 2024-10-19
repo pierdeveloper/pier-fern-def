@@ -614,7 +614,7 @@ types:
         type: commons.TransferType
         docs: The type of transfer to use for the disbursement (ACH or none [ledger only])
       settlement_priority:
-        type: commons.SettlementPriorities
+        type: optional<commons.SettlementPriorities>
         docs: The speed at which the transfer should execute when ACH is used
     examples:
       - name: Default
