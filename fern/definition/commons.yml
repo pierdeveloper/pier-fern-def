@@ -113,6 +113,7 @@ types:
     enum:
       - pending
       - processing
+      - processed
       - settled
       - failed
       - cancelled
@@ -297,4 +298,16 @@ errors:
 
   TransactionAlreadyRefundedError:
     status-code: 400
+    type: ErrorBody
+
+  UnableToAcquireLockError:
+    status-code: 409
+    type: ErrorBody
+
+  ReconciliationReportInvalidDateError:
+    status-code: 422
+    type: ErrorBody
+
+  ReconciliationReportNotYetAvailableError:
+    status-code: 412
     type: ErrorBody

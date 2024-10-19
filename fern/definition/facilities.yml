@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   A facility represents an active loan or line of credit. 
   It contains references to the borrower, application and executed loan as well as the terms and other state information about the credit facility. 
   Facilities are used by Pier's system for servicing, credit reporting and other down stream functionality.
@@ -118,6 +118,62 @@ service:
             disbursement_id: $DisbursementId.Example0
           response:
             body: "Ok."
+
+    createLimitReductionNotice:
+        display-name: Create a limit reduction notice
+        docs: Create a limit reduction notice, which should be presented to the user when their credit limit is reduced. This endpoint must be called before reducing the credit limit. The document_id returned should be stored and used in the PATCH /facilities/{facility_id}/update_limit endpoint.
+        path: "/{facility_id}/create_limit_reduction_notice"
+        path-parameters:
+          facility_id: FacilityId
+        method: POST
+        request:
+          name: CreateLimitReductionNoticeRequest
+          body:
+              properties:
+                new_limit_amount:
+                    type: integer
+                    docs: Amount of the new credit limit, in cents
+                reasons:
+                    type: list<LimitReductionReasons>
+                    docs: The reasons for the limit reduction
+        response: Document
+        errors:
+          - commons.FacilityNotFoundError
+          - commons.InvalidInputError
+        examples:
+            - path-parameters:
+                facility_id: $FacilityId.Example0
+              request:
+                  new_limit_amount: 100000
+                  reasons: ["fraud_prevention"]
+              response:
+                  body: $Document.ExampleDocument
+
+    updateCreditLimit:
+      display-name: Update credit limit for a line of credit
+      docs: Update credit limit for a line of credit. For reductions, pass in the document_id from the create_limit_reduction_notice endpoint. For increases, pass in the new credit limit amount.
+      path: "/{facility_id}/update_limit"
+      path-parameters:
+        facility_id: FacilityId
+      method: PATCH
+      request:
+          name: UpdateCreditLimitRequest
+          body:
+            properties:
+                new_limit_amount:
+                  type: optional<integer>
+                  docs: The new credit limit amount, in cents
+                document_id:
+                  type: optional<string>
+                  docs: The document_id from the create_limit_reduction_notice endpoint
+      response: Facility
+      examples:
+        - path-parameters:
+            facility_id: $FacilityId.Example0
+          request:
+            new_limit_amount: 100000
+          response:
+            body: $Facility.Active
 
     listPayments:
       display-name: List all payments for a facility
@@ -238,6 +294,11 @@ service:
                 grace_period:
                   term: 0
                   interest_rate: 0
+                introductory_promo_period:
+                  interest_rate: 0
+                  promo_term:
+                    term: 90
+                    term_type: daily
                 amount: 100000
                 apr: 200
                 annual_fee: 0
@@ -260,6 +321,11 @@ service:
               autopay:
                 authorized: false
               balance: 0
+              balances:
+                current_balance: 0
+                principal_balance: 0
+                interest_balance: 0
+                payoff_balance: 0
               origination_date: "2024-04-19"
               remaining_statement_balance: 7500
               documents:
@@ -272,6 +338,8 @@ service:
                 - $Statement.Default
               payments_due: $PaymentsDue.Default
               remaining_minimum_balance: 7500
+              in_grace_period: true
+              in_introductory_promo_period: true
 
 
     enable_autopay:
@@ -513,9 +581,6 @@ types:
       interest_charged:
         type: integer
         docs: The interest balance of the statement, in cents
-      minimum_payment:
-        type: integer
-        docs: The minimum payment due, in cents
       due_date:
         type: string
         docs: The due date of the statement (YYYY-MM-DD)
@@ -548,7 +613,6 @@ types:
           current_principal_balance: 500000
           current_interest_balance: 10000
           interest_charged: 0
-          minimum_payment: 12445
           due_date: 2023-03-17
           transactions: $FacilityTransactionItems.Default
           payments:
@@ -698,6 +762,28 @@ types:
             document_url: "https://storage.googleapis.com/example/signed_autopay_ach_authorization.pdf"
             document_id: "doc_0123456789abcdef"
 
+  FacilityBalances:
+    properties:
+      current_balance:
+        type: integer
+        docs: The current balance of the loan, in cents (includes everything - principal, interest, fees, etc.)
+      principal_balance:
+        type: integer
+        docs: The principal balance of the loan, in cents
+      interest_balance:
+        type: integer
+        docs: The interest balance of the loan, in cents
+      payoff_balance:
+        type: integer
+        docs: The payoff balance of the loan, in cents (if the facility is in grace then this balance is only principal; otherwise it matches current_balance)
+    examples:
+      - name: Default
+        value:
+          current_balance: 500000
+          principal_balance: 500000
+          interest_balance: 0
+          payoff_balance: 500000
+
   Facility:
     properties:
       id: FacilityId
@@ -741,9 +827,17 @@ types:
       balance:
         type: optional<integer>
         docs: The remaining balance of the loan, in cents
+      balances:
+        type: FacilityBalances
+        docs: A deeper view of what makes up the facility balance, all in cents
+      interest_balance:
+        type: optional<integer>
+        docs: The current interest balance of the loan, in cents (deprecated - see balances field)
+        availability: deprecated
       payoff_balance:
         type: optional<integer>
-        docs: The current payoff balance of the loan, in cents
+        docs: The current payoff balance of the loan, in cents (deprecated - see balances field)
+        availability: deprecated
       origination_date:
         type: optional<string>
         docs: The date the loan was originated (YYYY-MM-DD)
@@ -801,6 +895,12 @@ types:
       last_statement_info:
         type: optional<LastStatementInfo>
         docs: The last statement information including date/amount.
+      in_grace_period:
+        type: optional<boolean>
+        docs: Whether the facility is in a grace period
+      in_introductory_promo_period:
+        type: optional<boolean>
+        docs: Whether the facility is in an introductory promotional period
     examples:
       - name: Active
         value:
@@ -814,6 +914,8 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
@@ -838,6 +940,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
       - name: AutopayEnabled
         value:
           terms: $applications.Offer.Loan
@@ -850,6 +954,8 @@ types:
           created_on: "2023-05-12T19:46:09.293Z"
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
@@ -873,6 +979,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
       - name: Closed
         value:
           terms: $applications.Offer.Loan
@@ -885,6 +993,8 @@ types:
           status: closed
           account_number: "401542198"
           balance: 500000
+          balances: $FacilityBalances.Default
+          interest_balance: 0
           payoff_balance: 500000
           origination_date: "2023-05-12"
           disbursement_date: "2023-05-12"
@@ -907,6 +1017,8 @@ types:
           remaining_statement_balance: 7500
           remaining_minimum_balance: 7500
           last_statement_info: $LastStatementInfo.Default
+          in_grace_period: false
+          in_introductory_promo_period: false
 
   LastStatementInfo:
     properties:
@@ -922,6 +1034,19 @@ types:
           last_statement_date: "2024-06-01T00:00:00.000Z"
           last_statement_amount: 47000
 
+  LimitReductionReasons:
+    enum:
+        - change_in_credit_score
+        - high_credit_utilization
+        - late_payments
+        - inactivity
+        - economic_downturn
+        - negative_changes_in_financial_situation
+        - increased_debt_levels
+        - credit_report_changes
+        - regulatory_or_internal_policy_changes
+        - fraud_prevention
+
   CreditStatus:
     enum:
       - active
@@ -932,6 +1057,9 @@ types:
       amount:
         type: integer
         docs: The amount of the transaction, in cents (e.g. 1000 = $10.00)
+      net_amount:
+        type: integer
+        docs: The net amount of the transaction, meaning positive or negative depending on the effect on the ledger, in cents (e.g. 1000 = $10.00)
       transaction_date:
         type: string
         docs: The date of the transaction (YYYY-MM-DD)
@@ -941,6 +1069,18 @@ types:
       description:
         type: string
         docs: A description of the transaction
+      transaction_type:
+        type: FacilityTransactionType
+        docs: The type of transaction relative to the effect on the balance (CREDIT = balance decrease; DEBIT = balance increase; NONE = no balance change)
+      transaction_iso_timestamp:
+        type: datetime
+        docs: The ISO timestamp of the transaction
+
+  FacilityTransactionType:
+    enum:
+      - NONE
+      - CREDIT
+      - DEBIT
 
   FacilityTransactionItems:
     type: list<FacilityTransactionItem>
@@ -948,13 +1088,19 @@ types:
       - name: Default
         value:
           - amount: 100000
+            net_amount: 100000
             transaction_date: "2023-05-12"
             effective_date: "2023-05-12"
             description: "Disbursement"
+            transaction_type: "DEBIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
           - amount: 500000
+            net_amount: -500000
             transaction_date: "2024-06-02"
             effective_date: "2024-06-02"
             description: "Principal Reduction"
+            transaction_type: "CREDIT"
+            transaction_iso_timestamp: "2023-05-12T00:00:00.000Z"
 
   PaymentDue:
     properties:

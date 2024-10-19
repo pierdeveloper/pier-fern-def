@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
-  Loan payments can be made using Pier via ACH
+docs: >
+  Loan payments can be made using Pier via ACH.
 
 imports:
   commons: commons.yml
@@ -139,8 +139,8 @@ types:
         type: optional<commons.SettlementPriorities>
         docs: The speed at which the transfer should execute when ACH is used
       ach_authorization_id:
-        type: string
-        docs: The Document ID of an unused ACH authorization document
+        type: optional<string>
+        docs: The Document ID of an unused ACH authorization document (only required when `transfer_type` is not `none`)
     examples:
       - name: Default
         value:

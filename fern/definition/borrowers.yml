@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   Borrowers represent a legal borrower, and can either be a consumer (e.g. for personal loans and lines of credit) or a [business](notion://www.notion.so/72a5b7a8b07d4bb983ae86a6b32d6696#5261b2cf754e453c8ad40b059ac0d584) (e.g. for commercial charge cards and loans). 
   Creating a borrower (or referencing an existing one) is the first step in the Pier credit origination process.
 
@@ -551,7 +551,6 @@ types:
         type: GovernmentIdentifiers
         docs: The person's government identifiers, required fields dependent on customer configuration
 
-
   BusinessContact:
     properties:
       first_name:
@@ -602,7 +601,7 @@ types:
         docs: Kyc status of a consumer (*sandbox only*)
       government_identifiers:
         type: optional<GovernmentIdentifiers>
-        docs: The borrower's government identifiers, required fields dependent on customer configuration
+        docs: The borrower's government identifiers, required fields dependent on customer configuration. Can be non-unique on sandbox environment.
 
     examples:
       - name: Default

@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
-  Webhooks
+docs: >
+  Webhook, lending details and other various system configurations can be set and retrieved using the Configuration API.
 
 imports:
   commons: commons.yml
@@ -10,37 +10,48 @@ service:
   base-path: /configuration
   auth: true
   endpoints:
-    create_webhook:
-      display-name: Set webhook URL
-      docs: Set a url to receive webhook events from Pier.
+    set_webhook_urls:
+      display-name: Set webhook URLs
+      docs: Set the array of urls to receive webhook events from Pier.
       path: "/webhook"
       method: POST
       request:
-        name: CreateWebhookRequest
+        name: SetWebhook
         body:
           properties:
-            url:
-              type: string
-              docs: The `url` to send webhooks to
-      response: string
+            urls:
+              type: list<string>
+              docs: The array of `urls` to send webhooks to
+      response: WebhookUrls
       errors:
         - commons.InvalidWebhookError
       examples:
         - request:
-            url: "https://example.com/webhook"
+            urls:
+              - "https://example.com/webhook1"
+              - "https://example.com/webhook2"
           response:
-            body: Ok.
+            body: $WebhookUrls.Default
 
-    delete_webhook:
-      display-name: Remove a webhook
-      docs: Delete the url that was set to receive webhook events from Pier.
+    delete_webhook_urls:
+      display-name: Reset webhook URLs
+      docs: Reset the array of `urls` that receives Pier webhooks.
       path: "/webhook"
       method: DELETE
-      response: string
+      response: DeleteWebhookResponse
       examples:
-        - request:
-          response:
-            body: Ok.
+        - response:
+            body: $DeleteWebhookResponse.Default
+
+    get_webhook_urls:
+      display-name: Get webhook URLs
+      docs: Get the array of `urls` that receives Pier webhooks.
+      path: "/webhook"
+      method: GET
+      response: WebhookUrls
+      examples:
+        - response:
+            body: $WebhookUrls.Default
 
     webhook_verification:
       display-name: Verify a webhook with Pier public key
@@ -84,6 +95,26 @@ service:
             body: Ok.
 
 types:
+  WebhookUrls:
+    properties:
+      urls:
+        type: list<string>
+        docs: The array of `urls` to send webhooks to
+    examples:
+      - name: Default
+        value:
+          urls:
+            - "https://example.com/webhook1"
+            - "https://example.com/webhook2"
+
+  DeleteWebhookResponse:
+    properties:
+      urls: list<string>
+    examples:
+      - name: Default
+        value:
+          urls: []
+
   VerificationResponse:
     properties:
         public_key:

@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fern-api/fern/main/fern.schema.json
 
-docs: |
+docs: >
   Pier's coverage endpoints provide our up-to-date state lending coverage and lending thresholds. 
   `min` and `max` amounts are in cents, and `max_apr` is in basis points. 
   States not yet supported are represented as an empty object
@@ -76,7 +76,7 @@ service:
     checkOffers:
       display-name: Check offers
       docs: |
-        Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not.
+        Check a set of offers against our limits for a given state. Customers can pass us a list of offers, which we will run through our compliance limits. We will return a boolean for each offer indicating whether the offer passes our limits or not. If the user does not specify an ID for each offer, we will reindex them from 0.
       path: /coverage/check_offers
       method: POST
       request:
@@ -97,17 +97,22 @@ service:
         - request:
             state: AK
             offers:
-              - id: "26"
+              - id: 26
                 type: "loan_offer"
                 amount: 300000
                 interest_rate: 750
-                term: 24
+                loan_term:
+                  term_type: "months"
+                  term: 12
                 origination_fee: 150
                 first_payment_date: "2024-04-15"
                 payment_period: monthly
-              - id: "27"
+              - id: 27
                 type: "revolving_line_of_credit_offer"
                 amount: 100000
+                loan_term:
+                  term_type: "months"
+                  term: 12
                 interest_rate: 200
                 origination_fee: 0
           response:
@@ -262,7 +267,7 @@ types:
   CheckOffer:
     properties:
       id:
-        type: string
+        type: optional<integer>
         docs: Unique identifier for the offer used in the check_offers endpoint.
       type: CheckOfferType
       amount:
@@ -273,7 +278,10 @@ types:
         docs: The interest rate (in basis points) charged on the offer (e.g., 750 for 7.50%).
       term:
         type: optional<integer>
-        docs: The term of the offer in months (e.g., 24 for a 24-month term).
+        docs: Legacy - The term of the offer in months (e.g., 24 for a 24-month term). Use loan_term instead, but if this is specified, loan_term can be undefined.
+      loan_term:
+        type: applications.Term
+        docs: The term of the offer.
       origination_fee:
         type: integer
         docs: The origination fee charged to originate the offer in basis points (e.g., 150 for 1.50%).
