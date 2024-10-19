@@ -578,8 +578,8 @@ types:
         type: datetime
         docs: Timestamp the disbursement object is created on
       transfer_type:
-        type: commons.TransferType
-        docs: The type of transfer to use for the disbursement
+        type: commons.DisbursementTransferType
+        docs: The type of transfer that the disbursement was (ACH, ledger only, or special cases like refunds)
     examples:
       - name: Pending
         value:
@@ -612,13 +612,17 @@ types:
         docs: The bank account to disburse to
       transfer_type:
         type: commons.TransferType
-        docs: The type of transfer to use for the disbursement
+        docs: The type of transfer to use for the disbursement (ACH or none [ledger only])
+      settlement_priority:
+        type: commons.SettlementPriorities
+        docs: The speed at which the transfer should execute when ACH is used
     examples:
       - name: Default
         value:
           amount: 100000
           disbursement_bank_account: $commons.BankAccount.Default
           transfer_type: standard
+          settlement_priority: same_day
       - name: DefaultNoneType
         value:
           amount: 100000

@@ -78,15 +78,36 @@ types:
       - checking
       - savings
 
-  # Also, we need to distinguish between internal transfer types on the objects and the ones that are passed in through the api
-  # We also need to add settlement priorities
-  # These need to be set to different ones for payment/disbursement
   TransferType:
+    docs: These transfer types are passed in by API users to indicate ACH or not.
     enum:
       - standard
-      - next_day
-      - same_day
       - none
+
+  PaymentTransferType:
+    docs: >
+      Transfer types that are not standard/none are set by special operations like the refund endpoint for example. 
+      Special types, like refund, will reference the original transaction transfer type of standard/none to determine 
+      if ACH was used if this knowledge is needed (e.g. does an ACH refund need to happen or was this ledgering only).
+    enum:
+      - standard
+      - none
+      - refund
+      - credit
+      - cancellation
+      - suspense_credit
+
+  DisbursementTransferType:
+    docs: >
+      Transfer types that are not standard/none are set by special operations like the refund endpoint for example. 
+      Special types, like refund, will reference the original transaction transfer type of standard/none to determine 
+      if ACH was used if this knowledge is needed (e.g. does an ACH refund need to happen or was this ledgering only).
+    enum:
+      - standard
+      - none
+      - refund
+      - cancellation
+      - suspense_refund
 
   TransferStatus:
     enum:
@@ -95,6 +116,13 @@ types:
       - settled
       - failed
       - cancelled
+
+  SettlementPriorities:
+    docs: This determines the network speed used for ACH transfers.
+    enum:
+      - standard
+      - next_day
+      - same_day
 
   CreditType:
     enum:

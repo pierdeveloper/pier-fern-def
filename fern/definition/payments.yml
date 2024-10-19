@@ -134,7 +134,10 @@ types:
         docs: The amount of the payment, in cents
       transfer_type:
         type: commons.TransferType
-        docs: The type of ACH transfer
+        docs: The type of transfer to use for the payment (ACH or none [ledger only])
+      settlement_priority:
+        type: commons.SettlementPriorities
+        docs: The speed at which the transfer should execute when ACH is used
       ach_authorization_id:
         type: string
         docs: The Document ID of an unused ACH authorization document
@@ -144,6 +147,7 @@ types:
           facility_id: $facilities.FacilityId.Example0
           amount: 100000
           transfer_type: standard
+          settlement_priority: same_day
           ach_authorization_id: doc_43da3b3f95c745e1985a71e9a00d6c27
       - name: DefaultNoneType
         value:
@@ -165,7 +169,7 @@ types:
         type: commons.TransferStatus
         docs: The status of the payment
       transfer_type:
-        type: commons.TransferType
+        type: commons.PaymentTransferType
         docs: The type of ACH transfer
       created_on:
         type: datetime
