@@ -34,43 +34,40 @@ Take care not to process the webhook body prior to computing the signature, othe
 
 More details about `identifiers` and `details` for each event can be found in the detailed documentation for each event type/code below.
 
-## Webhook payload example
+## Generic webhook object example
 
 ```json
 {
-  "type": "payment",
-  "code": "transaction_failed",
+  "type": "example",
+  "code": "example_code",
   "env": "sandbox",
   "url": "https://example.com/webhook",
-  "timestamp": "2023-12-05T01:04:44+0000",
+  "timestamp": "2024-10-15T22:00:28.785Z",
   "identifiers": {
-	"statement_id": "sta_7b1b1f0d97554532a2681e4159ec2a8a",
-    "facility_id": "fac_b71c4524ac57467e982ce5414800c27f"
+    "object_id": "obj_db2f7ce6eba24268a04633e4c560ba44"
   },
-  "details": {
-        "failure": {
-        "reason_code": "R01",
-        "description": "Insufficient Funds"
-    }
-  }
+  "details": "Additional details about the event"
 }
 ```
 
+Note that the type, code, identifiers, and details fields depicted here are generic and don't reflect actual values you will see. Concrete examples for each event type are shown below.
+
 ## Webhook event types
 
-At a high level, Pier events fall into three types as shown:
+At a high level, Pier events fall into four types as shown:
 
 | Type        | Description                          |
 |-------------|--------------------------------------|
 | Payment     | A payment event occurred             |
 | Disbursement| A facility disbursement occurred     |
 | Statement   | A new account statement was generated|
+| KYC Inquiry | A KYC inquiry result was returned    |
 
-In addition to an event type, each event has a more detailed code as summarized in the table below. More detailed descriptions of each event code and the data returned are included in the following section.
+In addition to an event type, each event has a more detailed code as summarized in the list below. More detailed descriptions of each event code and the data returned are included in the following section.
 
 ## Webhook codes
 
-The following webhook codes provide more detail about the nature of the event:
+The following webhook codes provide more detail about the nature of the event. Additional info about each code is provided in the detailed webhook examples below:
 
 - `transaction_succeeded`
 - `transaction_failed`
@@ -95,3 +92,182 @@ Certain event types also include identifiers for relevant Pier entities when app
 | Disbursement | `facility_id` and `disbursement_id` |
 | Payment      | `facility_id` and `payment_id`      |
 | Statement    | `facility_id` and `statement_id`    |
+| KYC Inquiry  | `consumer_id`                       |
+
+## Detailed webhook examples
+
+### Disbursements
+
+Disbursements (and payments) have three events in their lifecycle that trigger webhooks:
+
+- `transaction_initiated`
+    - indicates that the disbursement has been sent to the ACH network
+- `transaction_succeeded`
+    - indicates that the disbursement has successfully settled.
+- `transaction_failed`
+    - indicates that the disbursement has failed, and likely has a return code.
+
+#### Disbursement webhook examples
+
+- `transaction_initiated`
+```json
+{
+  "type": "disbursement",
+  "code": "transaction_initiated",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "disbursement_id": "dsb_0d22b88519554e8b8df69436f14180d4",
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  }
+
+}
+```
+
+- `transaction_succeeded`
+```json
+{
+  "type": "disbursement",
+  "code": "transaction_succeeded",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-18T00:24:36.535Z",
+  "identifiers": {
+    "disbursement_id": "dsb_0d22b88519554e8b8df69436f14180d4",
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  }
+}
+```
+
+- `transaction_failed`
+```json
+{
+  "type": "disbursement",
+  "code": "transaction_failed",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-18T00:27:10.928Z",
+  "identifiers": {
+    "disbursement_id": "dsb_0d22b88519554e8b8df69436f14180d4",
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  },
+  "details": "ACH transfer return code R01: Insufficient Funds"
+}
+```
+
+### Payments
+
+Payments have the same events as disbursements. The only difference in these cases are the `type` field which will be `payment` instead of `disbursement` in the examples above.
+In addition, payments also have a number of autopay and past due events:
+
+- `autopay_scheduled`
+    - indicates that an autopay has been scheduled for the next payment due. Implies `payment_due` event will not be sent.
+- `payment_due`
+    - indicates that a payment is due. Implies `autopay_scheduled` event will not be sent.
+- `payment_late_5_days`
+- `payment_late_10_days`
+- `payment_late_15_days`
+- `payment_late_30_days`
+- `payment_late_45_days`
+    - indicates that a payment is late by the number of days specified in the event code.
+
+#### Payment webhook examples
+
+- `autopay_scheduled`
+```json
+{
+  "type": "payment",
+  "code": "autopay_scheduled",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-18T00:27:10.928Z",
+  "identifiers": {
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  }
+}
+```
+- `payment_due`
+```json
+{
+  "type": "payment",
+  "code": "payment_due",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-18T00:27:10.928Z",
+  "identifiers": {
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  }
+}
+```
+- `payment_late_5_days`
+- `payment_late_10_days`
+- `payment_late_15_days`
+- `payment_late_30_days`
+- `payment_late_45_days`
+```json
+{
+    "type": "payment",
+    "code": "payment_late_5_days",
+    "env": "sandbox",
+    "url": "https://example.com/webhook",
+    "timestamp": "2024-10-18T00:27:10.928Z",
+    "identifiers": {
+      "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+    }
+}
+```
+
+### Statements
+
+When a statement is ready, a `statement_ready` webhook is sent. The `statement_id` and `facility_id` are included in the `identifiers` field.
+
+```json
+{
+  "type": "statement",
+  "code": "statement_ready",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "statement_id": "stmt_0d22b88519554e8b8df69436f14180d4",
+    "facility_id": "fac_207b5820591743fab5994f5b5b2b475e"
+  }
+}
+```
+
+### KYC Inquiries
+
+KYC inquiry webhook examples are shown below. They only vary in the result indicated in the codes `kyc_approved` for a successful KYC check and `kyc_declined` for a KYC check that resulted in a failure. Both always include the `consumer_id` of the borrower for whom the KYC check was performed in the `identifiers` field.
+
+- Approved
+```json
+{
+  "type": "kyc_inquiry_result",
+  "code": "kyc_approved",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "consumer_id": "bor_0ec20e551975485ca49701bb622c6edf"
+  }
+}
+```
+
+- Declined
+```json
+{
+  "type": "kyc_inquiry_result",
+  "code": "kyc_declined",
+  "env": "sandbox",
+  "url": "https://example.com/webhook",
+  "timestamp": "2024-10-15T21:39:27.051Z",
+  "identifiers": {
+    "consumer_id": "bor_0ec20e551975485ca49701bb622c6edf"
+  }
+}
+```
+See the [KYC Guide](/guides/kyc) for more information about this feature.
+
+### Webhook retries
+If the webhook endpoint does not respond with a 2xx status code, Pier will retry sending the webhook up to 5 times with an exponential backoff. The first retry will be around 10 seconds later, the second after around 2 minutes, the third after around 15-20 minutes, the fourth after 2-3 hours, and the fifth after approximately 1 day. If the webhook still fails after 5 retries, the webhook will be marked as failed and no further retries will be attempted.
