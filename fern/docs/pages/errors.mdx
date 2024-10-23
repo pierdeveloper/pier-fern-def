@@ -68,7 +68,7 @@ Pier uses HTTP codes to indicate the status of an API request. Generally, `2xx` 
 | PAYMENT_NOT_FOUND | PAYMENT_ERROR | 404 | The payment resource does not exist |
 | INVALID_PAYMENT_ID | PAYMENT_ERROR | 400 | The payment_id specified is invalid |
 | UNABLE_TO_INITIATE_PAYMENT | PAYMENT_ERROR | 400 | Unable to initiate payment |
-| PAYMENT_ALREADY_SUBMITTED | PAYMENT_ERROR | 400 | Payment with this id has already been submitted to dwolla |
+| PAYMENT_ALREADY_SUBMITTED | PAYMENT_ERROR | 400 | Payment with this id has already been submitted to svb |
 | CREDIT_POLICY_NOT_FOUND | CREDIT_POLICY_ERROR | 404 | The credit policy resource does not exist |
 | CREDIT_POLICY_NOT_IN_DRAFTED_STATE | CREDIT_POLICY_ERROR | 400 | The credit policy must be in a drafted state in order to submit it for approval |
 | CREDIT_POLICY_NOT_IN_APPROVED_STATE | CREDIT_POLICY_ERROR | 400 | The credit policy must be in an approved state in order to deploy it |
@@ -78,7 +78,7 @@ Pier uses HTTP codes to indicate the status of an API request. Generally, `2xx` 
 | INVALID_CREDIT_POLICY_ID | CREDIT_POLICY_ERROR | 400 | The credit_policy_id specified is invalid |
 | AUTOPAY_ALREADY_DISABLED | FACILITY_ERROR | 400 | Autopay is already disabled for this facility |
 | DISBURSEMENT_ACH_DISABLED | FACILITY_ERROR | 400 | Your account is not enabled for ACH disbursements |
-| DISBURSEMENT_ALREADY_SUBMITTED | DISBURSEMENT_ERROR | 400 | Disbursement with this id has already been submitted to dwolla |
+| DISBURSEMENT_ALREADY_SUBMITTED | DISBURSEMENT_ERROR | 400 | Disbursement with this id has already been submitted to svb |
 | DISBURSEMENT_AMOUNT_EXCEEDS_FACILITY_AMOUNT | FACILITY_ERROR | 400 | The disbursement amount requested, along with other disbursements on this facility, may not exceed the loan amount for the facility |
 | DISBURSEMENT_AMOUNT_EXCEEDS_AVAILABLE_LIMIT | FACILITY_ERROR | 400 | The requested disbursement exceeds the available limit for the facility |
 | DISBURSEMENT_ERROR | DISBURSEMENT_ERROR | 500 | Unable to initiate disbursement |
