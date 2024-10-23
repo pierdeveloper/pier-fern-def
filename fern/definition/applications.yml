@@ -185,6 +185,8 @@ types:
             type: interest_plus_percentage_of_principal
             value: 500
             floor: 3000
+          payment_period: monthly
+          first_payment_date: "2022-12-31"
       - name: Loan
         value:
           type: loan_offer
@@ -269,6 +271,8 @@ types:
             type: interest_plus_percentage_of_principal
             value: 500
             floor: 3000
+          payment_period: monthly
+          first_payment_date: "2022-12-31"
       - name: Loan
         value:
           type: loan_offer
@@ -432,12 +436,18 @@ types:
           '2500' for $25.00; default to 0)
       minimum_payment:
         type: optional<MinimumPayment>
-        docs: The minimum payment due each billing cycle. There is also a flat minimum payment of $15, which is used if the calculated minimum payment is less than $15.
+        docs: The minimum payment due each billing cycle. There is also a flat minimum payment of \$15, which is used if the calculated minimum payment is less than \$15.
       origination_fee:
         type: optional<integer>
         docs: >
           The origination fee charged to originate the line in basis points (e.g. '150'
           for 1.50%)
+      payment_period:
+        type: optional<PaymentPeriod>
+        docs: The repayment frequency for the loan. Accepted values weekly, biweekly, monthly, semi_monthly_first_15th, semi_monthly_last_15th, semi_monthly
+      first_payment_date:
+        type: optional<string>
+        docs: The date of the first payment, in ISO 8601 format (e.g. 2022-12-31)
           
 
   LineOfCreditOffer:
