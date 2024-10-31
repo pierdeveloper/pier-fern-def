@@ -94,3 +94,5 @@ Pier uses HTTP codes to indicate the status of an API request. Generally, `2xx` 
 | LEDGERING_DISABLED | LEDGERING_ERROR | 400 | Your account is not enabled for ledgering |
 | MISSING_DISBURSEMENT_BANK_DETAILS | DISBURSEMENT_ERROR | 400 | Invalid or missing disbursement bank account & routing info |
 | MISSING_LENDING_DETAILS | LOAN_AGREEMENT_ERROR | 400 | Invalid lending details for generating loan agreement |
+| CANNOT_CANCEL_TRANSACTION_INCORRECT_STATUS | PAYMENT_ERROR | 409 | Can only cancel Payment or Disbursement if the transaction's status is pending and ach has not been submitted |
+| CANNOT_REFUND_TRANSACTION_INCORRECT_STATUS | PAYMENT_ERROR | 409 | Can only refund Payment or Disbursement if the transaction's status is settled |
