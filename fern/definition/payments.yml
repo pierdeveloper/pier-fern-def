@@ -53,7 +53,7 @@ service:
 
     refundPayment:
         display-name: Refund a payment
-        docs: Refunds a specified payment in full. This endpoint is intended for correcting erroneous transactions. Only customers with ACH disabled can refund payments.
+        docs: Refunds a specified payment in full. This endpoint is intended for correcting erroneous transactions. Only payments in the `settled` state can be refunded. This includes customers with ACH disabled because payments go straight to settled.
         path: "/{payment_id}/refund"
         path-parameters:
             payment_id: PaymentId
@@ -62,6 +62,32 @@ service:
         errors:
             - commons.PaymentNotFoundError
             - commons.InvalidPaymentIdError
+            - commons.CannotRefundTransactionIncorrectStatus
+
+    cancelPayment:
+      display-name: Cancel a payment
+      docs: |
+            Cancels a submitted payment before it is sent to the ACH network. Payments can only be canceled if they are still in the `pending` state and have not been submitted to the ACH network. After a payment is sent to the ACH network, you must wait for the it to settle and then you may refund it instead.
+              
+            In some cases if you cancel while the payment is in the process of being submitted to the ACH network you may see a status of `cancellation_pending` in the response. In this case, you can check the status of the payment or wait for a subsequent webhook to see if it was successfully canceled or processed.
+      path: "/{payment_id}/cancel"
+      path-parameters:
+        payment_id: PaymentId
+      method: POST
+      response: Payment
+      errors:
+        - commons.PaymentNotFoundError
+        - commons.InvalidPaymentIdError
+        - commons.CannotCancelTransactionIncorrectStatus
+      examples:
+        - path-parameters:
+            payment_id: $PaymentId.Example0
+          response:
+            body: $Payment.Canceled
+        - path-parameters:
+            payment_id: $PaymentId.Example0
+          response:
+            body: $Payment.CancellationPending
 
     getAll:
       display-name: List all payments
@@ -225,3 +251,22 @@ types:
           transfer_type: standard
           created_on: 2023-02-27T00:00:00Z
           is_autopay: false
+      - name: Canceled
+        value:
+          id: $PaymentId.Example0
+          amount: 100000
+          facility_id: $facilities.FacilityId.Example0
+          status: canceled
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+          is_autopay: false
+      - name: CancellationPending
+        value:
+          id: $PaymentId.Example0
+          amount: 100000
+          facility_id: $facilities.FacilityId.Example0
+          status: cancellation_pending
+          transfer_type: standard
+          created_on: 2023-02-27T00:00:00Z
+          is_autopay: false
+

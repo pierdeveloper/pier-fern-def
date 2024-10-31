@@ -221,6 +221,36 @@ service:
           - commons.DisbursementNotFoundError
           - commons.PaymentNotFoundError
 
+    cancelDisbursement:
+      display-name: Cancel a disbursement
+      docs: |
+            Cancels a submitted disbursement before it is sent to the ACH network. Disbursements can only be canceled if they are still in the `pending` state and have not been submitted to the ACH network. After a disbursement is sent to the ACH network, you must wait for the it to settle and then you may refund it instead.
+        
+            In some cases if you cancel while the disbursement is in the process of being submitted to the ACH network you may see a status of `cancellation_pending` in the response. In this case, you can check the status of the disbursement or wait for a subsequent webhook to see if it was successfully canceled or processed.
+      path: "/{facility_id}/disbursements/{disbursement_id}/refund"
+      path-parameters:
+        facility_id: FacilityId
+        disbursement_id: DisbursementId
+      method: POST
+      response: Disbursement
+      errors:
+        - commons.FacilityNotFoundError
+        - commons.TransactionNotFoundError
+        - commons.TransactionAlreadyRefundedError
+        - commons.InvalidInputError
+        - commons.CannotCancelTransactionIncorrectStatus
+      examples:
+        - path-parameters:
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
+          response:
+            body: $Disbursement.Canceled
+        - path-parameters:
+            facility_id: $FacilityId.Example0
+            disbursement_id: $DisbursementId.Example0
+          response:
+            body: $Disbursement.CancellationPending
+
     refundDisbursement:
       display-name: Refund a disbursement
       docs: |
@@ -236,6 +266,7 @@ service:
         - commons.TransactionNotFoundError
         - commons.TransactionAlreadyRefundedError
         - commons.InvalidInputError
+        - commons.CannotRefundTransactionIncorrectStatus
 
     close:
       display-name: Close a facility
@@ -665,6 +696,28 @@ types:
           date: 2023-02-27
           created_on: 2023-02-27T00:00:00Z
           transfer_type: none
+      - name: Canceled
+        value:
+          id: $DisbursementId.Example0
+          facility_id: $FacilityId.Example0
+          amount: 100000
+          status: canceled
+          failure_reason: null
+          date: 2023-02-27
+          created_on: 2023-02-27T00:00:00Z
+          transfer_type: none
+      - name: CancellationPending
+        value:
+          id: $DisbursementId.Example0
+          facility_id: $FacilityId.Example0
+          amount: 100000
+          status: cancellation_pending
+          failure_reason: null
+          date: 2023-02-27
+          created_on: 2023-02-27T00:00:00Z
+          transfer_type: none
+
+
 
   DisbursementRequest:
     properties:

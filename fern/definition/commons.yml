@@ -116,7 +116,8 @@ types:
       - processed
       - settled
       - failed
-      - cancelled
+      - canceled
+      - cancellation_pending
 
   SettlementPriorities:
     docs: This determines the network speed used for ACH transfers.
@@ -310,4 +311,12 @@ errors:
 
   ReconciliationReportNotYetAvailableError:
     status-code: 412
+    type: ErrorBody
+
+  CannotCancelTransactionIncorrectStatus:
+    status-code: 409
+    type: ErrorBody
+
+  CannotRefundTransactionIncorrectStatus:
+    status-code: 409
     type: ErrorBody
